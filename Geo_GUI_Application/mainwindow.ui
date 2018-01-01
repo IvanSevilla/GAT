@@ -128,9 +128,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="Btn_Color">
+           <widget class="QPushButton" name="Btn_Move">
             <property name="text">
-             <string>Color</string>
+             <string>Move</string>
             </property>
             <property name="flat">
              <bool>false</bool>

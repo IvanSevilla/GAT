@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalLayout_7->addWidget(ui->graphicsView);
     ui->Btn_Do->setHidden(1);
     ui->Btn_Undo->setHidden(1);
-    ui->Btn_Color->setHidden(1);
+    ui->Btn_Move->setHidden(1);
     ui->Btn_Add_Point->setHidden(1);
     ui->Btn_Del_Point->setHidden(1);
     scene = new QGraphicsScene(this);
@@ -118,7 +118,7 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         }
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
-        ui->Btn_Color->setHidden(!checked);
+        ui->Btn_Move->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
@@ -131,7 +131,7 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
-        ui->Btn_Color->setHidden(!checked);
+        ui->Btn_Move->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }
@@ -362,4 +362,10 @@ void MainWindow::on_Btn_Undo_pressed()
 void MainWindow::on_Btn_Do_clicked()
 {
     if(image)edit->redoLastPoint();
+}
+
+void MainWindow::on_Btn_Move_clicked()
+{
+    if(image)this->edit->setPaint(3);
+
 }

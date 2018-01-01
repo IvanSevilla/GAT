@@ -84,6 +84,8 @@ private slots:
 
     void on_Btn_Do_clicked();
 
+    void on_Btn_Move_clicked();
+
 private:
     Ui::MainWindow *ui;
 

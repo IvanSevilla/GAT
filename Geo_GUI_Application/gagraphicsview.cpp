@@ -24,12 +24,13 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
         if(paint == 1){
             double rad = 1;
             QPointF pt = mapToScene(e->pos());
-            QGraphicsItem* it = scene->addEllipse(pt.x()-rad, pt.y()-rad, rad+2.0, rad+2.0,pen, brush);
+            QGraphicsItem* it = scene->addEllipse(pt.x(), pt.y(), rad+2.0, rad+2.0,pen, brush);
             itemList.insert(scene->items().size()+actualGroup,scene->items().first());
             pointList.insert(scene->items().size()+actualGroup,pt);
             it->setFlag(QGraphicsItem::ItemIsMovable,true);
             it->setFlag(QGraphicsItem::ItemIsSelectable,true);
             it->setFlag(QGraphicsItem::ItemClipsToShape,true);
+
 
             switch (actualGroup) {
             case G0:
@@ -81,9 +82,8 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             qDebug()<<scene->items();
 
 
-        }else {
+        }if(paint == 3){
             QGraphicsView::mousePressEvent(e);
-            qDebug()<<"here";
 
         }
     }
