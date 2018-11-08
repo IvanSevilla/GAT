@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/test">
+        <file>projecteMontserrat.txt</file>
+        <file>Montserrat_Ortho/projecteMontserrat_1.txt</file>
+    </qresource>
+</RCC>

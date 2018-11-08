@@ -4,4 +4,4 @@ CONFIG += qt warn_on depend_includepath testcase
 
 TEMPLATE = app
 
-SOURCES +=  tst_geolibtest.cpp
+include(GeolibTest.pri)

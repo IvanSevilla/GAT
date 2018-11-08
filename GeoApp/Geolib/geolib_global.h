@@ -3,6 +3,8 @@
 
 #include <QtCore/qglobal.h>
 #include <string.h>
+#include <iostream>
+#include <fstream>
 #include "glm/glm.hpp"
 using namespace std;
 #if defined(GEOLIB_LIBRARY)

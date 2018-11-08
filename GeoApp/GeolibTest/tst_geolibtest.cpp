@@ -1,5 +1,6 @@
 #include <QtTest>
-
+#include "../Geolib/geolib.h"
+#include "../Geolib/geolib_global.h"
 // add necessary includes here
 
 class GeolibTest : public QObject
@@ -17,7 +18,9 @@ private slots:
 
 GeolibTest::GeolibTest()
 {
-
+    string path = "../Geolib/Monstserrat_Ortho/projecteMontserrat.txt";
+    Geolib g = Geolib();
+    g.ReadFile(path);
 }
 
 GeolibTest::~GeolibTest()
