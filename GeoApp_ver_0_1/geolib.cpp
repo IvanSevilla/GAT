@@ -7,8 +7,8 @@ Geolib::Geolib()
 
 void Geolib::ReadFile(QString path){
     // Inicialitzem un string per a guardar les linies del fitxer
-    char readLine[256];
-    cout<< "reading File"<<endl;
+    //char readLine[256];
+    //cout<< "reading File"<<endl;
     // Obrim el fitxer
     Q_INIT_RESOURCE(resources);
     QFile file;

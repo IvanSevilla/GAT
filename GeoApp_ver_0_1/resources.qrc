@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/test">
+    <qresource prefix="/data">
         <file>projecteMontserrat.txt</file>
         <file>Montserrat_Ortho/projecteMontserrat_1.txt</file>
     </qresource>
