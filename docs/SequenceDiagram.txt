@@ -1,0 +1,20 @@
+@startuml
+
+title "APP / API: OPEN FILE - Sequence Diagram"
+
+actor User
+control "GeoApp" as GA
+entity "Library" as API
+
+User -> GA : Opens Project
+GA -> API : OpenProject()
+API --> API : ReadFile()
+API --> API : ReadImage()
+API --> API : ReadCalibrationMatrix()
+API --> API : ReadMatrix()
+GA <- API : struct Project* p
+User <- GA : Shows Project loaded
+
+
+
+@enduml

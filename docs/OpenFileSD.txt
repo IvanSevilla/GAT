@@ -1,0 +1,43 @@
+                  "APP / API: OPEN FILE - Sequence Diagram"                   
+                                                                              
+       ┌─┐                                                                    
+       ║"│                                                                    
+       └┬┘                                                                    
+       ┌┼┐                                                                    
+        │                 ┌──────┐          ┌───────┐                         
+       ┌┴┐                │GeoApp│          │Library│                         
+      User                └──────┘          └───────┘                         
+       │    Opens Project    │                  │                             
+       │ ────────────────────>                  │                             
+       │                     │                  │                             
+       │                     │   OpenProject()  │                             
+       │                     │ ─────────────────>                             
+       │                     │                  │                             
+       │                     │                  │─ ─ ┐                        
+       │                     │                  │    | ReadFile()             
+       │                     │                  │< ─ ┘                        
+       │                     │                  │                             
+       │                     │                  │─ ─ ┐                        
+       │                     │                  │    | ReadImage()            
+       │                     │                  │< ─ ┘                        
+       │                     │                  │                             
+       │                     │                  │─ ─ ┐                        
+       │                     │                  │    | ReadCalibrationMatrix()
+       │                     │                  │< ─ ┘                        
+       │                     │                  │                             
+       │                     │                  │─ ─ ┐                        
+       │                     │                  │    | ReadMatrix()           
+       │                     │                  │< ─ ┘                        
+       │                     │                  │                             
+       │                     │ struct Project* p│                             
+       │                     │ <─────────────────                             
+       │                     │                  │                             
+       │ Shows Project loaded│                  │                             
+       │ <────────────────────                  │                             
+      User                ┌──────┐          ┌───────┐                         
+       ┌─┐                │GeoApp│          │Library│                         
+       ║"│                └──────┘          └───────┘                         
+       └┬┘                                                                    
+       ┌┼┐                                                                    
+        │                                                                     
+       ┌┴┐                         

@@ -1,0 +1,27 @@
+1
+6
+D:\Projectes Digitalitzacio\Montserrat_Ortho\281116a.tif
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock1.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord1.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\281116b.tif
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock2.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord2.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\281116c.tif
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock3.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord3.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\281116v.tif
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock4.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord4.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\zoom8.jpg
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock5.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord5.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\zoom9.jpg
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatblock6.txt
+D:\Projectes Digitalitzacio\Montserrat_Ortho\resultatcoord6.txt
+1
+D:\Projectes Digitalitzacio\Montserrat_Ortho\281116.txt
+1
+D:\Projectes Digitalitzacio\Montserrat_Ortho\calib.txt
+1
+D:\Projectes Digitalitzacio\Montserrat_Ortho\matriu.txt
+

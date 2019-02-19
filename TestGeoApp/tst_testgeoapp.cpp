@@ -1,5 +1,5 @@
 #include <QtTest>
-
+#include "geolib.h"
 // add necessary includes here
 
 class TestGeoApp : public QObject
