@@ -9,14 +9,15 @@ class GEOLIBSHARED_EXPORT Geolib
 {
 
 public:
+    typedef enum {ORTO, NOORTO} PROJECT_TYPE;
     struct Project
     {
         Project() {}
         QImage images[NUM_IMAGES];
-        int Type;
+        PROJECT_TYPE Type;
         arma::field<arma::mat> matrices (); // try using arma::Cube
         arma::mat calibration ();
-        arma::field<arma::mat> PointCloud ();
+        arma::field<glm::vec3> PointCloud ();
 
 
 
