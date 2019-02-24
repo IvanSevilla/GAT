@@ -8,9 +8,10 @@
 #include <QGraphicsScene>
 #include <QDir>
 #include <QtGui>
+#include <QGraphicsProxyWidget>
 #include <QLabel>
 #include <iostream>
-using namespace std;
+
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +38,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    void ZoomOut(double h, double w);
+    void ZoomIn(double h, double w);
+    QWidget* w;
 
 };
 

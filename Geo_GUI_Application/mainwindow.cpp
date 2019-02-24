@@ -51,21 +51,40 @@ void MainWindow::on_actionAdd_Image_triggered()
     //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
     //ui->imagelabel->show();
     ui->graphicsView->setScene(scene);
+    w = new QWidget();
+    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
+
+    w->setGeometry(pix.rect());
+    w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+    QVBoxLayout* layout1 = new QVBoxLayout(w);
+    layout1->setAlignment(Qt::AlignRight | Qt::AlignTop);
+
+    //QObject::connect(button, &QPushButton::clicked, label, &QLabel::show);
+
+    proxy->setWidget(w);
+    scene->addItem(proxy);
+
 }
 
 
-
+void MainWindow::ZoomIn(double h, double w){
+    ui->graphicsView->scale(h,w);
+}
+void MainWindow::ZoomOut(double h, double w){
+    ui->graphicsView->scale(h,w);
+}
 
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
-    ui->label->setNum(checked);
     if(checked){
+        w->setStyleSheet("background-color: rgba(0,0,200,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
+        w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
@@ -76,10 +95,10 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
 
 void MainWindow::on_Btn_Zoom_In_clicked()
 {
-    ui->graphicsView->scale(1.2,1.2);
+    this->ZoomIn(1.2,1.2);
 }
 
 void MainWindow::on_Btn_Zoom_Out_clicked()
 {
-    ui->graphicsView->scale(1/1.2,1/1.2);
+    this->ZoomOut(1/1.2,1/1.2);
 }
