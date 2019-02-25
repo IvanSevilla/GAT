@@ -8,6 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    w = new GaGraphicsView();
+    ui->centralWidget->setMouseTracking(true);
+    QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+
     QTimer::singleShot(0, this, SLOT(showMaximized()));
     ui->horizontalLayout_7->addWidget(ui->graphicsView);
     ui->Btn_Do->setHidden(1);
@@ -20,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete w;
     delete ui;
+
 }
 
 
@@ -32,6 +38,11 @@ void MainWindow::on_actionLoad_Project_triggered()
 
 void MainWindow::on_actionAdd_Image_triggered()
 {
+    delete w;
+    w = new GaGraphicsView();
+    ui->centralWidget->setMouseTracking(true);
+    QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+
     QString image_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
     QMessageBox::information(this,"..",image_name);
     //QImage img;
@@ -51,15 +62,12 @@ void MainWindow::on_actionAdd_Image_triggered()
     //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
     //ui->imagelabel->show();
     ui->graphicsView->setScene(scene);
-    w = new QWidget();
     QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
 
     w->setGeometry(pix.rect());
     w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
     QVBoxLayout* layout1 = new QVBoxLayout(w);
     layout1->setAlignment(Qt::AlignRight | Qt::AlignTop);
-
-    //QObject::connect(button, &QPushButton::clicked, label, &QLabel::show);
 
     proxy->setWidget(w);
     scene->addItem(proxy);
@@ -101,4 +109,8 @@ void MainWindow::on_Btn_Zoom_In_clicked()
 void MainWindow::on_Btn_Zoom_Out_clicked()
 {
     this->ZoomOut(1/1.2,1/1.2);
+}
+
+void MainWindow::setMousePoint (QPointF point)
+{
 }

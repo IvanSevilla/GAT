@@ -11,6 +11,7 @@
 #include <QGraphicsProxyWidget>
 #include <QLabel>
 #include <iostream>
+#include "gagraphicsview.h"
 
 
 namespace Ui {
@@ -41,6 +42,7 @@ private:
 
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
+    void setMousePoint (QPointF point);
     QWidget* w;
 
 };

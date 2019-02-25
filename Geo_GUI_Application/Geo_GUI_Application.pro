@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    gagraphicsview.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    gagraphicsview.h
 
 FORMS += \
         mainwindow.ui
