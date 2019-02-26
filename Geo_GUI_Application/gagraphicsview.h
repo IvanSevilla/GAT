@@ -11,6 +11,7 @@ class GaGraphicsView : public QGraphicsView
 Q_OBJECT
 public:
 explicit GaGraphicsView(QWidget *parent = 0);
+void setToggle(bool t);
 
 signals:
 void sendMousePoint(QPointF point);
@@ -20,6 +21,7 @@ void mousePressEvent(QMouseEvent * e);
 
 private:
 QGraphicsScene * scene;
+bool toggle;
 };
 
 

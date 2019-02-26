@@ -9,8 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     w = new GaGraphicsView();
-    ui->centralWidget->setMouseTracking(true);
-    QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+    QWidget::disconnect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+    //ui->centralWidget->setMouseTracking(true);
+    //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
     QTimer::singleShot(0, this, SLOT(showMaximized()));
     ui->horizontalLayout_7->addWidget(ui->graphicsView);
@@ -40,8 +41,8 @@ void MainWindow::on_actionAdd_Image_triggered()
 {
     delete w;
     w = new GaGraphicsView();
-    ui->centralWidget->setMouseTracking(true);
-    QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+    //ui->centralWidget->setMouseTracking(true);
+    //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
     QString image_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
     QMessageBox::information(this,"..",image_name);
@@ -85,6 +86,10 @@ void MainWindow::ZoomOut(double h, double w){
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
     if(checked){
+        ui->centralWidget->setMouseTracking(true);
+        w->setMouseTracking(true);
+        w->setToggle(true);
+        QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
         w->setStyleSheet("background-color: rgba(0,0,200,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
@@ -92,6 +97,8 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
+        ui->centralWidget->setMouseTracking(false);
+        w->setToggle(false);
         w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
@@ -111,6 +118,6 @@ void MainWindow::on_Btn_Zoom_Out_clicked()
     this->ZoomOut(1/1.2,1/1.2);
 }
 
-void MainWindow::setMousePoint (QPointF point)
-{
-}
+void MainWindow::setMousePoint (QPointF point){
+
+};

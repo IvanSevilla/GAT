@@ -43,7 +43,7 @@ private:
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
     void setMousePoint (QPointF point);
-    QWidget* w;
+    GaGraphicsView* w;
 
 };
 
