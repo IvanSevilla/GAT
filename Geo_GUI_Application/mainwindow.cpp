@@ -8,8 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    w = new GaGraphicsView();
-    QWidget::disconnect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+    deledit = false;
+    delmini = false;
+    image = false;
+    //w = new GaGraphicsView();
     //ui->centralWidget->setMouseTracking(true);
     //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
@@ -20,12 +22,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Btn_Color->setHidden(1);
     ui->Btn_Add_Point->setHidden(1);
     ui->Btn_Del_Point->setHidden(1);
+    scene = new QGraphicsScene(this);
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete w;
+    if(deledit){
+        delete edit;
+    }
+    if(delmini){
+        delete minimap;
+        delete miniscene;
+    }
+    delete scene;
     delete ui;
 
 }
@@ -39,39 +49,40 @@ void MainWindow::on_actionLoad_Project_triggered()
 
 void MainWindow::on_actionAdd_Image_triggered()
 {
-    delete w;
-    w = new GaGraphicsView();
+    //delete w;
     //ui->centralWidget->setMouseTracking(true);
     //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
     QString image_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
-    QMessageBox::information(this,"..",image_name);
-    //QImage img;
-    //int gw = ui->graphicsView->width();
-    //int gh = ui->graphicsView->height();
-    QPixmap pix(image_name);
-    QGraphicsScene *scene;
-    //img.load(image_name);
-    scene = new QGraphicsScene(this);
-    //pix = pix.scaledToHeight(gh);
-    //pix = pix.scaledToWidth(gw);
-    scene->addPixmap(pix);
-    scene->setSceneRect(pix.rect());//QRectF(0,0,gw-1,gh-1));
+    if(image_name != ""){
+        image = true;
+        QMessageBox::information(this,"..",image_name);
+        //QImage img;
+        //int gw = ui->graphicsView->width();
+        //int gh = ui->graphicsView->height();
+        pix.load(image_name);
+        minipix.load(image_name);
+        //img.load(image_name);
+        //pix = pix.scaledToHeight(gh);
+        //pix = pix.scaledToWidth(gw);
+        scene->addPixmap(pix);
+        scene->setSceneRect(pix.rect());//QRectF(0,0,gw-1,gh-1));
 
-    //int w = pix.rect().x();
-    //int h = pix.rect().y();
-    //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
-    //ui->imagelabel->show();
-    ui->graphicsView->setScene(scene);
-    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
+        //int w = pix.rect().x();
+        //int h = pix.rect().y();
+        //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
+        //ui->imagelabel->show();
+        ui->graphicsView->setScene(scene);
+        //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
 
-    w->setGeometry(pix.rect());
-    w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
-    QVBoxLayout* layout1 = new QVBoxLayout(w);
-    layout1->setAlignment(Qt::AlignRight | Qt::AlignTop);
+        //w->setGeometry(pix.rect());
+        //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+        //QVBoxLayout* layout1 = new QVBoxLayout(w);
+        //layout1->setAlignment(Qt::AlignRight | Qt::AlignTop);
 
-    proxy->setWidget(w);
-    scene->addItem(proxy);
+        //proxy->setWidget(w);
+        //scene->addItem(proxy);
+    }
 
 }
 
@@ -86,20 +97,35 @@ void MainWindow::ZoomOut(double h, double w){
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
     if(checked){
+        edit = new GaGraphicsView();
+        deledit = true;
+        proxyedit = new QGraphicsProxyWidget();
+
+        edit->setGeometry(pix.rect());
+        edit->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+        QVBoxLayout *layoutedit = new QVBoxLayout(edit);
+        layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
+
+        proxyedit->setWidget(edit);
+        scene->addItem(proxyedit);
         ui->centralWidget->setMouseTracking(true);
-        w->setMouseTracking(true);
-        w->setToggle(true);
-        QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
-        w->setStyleSheet("background-color: rgba(0,0,200,0.1)");
+        edit->setMouseTracking(true);
+        edit->setToggle(true);
+        QWidget::connect (this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+        edit->setStyleSheet("background-color: rgba(0,0,200,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
+        delete edit;
+        deledit = false;
         ui->centralWidget->setMouseTracking(false);
-        w->setToggle(false);
-        w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+        scene->removeItem(proxyedit);
+        //w->setToggle(false);
+        //w->setPaint(false);
+        //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
@@ -121,3 +147,45 @@ void MainWindow::on_Btn_Zoom_Out_clicked()
 void MainWindow::setMousePoint (QPointF point){
 
 };
+
+void MainWindow::on_Btn_Del_Point_clicked()
+{
+    this->edit->setPaint(2);
+}
+
+void MainWindow::on_Btn_Add_Point_clicked()
+{
+    this->edit->setPaint(1);
+}
+
+void MainWindow::on_actionMiniMap_triggered(bool tiggered)
+{   if(image){
+    if(tiggered){
+        minimap = new QGraphicsView();
+        minimap->setDragMode(QGraphicsView::NoDrag);
+        delmini = true;
+        //proxymini = new QGraphicsProxyWidget();
+        //int aspectratio = pix.width()/pix.height();
+        minipix = minipix.scaled(450,300,Qt::KeepAspectRatio);
+        minimap->setGeometry(QRect(900,0,450,300));
+        miniscene = new QGraphicsScene(this);
+        miniscene->addPixmap(minipix);
+        miniscene->setSceneRect(minipix.rect());
+        minimap->setScene(miniscene);
+        //minimap->setStyleSheet("background-color: rgba(200,0,0,255)");
+        QVBoxLayout *layoutmini = new QVBoxLayout(minimap);
+        layoutmini->setAlignment(Qt::AlignRight | Qt::AlignTop);
+        minimap->setParent(ui->graphicsView);
+        minimap->show();
+        //proxymini->setWidget(minimap);
+        //scene->addItem(proxymini);
+    }else{
+        delmini = false;
+        delete minimap;
+        //delete miniscene;
+        //scene->removeItem(proxymini);
+
+    }}else{
+        ui->actionMiniMap->setChecked(false);
+    }
+}

@@ -40,3 +40,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+INCLUDEPATH += /usr/local/Cellar/armadillo/9.100.5_2/include/
+LIBS += -L/usr/local/Cellar/armadillo/9.100.5_2/lib/ \
+    -larmadillo\
+    -framework /Accelerate

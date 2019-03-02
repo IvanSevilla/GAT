@@ -106,6 +106,9 @@
             <property name="text">
              <string>Add Point</string>
             </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
             <property name="flat">
              <bool>false</bool>
             </property>
@@ -115,6 +118,9 @@
            <widget class="QPushButton" name="Btn_Del_Point">
             <property name="text">
              <string>Del Point</string>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -199,9 +205,16 @@
     <addaction name="actionDelete_Matrix"/>
     <addaction name="actionDelete_Matrix_2"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionMiniMap"/>
+   </widget>
    <addaction name="menuGEOApp"/>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -260,6 +273,17 @@
   <action name="actionDelete_Matrix_2">
    <property name="text">
     <string>Delete Matrix</string>
+   </property>
+  </action>
+  <action name="actionMiniMap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>MiniMap</string>
    </property>
   </action>
  </widget>
