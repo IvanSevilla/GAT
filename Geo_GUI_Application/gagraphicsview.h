@@ -19,6 +19,11 @@ QGraphicsScene* getGraphicsScene(){
     return scene;
 }
 
+void setSceneG(QGraphicsScene* extsc){
+    scene = extsc;
+    this->setScene(scene);
+}
+
 signals:
 void sendMousePoint(QPointF point);
 

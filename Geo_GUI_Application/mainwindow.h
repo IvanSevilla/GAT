@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define MAX_GROUPS 8
+
 #include <QMainWindow>
 #include <QString>
 #include <QFileDialog>
@@ -12,6 +14,8 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <iostream>
+#include <QList>
+#include <QSharedPointer>
 #include "gagraphicsview.h"
 
 
@@ -50,12 +54,14 @@ private:
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
     void setMousePoint (QPointF point);
+    QList<QSharedPointer<QGraphicsView>> EditList;
     GaGraphicsView* edit;
     QGraphicsView* minimap;
     QPixmap pix;
     QPixmap minipix;
     QGraphicsScene *scene;
     QGraphicsScene *miniscene;
+    QGraphicsScene * editscene;
     bool deledit;
     bool delmini;
     bool image;

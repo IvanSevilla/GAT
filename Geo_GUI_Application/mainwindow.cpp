@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     deledit = false;
     delmini = false;
     image = false;
+    for(int i = 0; i<MAX_GROUPS;i++){
+        EditList.push_back(QSharedPointer<QGraphicsView>(new QGraphicsView));
+    }
     //w = new GaGraphicsView();
     //ui->centralWidget->setMouseTracking(true);
     //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
@@ -23,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Btn_Add_Point->setHidden(1);
     ui->Btn_Del_Point->setHidden(1);
     scene = new QGraphicsScene(this);
+    editscene = new QGraphicsScene(this);
+
+
 
 }
 
@@ -36,6 +42,7 @@ MainWindow::~MainWindow()
         delete miniscene;
     }
     delete scene;
+    delete editscene;
     delete ui;
 
 }
@@ -73,7 +80,33 @@ void MainWindow::on_actionAdd_Image_triggered()
         //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
         //ui->imagelabel->show();
         ui->graphicsView->setScene(scene);
+        for(QSharedPointer<QGraphicsView> i: EditList){
+            i.data()->setStyleSheet("background-color: rgba(0,0,0,0)");
+            i.data()->setGeometry(pix.rect());
+            QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
+            QVBoxLayout *layouti = new QVBoxLayout(i.data());
+            layouti->setAlignment(Qt::AlignRight | Qt::AlignTop);
+            proxy->setWidget(i.data());
+            scene->addItem(proxy);
+        }
         //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
+        edit = new GaGraphicsView();
+        deledit = true;
+        proxyedit = new QGraphicsProxyWidget();
+
+        edit->setGeometry(pix.rect());
+        edit->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+        edit->setSceneG(editscene);
+        edit->setToggle(false);
+        QVBoxLayout *layoutedit = new QVBoxLayout(edit);
+        layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
+
+        proxyedit->setWidget(edit);
+        scene->addItem(proxyedit);
+        ui->centralWidget->setMouseTracking(true);
+        edit->setMouseTracking(true);
+        edit->setToggle(true);
+        QWidget::connect (this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
         //w->setGeometry(pix.rect());
         //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
@@ -97,32 +130,14 @@ void MainWindow::ZoomOut(double h, double w){
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
     if(checked){
-        edit = new GaGraphicsView();
-        deledit = true;
-        proxyedit = new QGraphicsProxyWidget();
 
-        edit->setGeometry(pix.rect());
-        edit->setStyleSheet("background-color: rgba(200,0,0,0.1)");
-        QVBoxLayout *layoutedit = new QVBoxLayout(edit);
-        layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
-
-        proxyedit->setWidget(edit);
-        scene->addItem(proxyedit);
-        ui->centralWidget->setMouseTracking(true);
-        edit->setMouseTracking(true);
-        edit->setToggle(true);
-        QWidget::connect (this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
-        edit->setStyleSheet("background-color: rgba(0,0,200,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
-        delete edit;
-        deledit = false;
         ui->centralWidget->setMouseTracking(false);
-        scene->removeItem(proxyedit);
         //w->setToggle(false);
         //w->setPaint(false);
         //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
@@ -135,13 +150,12 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
 }
 
 void MainWindow::on_Btn_Zoom_In_clicked()
-{
-    this->ZoomIn(1.2,1.2);
+{   if(image)this->ZoomIn(1.2,1.2);
 }
 
 void MainWindow::on_Btn_Zoom_Out_clicked()
 {
-    this->ZoomOut(1/1.2,1/1.2);
+    if(image)this->ZoomOut(1/1.2,1/1.2);
 }
 
 void MainWindow::setMousePoint (QPointF point){

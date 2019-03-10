@@ -6,9 +6,8 @@
 GaGraphicsView::GaGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
     {
-    scene = new QGraphicsScene();
     this->setSceneRect(50, 50, 350, 350);
-    this->setScene(scene);
+
     this->setToggle(false);
     this->setPaint(false);
 
