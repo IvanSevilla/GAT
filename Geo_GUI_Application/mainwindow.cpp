@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     deledit = false;
     delmini = false;
     image = false;
-    for(int i = 0; i<MAX_GROUPS;i++){
-        EditList.push_back(QSharedPointer<QGraphicsView>(new QGraphicsView));
-    }
     //w = new GaGraphicsView();
     //ui->centralWidget->setMouseTracking(true);
     //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
@@ -80,41 +77,24 @@ void MainWindow::on_actionAdd_Image_triggered()
         //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
         //ui->imagelabel->show();
         ui->graphicsView->setScene(scene);
-        for(QSharedPointer<QGraphicsView> i: EditList){
-            i.data()->setStyleSheet("background-color: rgba(0,0,0,0)");
-            i.data()->setGeometry(pix.rect());
-            QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
-            QVBoxLayout *layouti = new QVBoxLayout(i.data());
-            layouti->setAlignment(Qt::AlignRight | Qt::AlignTop);
-            proxy->setWidget(i.data());
-            scene->addItem(proxy);
-        }
         //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         edit = new GaGraphicsView();
         deledit = true;
         proxyedit = new QGraphicsProxyWidget();
 
         edit->setGeometry(pix.rect());
+        //edit->setHidden(true);
         edit->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         edit->setSceneG(editscene);
         edit->setToggle(false);
         QVBoxLayout *layoutedit = new QVBoxLayout(edit);
         layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
-
+        //probar anidar
         proxyedit->setWidget(edit);
         scene->addItem(proxyedit);
         ui->centralWidget->setMouseTracking(true);
-        edit->setMouseTracking(true);
         edit->setToggle(true);
         QWidget::connect (this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
-
-        //w->setGeometry(pix.rect());
-        //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
-        //QVBoxLayout* layout1 = new QVBoxLayout(w);
-        //layout1->setAlignment(Qt::AlignRight | Qt::AlignTop);
-
-        //proxy->setWidget(w);
-        //scene->addItem(proxy);
     }
 
 }
@@ -130,16 +110,21 @@ void MainWindow::ZoomOut(double h, double w){
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
     if(checked){
-
+        if(image){
+            edit->setToggle(true);
+            edit->setPaint(0);
+        }
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
         ui->Btn_Color->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
-        ui->centralWidget->setMouseTracking(false);
-        //w->setToggle(false);
-        //w->setPaint(false);
+        if(image){
+            ui->centralWidget->setMouseTracking(false);
+            edit->setToggle(false);
+            edit->setPaint(0);
+        }
         //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
         ui->Btn_Do->setHidden(!checked);
         ui->Btn_Undo->setHidden(!checked);
@@ -164,12 +149,12 @@ void MainWindow::setMousePoint (QPointF point){
 
 void MainWindow::on_Btn_Del_Point_clicked()
 {
-    this->edit->setPaint(2);
+    if(image)this->edit->setPaint(2);
 }
 
 void MainWindow::on_Btn_Add_Point_clicked()
 {
-    this->edit->setPaint(1);
+    if(image)this->edit->setPaint(1);
 }
 
 void MainWindow::on_actionMiniMap_triggered(bool tiggered)
@@ -202,4 +187,176 @@ void MainWindow::on_actionMiniMap_triggered(bool tiggered)
     }}else{
         ui->actionMiniMap->setChecked(false);
     }
+}
+
+void MainWindow::on_Group0_clicked(bool checked)
+{
+    if(image){
+        if(checked){
+            edit->setGroup(0);
+        }
+
+    }
+
+}
+
+void MainWindow::on_Visiblity0_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(0,checked);
+    }
+}
+
+void MainWindow::on_Group1_clicked(bool checked)
+{
+    if(image){
+        if(checked){
+            edit->setGroup(1);
+
+        }
+
+    }
+}
+
+void MainWindow::on_Visiblity1_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(1,checked);
+
+    }
+}
+
+void MainWindow::on_Group2_clicked(bool checked)
+{
+    if(image){
+        if(checked ){
+            edit->setGroup(2);
+
+        }
+
+    }
+}
+
+void MainWindow::on_Visibility2_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(2,checked);
+
+    }
+
+}
+
+void MainWindow::on_Group3_clicked(bool checked)
+{
+    if(image){
+        if(checked ){
+            edit->setGroup(3);
+
+        }
+
+    }
+}
+
+void MainWindow::on_Visiblity3_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(3,checked);
+
+    }
+
+}
+
+void MainWindow::on_Group4_clicked(bool checked)
+{    if(image){
+        if(checked ){
+            edit->setGroup(4);
+
+        }
+
+    }
+
+}
+
+void MainWindow::on_Visiblity4_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(4,checked);
+
+    }
+
+
+}
+
+void MainWindow::on_Group5_clicked(bool checked)
+{    if(image){
+        if(checked ){
+            edit->setGroup(5);
+
+        }
+
+    }
+
+}
+
+void MainWindow::on_Visiblity5_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(5,checked);
+
+    }
+
+
+}
+
+void MainWindow::on_Group6_clicked(bool checked)
+{    if(image){
+        if(checked ){
+            edit->setGroup(6);
+
+        }
+
+    }
+
+}
+
+void MainWindow::on_Visiblity6_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(6,checked);
+
+    }
+
+
+}
+
+void MainWindow::on_Group7_clicked(bool checked)
+{    if(image){
+        if(checked ){
+            edit->setGroup(7);
+
+        }
+
+    }
+
+}
+
+void MainWindow::on_Visiblity7_clicked(bool checked)
+{
+    if(image){
+        edit->setGroupVisibility(7,checked);
+
+    }
+
+
+}
+
+
+void MainWindow::on_Btn_Undo_pressed()
+{
+    if(image)edit->removeLastPoint();
+}
+
+void MainWindow::on_Btn_Do_clicked()
+{
+    if(image)edit->redoLastPoint();
 }

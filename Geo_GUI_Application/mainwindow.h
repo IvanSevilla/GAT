@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define MAX_GROUPS 8
 
 #include <QMainWindow>
 #include <QString>
@@ -48,20 +47,56 @@ private slots:
 
     void on_actionMiniMap_triggered(bool tiggered);
 
+    void on_Group0_clicked(bool checked);
+
+    void on_Visiblity0_clicked(bool checked);
+
+    void on_Group1_clicked(bool checked);
+
+    void on_Visiblity1_clicked(bool checked);
+
+    void on_Group2_clicked(bool checked);
+
+    void on_Visibility2_clicked(bool checked);
+
+    void on_Group3_clicked(bool checked);
+
+    void on_Visiblity3_clicked(bool checked);
+
+    void on_Group4_clicked(bool checked);
+
+    void on_Visiblity4_clicked(bool checked);
+
+    void on_Group5_clicked(bool checked);
+
+    void on_Visiblity5_clicked(bool checked);
+
+    void on_Group6_clicked(bool checked);
+
+    void on_Visiblity6_clicked(bool checked);
+
+    void on_Group7_clicked(bool checked);
+
+    void on_Visiblity7_clicked(bool checked);
+
+
+    void on_Btn_Undo_pressed();
+
+    void on_Btn_Do_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
     void setMousePoint (QPointF point);
-    QList<QSharedPointer<QGraphicsView>> EditList;
     GaGraphicsView* edit;
     QGraphicsView* minimap;
     QPixmap pix;
     QPixmap minipix;
     QGraphicsScene *scene;
     QGraphicsScene *miniscene;
-    QGraphicsScene * editscene;
+    QGraphicsScene *editscene;
     bool deledit;
     bool delmini;
     bool image;
