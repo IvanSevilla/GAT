@@ -22,12 +22,15 @@ GaGraphicsView::GaGraphicsView(QWidget *parent) :
 void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 {
     if(toggle){
+        qDebug()<<scene->items();
         if(paint == 1){
             double rad = 1;
             QPointF pt = mapToScene(e->pos());
             QGraphicsItem* it = scene->addEllipse(pt.x()-rad, pt.y()-rad, rad+2.0, rad+2.0,pen, brush);
             itemList.insert(scene->items().size()+actualGroup,scene->items().first());
             pointList.insert(scene->items().size()+actualGroup,pt);
+            it->setFlag(QGraphicsItem::ItemIsMovable,true);
+            it->setFlag(QGraphicsItem::ItemIsSelectable,true);
 
             switch (actualGroup) {
             case G0:

@@ -111,6 +111,8 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
     if(checked){
         if(image){
+            QWidget::connect (this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+
             edit->setToggle(true);
             edit->setPaint(0);
         }
@@ -121,6 +123,8 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         ui->Btn_Del_Point->setHidden(!checked);
     }else{
         if(image){
+            QWidget::disconnect( this->edit, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
+
             ui->centralWidget->setMouseTracking(false);
             edit->setToggle(false);
             edit->setPaint(0);
