@@ -35,6 +35,7 @@ explicit GaGraphicsView(QWidget *parent = 0);
         for(QSharedPointer<QGraphicsItemGroup> g: groups){
             scene->addEllipse(0,0,1,1,QPen(Qt::transparent),QBrush(Qt::transparent));
             g.data()->addToGroup(scene->items().first());
+            g->setHandlesChildEvents(false);
             scene->addItem(g.data());
         }
     }

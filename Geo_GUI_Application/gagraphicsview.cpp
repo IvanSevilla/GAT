@@ -15,14 +15,12 @@ GaGraphicsView::GaGraphicsView(QWidget *parent) :
     this->setPaint(false);
     for(int i = 0; i<MAX_GROUPS;i++){
         groups.push_back(QSharedPointer<QGraphicsItemGroup>(new QGraphicsItemGroup()));
-
     }
 
     }
 void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 {
     if(toggle){
-        qDebug()<<scene->items();
         if(paint == 1){
             double rad = 1;
             QPointF pt = mapToScene(e->pos());
@@ -31,6 +29,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             pointList.insert(scene->items().size()+actualGroup,pt);
             it->setFlag(QGraphicsItem::ItemIsMovable,true);
             it->setFlag(QGraphicsItem::ItemIsSelectable,true);
+            it->setFlag(QGraphicsItem::ItemClipsToShape,true);
 
             switch (actualGroup) {
             case G0:
@@ -81,6 +80,10 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             //penerase, brusherase);
             qDebug()<<scene->items();
 
+
+        }else {
+            QGraphicsView::mousePressEvent(e);
+            qDebug()<<"here";
 
         }
     }
