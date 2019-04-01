@@ -24,12 +24,15 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
         if(paint == 1){
             double rad = 1;
             QPointF pt = mapToScene(e->pos());
-            QGraphicsItem* it = scene->addEllipse(pt.x(), pt.y(), rad+2.0, rad+2.0,pen, brush);
-            itemList.insert(scene->items().size()+actualGroup,scene->items().first());
-            pointList.insert(scene->items().size()+actualGroup,pt);
+            CustomElipse* it = new CustomElipse();
+            it->setPen(pen);
+            it->setBrush(brush);
+            it->setRect(pt.x()-1.5,pt.y()-1.5,3,3);
             it->setFlag(QGraphicsItem::ItemIsMovable,true);
             it->setFlag(QGraphicsItem::ItemIsSelectable,true);
             it->setFlag(QGraphicsItem::ItemClipsToShape,true);
+            scene->addItem(it);
+
 
 
             switch (actualGroup) {
@@ -67,19 +70,44 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 break;
 
             }
+            //QGraphicsItem* line = scene->addLine(pt.x(),pt.y(),pt.x()+7.0,pt.y()+4.0,pen);
+            //line->setFlag(QGraphicsItem::ItemIsMovable,true);
+            //line->setFlag(QGraphicsItem::ItemIsSelectable,true);
+            //line->setFlag(QGraphicsItem::ItemClipsToShape,true);
+
+
         }if(paint == 2){
 
             //penerase.setColor(QColor(0,0,0));
             //brusherase= QBrush(Qt::SolidPattern);
             //brusherase.setColor(QColor(0,0,0));
             //double rad = 1;
-            QPointF pt = mapToScene(e->pos());
-            if(!pointList.keys(pt).isEmpty()){
-                scene->removeItem(itemList.value(pointList.key(pt)));
-            }
             //scene->addEllipse(pt.x()-rad, pt.y()-rad, rad+2.0, rad+2.0,
             //penerase, brusherase);
-            qDebug()<<scene->items();
+            QGraphicsView::mousePressEvent(e);
+            qDebug()<<e->button();
+            if(!e->isAccepted()) {
+                        //remove item
+                if(e->button() == Qt::RightButton) {
+                    QGraphicsItem * itemToRemove = NULL;
+                    QPointF pt = mapToScene(e->pos());
+                    qDebug()<<scene->items(pt);
+                    foreach(auto item, scene->items(pt)) {
+                        if(item->type() == QGraphicsItem::UserType+1) {
+                            itemToRemove = item;
+                            break;
+                        }
+                    }
+                    qDebug()<<itemToRemove->pos();
+                    if(itemToRemove){
+                        redoItems.push(itemToRemove);
+                        redoItemsGroup.push(dynamic_cast<QGraphicsItemGroup*>(redoItems.top()->parentItem()));
+                        scene->removeItem(redoItems.top());
+                    }
+
+                }
+                    }
+            //qDebug()<<scene->items();
 
 
         }if(paint == 3){

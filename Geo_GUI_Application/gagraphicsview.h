@@ -12,6 +12,8 @@
 #include <QStack>
 #include <QDebug>
 #include <QPointF>
+#include "customelipse.h"
+#include "customline.h"
 
 
 
@@ -78,8 +80,6 @@ QPen pen;
 QPen penerase;
 QBrush brush;
 QBrush brusherase;
-QMap<int,QGraphicsItem*> itemList;
-QMap<int,QPointF> pointList;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
 GROUP actualGroup;
 QStack <QGraphicsItem*>lastItems;

@@ -27,11 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    gagraphicsview.cpp
+    gagraphicsview.cpp \
+    customelipse.cpp \
+    customline.cpp
 
 HEADERS += \
         mainwindow.h \
-    gagraphicsview.h
+    gagraphicsview.h \
+    customelipse.h \
+    customline.h
 
 FORMS += \
         mainwindow.ui
