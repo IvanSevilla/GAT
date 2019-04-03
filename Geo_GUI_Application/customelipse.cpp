@@ -1,5 +1,9 @@
 #include "customelipse.h"
 
 CustomElipse::CustomElipse(QObject *parent) :
-    QObject(parent), QGraphicsEllipseItem()
+    QGraphicsEllipseItem(),QObject(parent)
+    {}
+
+CustomLine::CustomLine(QObject *parent) :
+     QGraphicsLineItem(),QObject(parent)
     {}

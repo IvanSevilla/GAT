@@ -4,11 +4,24 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QtDebug>
+#include <QPen>
+
+//class CustomElipse;
 
 class CustomLine: public QGraphicsLineItem,QObject
 {
 public:
     explicit CustomLine(QObject *parent = 0);
+    //void setFirst(CustomElipse *initial){
+    //    init = initial;
+    //    if(final){
+    //        this->setLine(initial->getCenter().x(),initial->getCenter().y(),final->getCenter().x(),final->getCenter().y());
+
+       // }
+   // }
+    void mouseMove(QGraphicsSceneMouseEvent *event){
+        mouseMoveEvent(event);
+    }
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
@@ -49,7 +62,8 @@ protected:
     }
 
 private:
-    QPointF _center;
+    //CustomElipse * init;
+    //CustomElipse * final;
     bool _isResizing;
 };
 

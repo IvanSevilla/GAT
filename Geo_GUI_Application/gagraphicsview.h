@@ -13,7 +13,6 @@
 #include <QDebug>
 #include <QPointF>
 #include "customelipse.h"
-#include "customline.h"
 
 
 
@@ -22,7 +21,7 @@ class GaGraphicsView : public QGraphicsView
 Q_OBJECT
 public:
 explicit GaGraphicsView(QWidget *parent = 0);
-    typedef enum {G0, G1, G2, G3, G4, G5, G6, G7} GROUP;
+    //typedef enum {G0, G1, G2, G3, G4, G5, G6, G7} GROUP;
 
     void setToggle(bool t);
     void setPaint(int paint);
@@ -71,6 +70,7 @@ void sendMousePoint(QPointF point);
 
 public slots:
 void mousePressEvent(QMouseEvent * e);
+void mouseReleaseEvent(QMouseEvent * e);
 
 private:
 QGraphicsScene * scene;
@@ -81,10 +81,11 @@ QPen penerase;
 QBrush brush;
 QBrush brusherase;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
-GROUP actualGroup;
+//GROUP actualGroup;
 QStack <QGraphicsItem*>lastItems;
 QStack <QGraphicsItem*>redoItems;
 QStack <QGraphicsItemGroup*>redoItemsGroup;
+QSharedPointer<QGraphicsItemGroup> group;
 bool setG0 = false;
 bool setG1 = false;
 bool setG2 = false;
