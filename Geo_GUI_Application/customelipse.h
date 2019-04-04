@@ -59,21 +59,27 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         qDebug() << "Custom item moved.";
-
-        event->accept();
+        QGraphicsItem::mouseMoveEvent(event);
+        qDebug()<<"item center before: "<<center;
+        center = event->scenePos();
+        qDebug()<<"Event: "<<event;
+        qDebug()<<"item center after: "<<center;
+        event->ignore();
         if(event->modifiers() == Qt::AltModifier && _isResizing){
 
-        } else if(event->modifiers() != Qt::AltModifier) {
-            qDebug() << "Custom item moved.";
-            QGraphicsItem::mouseMoveEvent(event);
-            qDebug()<<"moved"<<pos();
-        }
+        } //else if(event->modifiers() != Qt::AltModifier) {
+            //qDebug() << "Custom item moved.";
+            //QGraphicsItem::mouseMoveEvent(event);
+            //qDebug()<<"moved"<<pos();
+        //}
     }
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         qDebug()<<"here";
         QGraphicsItem::mouseReleaseEvent(event);
-        center = event->scenePos();
+        qDebug()<<"center at release time: "<<center;
+        qDebug()<<"cursor position at release time: "<<event->scenePos();
+        //center = event->scenePos();
         event->ignore();
         if(event->modifiers() == Qt::AltModifier && _isResizing) {
             _isResizing = false;
@@ -106,27 +112,32 @@ public:
     void setInitial(CustomElipse *initial){
         init = initial;
         if(final != nullptr){
-            this->setLine(init->getCenter().x(),init->getCenter().y(),final->getCenter().x(),final->getCenter().y());
+            this->setPos(init->getCenter());
+            this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
 
         }else {
-             this->setLine(init->getCenter().x(),init->getCenter().y(),init->getCenter().x(),init->getCenter().y());
+             this->setLine(0,0,0,0);
         }
 
     }
     void setFinal(CustomElipse *fin){
         final = fin;
         if(init!= nullptr){
-            this->setLine(init->getCenter().x(),init->getCenter().y(),final->getCenter().x(),final->getCenter().y());
+            this->setPos(init->getCenter());
+            this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
 
         }else {
-            this->setLine(final->getCenter().x(),final->getCenter().y(),final->getCenter().x(),final->getCenter().y());
+            this->setLine(0,0,0,0);
         }
     }
 
     void updatel(){
         qDebug()<<"noooo";
-        this->setLine(init->getCenter().x(),init->getCenter().y(),final->getCenter().x(),final->getCenter().y());
-        qDebug()<<init->getCenter();
+        qDebug()<<"Initial Point"<<init->getCenter();
+        this->setPos(init->getCenter());
+        this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
+        qDebug()<<"Initial Point"<<init->getCenter();
+        qDebug()<<"Final Point"<<final->getCenter();
     }
 
     void mouseMove(QGraphicsSceneMouseEvent *event){

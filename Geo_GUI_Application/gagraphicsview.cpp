@@ -24,11 +24,12 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
         if(paint == 1){
             //double rad = 1;
             QPointF pt = mapToScene(e->pos());
+            qDebug()<<pt;
             CustomElipse* it = new CustomElipse();
             it->setPen(pen);
             it->setBrush(brush);
             it->setRect(pt.x()-1.5,pt.y()-1.5,3,3);
-            it->setCenter(QPointF(pt.x(),pt.y()));
+            it->setCenter(pt);
             //qDebug()<<it->hasFinalLine();
             //qDebug()<<it->hasInitLine();
             it->setFlag(QGraphicsItem::ItemIsMovable,true);
@@ -39,10 +40,12 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 CustomLine * li = new CustomLine();
                 li->setPen(pen);
                 li->setInitial(dynamic_cast<CustomElipse*>(group->childItems().last()));
+                qDebug()<<"1: "<<dynamic_cast<CustomElipse*>(group->childItems().last())->getCenter();
                 li->setFinal(it);
                 dynamic_cast<CustomElipse*>(group->childItems().last())->setInitLine(li);
                 it->setFinalLine(li);
-                li->setPos(dynamic_cast<CustomElipse*>(group->childItems().last())->pos());
+                qDebug()<<"2: "<<it->getCenter();
+                qDebug()<<"3: "<<li->line();
                 li->setFlag(QGraphicsItem::ItemIsSelectable,true);
                 li->setFlag(QGraphicsItem::ItemClipsToShape,true);
                 scene->addItem(li);
@@ -69,20 +72,20 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             //scene->addEllipse(pt.x()-rad, pt.y()-rad, rad+2.0, rad+2.0,
             //penerase, brusherase);
             QGraphicsView::mousePressEvent(e);
-            qDebug()<<e->button();
+            //qDebug()<<e->button();
             if(!e->isAccepted()) {
                         //remove item
                 if(e->button() == Qt::RightButton) {
                     QGraphicsItem * itemToRemove = nullptr;
                     QPointF pt = mapToScene(e->pos());
-                    qDebug()<<scene->items(pt);
+                    //qDebug()<<scene->items(pt);
                     foreach(auto item, scene->items(pt)) {
                         if(item->type() == QGraphicsItem::UserType+1) {
                             itemToRemove = item;
                             break;
                         }
                     }
-                    qDebug()<<itemToRemove->pos();
+                    //qDebug()<<itemToRemove->pos();
                     if(itemToRemove != nullptr){
                         redoItems.push(itemToRemove);
                         redoItemsGroup.push(dynamic_cast<QGraphicsItemGroup*>(redoItems.top()->parentItem()));
@@ -100,16 +103,16 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
         }
     }
-void GaGraphicsView::mouseReleaseEvent(QMouseEvent * e){
-    QGraphicsView::mouseReleaseEvent(e);
-    qDebug()<<e->isAccepted();
+void GaGraphicsView::mouseMoveEvent(QMouseEvent * e){
+    QGraphicsView::mouseMoveEvent(e);
+    //qDebug()<<e->isAccepted();
     if(e->isAccepted()) {
-        qDebug()<<e;
+        //qDebug()<<e;
         if(paint == 3){
-            qDebug()<<scene->items();
+           // qDebug()<<scene->items();
             CustomElipse * itemToUpdate = nullptr;
             QPointF pt = mapToScene(e->pos());
-            qDebug()<<scene->items(pt);
+            //qDebug()<<scene->items(pt);
             foreach(auto item, scene->items(pt)) {
                 if(item->type() == QGraphicsItem::UserType+1) {
                     itemToUpdate = dynamic_cast<CustomElipse*>(item);

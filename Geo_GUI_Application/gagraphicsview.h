@@ -49,18 +49,21 @@ explicit GaGraphicsView(QWidget *parent = 0);
             qDebug()<<scene->items();
             redoItems.push(lastItems.pop());
             redoItemsGroup.push(dynamic_cast<QGraphicsItemGroup*>(redoItems.top()->parentItem()));
+            scene->removeItem(dynamic_cast<CustomElipse*>(redoItems.top())->getFinalLine());
             scene->removeItem(redoItems.top());
         }
     }
     void redoLastPoint(){
-        QGraphicsItem * item = redoItems.pop();
-        qDebug()<<item;
+        CustomElipse * item = dynamic_cast<CustomElipse*>(redoItems.pop());
+        qDebug()<<item->hasInitLine();
+        scene->addItem(item->getFinalLine());
         scene->addItem(item);
         qDebug()<<scene->items().first();
-        QGraphicsItemGroup * group = redoItemsGroup.pop();
-        group->addToGroup(item);
-        lastItems.push(group->childItems().last());
-        redoItemsGroup.push(group);
+        QGraphicsItemGroup * groupP = redoItemsGroup.pop();
+        groupP->addToGroup(item->getFinalLine());
+        groupP->addToGroup(item);
+        lastItems.push(groupP->childItems().last());
+        redoItemsGroup.push(groupP);
     }
     QGraphicsScene* getScene(){
         return scene;
@@ -70,7 +73,8 @@ void sendMousePoint(QPointF point);
 
 public slots:
 void mousePressEvent(QMouseEvent * e);
-void mouseReleaseEvent(QMouseEvent * e);
+//void mouseReleaseEvent(QMouseEvent * e);
+void mouseMoveEvent(QMouseEvent * e);
 
 private:
 QGraphicsScene * scene;
