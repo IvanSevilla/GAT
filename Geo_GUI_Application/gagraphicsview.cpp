@@ -46,17 +46,21 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 it->setFinalLine(li);
                 qDebug()<<"2: "<<it->getCenter();
                 qDebug()<<"3: "<<li->line();
-                li->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                li->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
                 scene->addItem(li);
                 group->addToGroup(li);
             }
 
             scene->addItem(it);
             group->addToGroup(it);
-            lastItems.push(group->childItems().last());
+            DoneAction d;
+            d.a = ADD;
+            d.point = it;
+            d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
+            lastItems.push(d);
 
-            }
+        }
             //QGraphicsItem* line = scene->addLine(pt.x(),pt.y(),pt.x()+7.0,pt.y()+4.0,pen);
             //line->setFlag(QGraphicsItem::ItemIsMovable,true);
             //line->setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -87,9 +91,37 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     }
                     //qDebug()<<itemToRemove->pos();
                     if(itemToRemove != nullptr){
-                        redoItems.push(itemToRemove);
-                        redoItemsGroup.push(dynamic_cast<QGraphicsItemGroup*>(redoItems.top()->parentItem()));
-                        scene->removeItem(redoItems.top());
+                        DoneAction d;
+                        d.point = dynamic_cast<CustomElipse*>(itemToRemove);
+                        d.a = DELETE;
+                        d.g = dynamic_cast<QGraphicsItemGroup*>(d.point->parentItem());
+                        qDebug()<<d.point->hasInitLine();
+                        qDebug()<<d.point->hasFinalLine();
+                        if(d.point->hasInitLine()){
+                            if(d.point->hasFinalLine()){
+                                d.a = JOIN;
+                                CustomElipse* p1,*p3;
+                                p1 = d.point->getFinalLine()->getInit();
+                                p3 = d.point->getInitLine()->getFinal();
+                                p3->setFinalLine(p1->getInitLine());
+                                p3->getFinalLine()->setFinal(p3);
+                                p3->getFinalLine()->updatel();
+                                qDebug()<<p1->getCenter();
+                                qDebug()<<p3->getFinalLine()->getInit()->getCenter();
+                                qDebug()<<d.point->getCenter();
+                                qDebug()<<d.point->getFinalLine()->getInit()->getCenter();
+                                scene->removeItem(d.point->getInitLine());
+                            }else{
+                                scene->removeItem(d.point->getInitLine());
+                            }
+                        }else{
+                            if(d.point->hasFinalLine()){
+                                scene->removeItem(d.point->getFinalLine());
+                            }
+                        }
+                        lastItems.push(d);
+                        scene->removeItem(lastItems.top().point);
+                        qDebug()<<d.a;
                     }
 
                 }

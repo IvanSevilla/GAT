@@ -5,6 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QtDebug>
 #include <QPen>
+#include <QSharedPointer>
 
 class CustomLine;
 
@@ -64,7 +65,7 @@ protected:
         center = event->scenePos();
         qDebug()<<"Event: "<<event;
         qDebug()<<"item center after: "<<center;
-        event->ignore();
+        event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing){
 
         } //else if(event->modifiers() != Qt::AltModifier) {
@@ -80,7 +81,7 @@ protected:
         qDebug()<<"center at release time: "<<center;
         qDebug()<<"cursor position at release time: "<<event->scenePos();
         //center = event->scenePos();
-        event->ignore();
+        event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing) {
             _isResizing = false;
         } else if(event->modifiers() != Qt::ShiftModifier) {
@@ -138,6 +139,12 @@ public:
         this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
         qDebug()<<"Initial Point"<<init->getCenter();
         qDebug()<<"Final Point"<<final->getCenter();
+    }
+    CustomElipse * getInit(){
+        return init;
+    }
+    CustomElipse * getFinal(){
+        return final;
     }
 
     void mouseMove(QGraphicsSceneMouseEvent *event){

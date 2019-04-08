@@ -20,9 +20,15 @@ class GaGraphicsView : public QGraphicsView
 {
 Q_OBJECT
 public:
-explicit GaGraphicsView(QWidget *parent = 0);
-    //typedef enum {G0, G1, G2, G3, G4, G5, G6, G7} GROUP;
+    explicit GaGraphicsView(QWidget *parent = 0);
+    typedef enum {ADD,DELETE,JOIN,SPLIT,NONE} ACTION;
+    struct DoneAction
+    {
+        ACTION a = NONE;
+        CustomElipse* point;
+        QGraphicsItemGroup* g;
 
+    };
     void setToggle(bool t);
     void setPaint(int paint);
     void addElipse(QMouseEvent *e);
@@ -43,27 +49,64 @@ explicit GaGraphicsView(QWidget *parent = 0);
     void setGroup(int g);
     void setGroupVisibility(int vis, bool bvis);
 
-    void removeLastPoint(){
+    void removeLastPoint(){ //clear si afegeixes coses a la llista
         qDebug()<<groups.first().data()->childItems().last();
         if(scene->items().size() > 16){
             qDebug()<<scene->items();
+            if(!redoItems.isEmpty()){
+                if(lastItems.top().a != redoItems.top().a){
+                    redoItems.clear();
+                }
+            }
             redoItems.push(lastItems.pop());
-            redoItemsGroup.push(dynamic_cast<QGraphicsItemGroup*>(redoItems.top()->parentItem()));
-            scene->removeItem(dynamic_cast<CustomElipse*>(redoItems.top())->getFinalLine());
-            scene->removeItem(redoItems.top());
+            qDebug()<<redoItems.top().a;
+            switch (redoItems.top().a) {
+            case DELETE:
+                scene->addItem(redoItems.top().point);
+                redoItems.top().g->addToGroup(redoItems.top().point);
+                break;
+            case ADD:
+                scene->removeItem(redoItems.top().point->getFinalLine());
+                scene->removeItem(redoItems.top().point);
+                break;
+            case JOIN:
+                break;
+            case SPLIT:
+                break;
+            case NONE:
+                break;
+
+            }
+
+
         }
     }
     void redoLastPoint(){
-        CustomElipse * item = dynamic_cast<CustomElipse*>(redoItems.pop());
-        qDebug()<<item->hasInitLine();
-        scene->addItem(item->getFinalLine());
-        scene->addItem(item);
+        switch (redoItems.top().a) {
+        case DELETE:
+            //scene->addItem(redoItems.top().point);
+            //redoItems.top().g->addToGroup(redoItems.top().point);
+            break;
+        case ADD:
+            //scene->removeItem(redoItems.top().point->getFinalLine());
+            //scene->removeItem(redoItems.top().point);
+            break;
+        case JOIN:
+            break;
+        case SPLIT:
+            break;
+        case NONE:
+            break;
+
+        }
+        DoneAction d = redoItems.pop();
+        qDebug()<<d.point->hasInitLine();
+        scene->addItem(d.point->getFinalLine());
+        scene->addItem(d.point);
         qDebug()<<scene->items().first();
-        QGraphicsItemGroup * groupP = redoItemsGroup.pop();
-        groupP->addToGroup(item->getFinalLine());
-        groupP->addToGroup(item);
-        lastItems.push(groupP->childItems().last());
-        redoItemsGroup.push(groupP);
+        d.g->addToGroup(d.point->getFinalLine());
+        d.g->addToGroup(d.point);
+        lastItems.push(d);
     }
     QGraphicsScene* getScene(){
         return scene;
@@ -86,9 +129,8 @@ QBrush brush;
 QBrush brusherase;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
 //GROUP actualGroup;
-QStack <QGraphicsItem*>lastItems;
-QStack <QGraphicsItem*>redoItems;
-QStack <QGraphicsItemGroup*>redoItemsGroup;
+QStack <DoneAction>lastItems;
+QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
 bool setG0 = false;
 bool setG1 = false;
