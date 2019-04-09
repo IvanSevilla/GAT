@@ -39,10 +39,10 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             if(group->childItems().size()>1){
                 CustomLine * li = new CustomLine();
                 li->setPen(pen);
-                li->setInitial(dynamic_cast<CustomElipse*>(group->childItems().last()));
-                qDebug()<<"1: "<<dynamic_cast<CustomElipse*>(group->childItems().last())->getCenter();
+                li->setInitial(lastPoint);
+                qDebug()<<"1: "<<lastPoint->getCenter();
                 li->setFinal(it);
-                dynamic_cast<CustomElipse*>(group->childItems().last())->setInitLine(li);
+                lastPoint->setInitLine(li);
                 it->setFinalLine(li);
                 qDebug()<<"2: "<<it->getCenter();
                 qDebug()<<"3: "<<li->line();
@@ -54,6 +54,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
             scene->addItem(it);
             group->addToGroup(it);
+            lastPoint = it;
             DoneAction d;
             d.a = ADD;
             d.point = it;

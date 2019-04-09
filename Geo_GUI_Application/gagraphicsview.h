@@ -64,12 +64,29 @@ public:
             case DELETE:
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
+                if(redoItems.top().point->hasInitLine()){
+                    scene->addItem(redoItems.top().point->getInitLine());
+                    redoItems.top().g->addToGroup(redoItems.top().point->getInitLine());
+                }if(redoItems.top().point->hasFinalLine()){
+                    scene->addItem(redoItems.top().point->getFinalLine());
+                    redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
+                }
+
                 break;
             case ADD:
                 scene->removeItem(redoItems.top().point->getFinalLine());
                 scene->removeItem(redoItems.top().point);
                 break;
             case JOIN:
+                scene->addItem(redoItems.top().point);
+                redoItems.top().g->addToGroup(redoItems.top().point);
+                qDebug()<<redoItems.top().point->getCenter();
+                redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
+                redoItems.top().point->getFinalLine()->updatel();
+                scene->addItem(redoItems.top().point->getInitLine());
+                redoItems.top().g->addToGroup(redoItems.top().point->getInitLine());
+                redoItems.pop();
+
                 break;
             case SPLIT:
                 break;
@@ -82,31 +99,33 @@ public:
         }
     }
     void redoLastPoint(){
-        switch (redoItems.top().a) {
-        case DELETE:
-            //scene->addItem(redoItems.top().point);
-            //redoItems.top().g->addToGroup(redoItems.top().point);
-            break;
-        case ADD:
-            //scene->removeItem(redoItems.top().point->getFinalLine());
-            //scene->removeItem(redoItems.top().point);
-            break;
-        case JOIN:
-            break;
-        case SPLIT:
-            break;
-        case NONE:
-            break;
+        if(!redoItems.isEmpty()){
+            switch (redoItems.top().a) {
+            case DELETE:
+                //scene->addItem(redoItems.top().point);
+                //redoItems.top().g->addToGroup(redoItems.top().point);
+                break;
+            case ADD:
+                //scene->removeItem(redoItems.top().point->getFinalLine());
+                //scene->removeItem(redoItems.top().point);
+                //qDebug()<<d.point->hasInitLine();
+                scene->addItem(redoItems.top().point->getFinalLine());
+                scene->addItem(redoItems.top().point);
+                //qDebug()<<scene->items().first();
+                redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
+                redoItems.top().g->addToGroup(redoItems.top().point);
+                lastItems.push(redoItems.top());
+                redoItems.pop();
+                break;
+            case JOIN:
+                break;
+            case SPLIT:
+                break;
+            case NONE:
+                break;
 
+            }
         }
-        DoneAction d = redoItems.pop();
-        qDebug()<<d.point->hasInitLine();
-        scene->addItem(d.point->getFinalLine());
-        scene->addItem(d.point);
-        qDebug()<<scene->items().first();
-        d.g->addToGroup(d.point->getFinalLine());
-        d.g->addToGroup(d.point);
-        lastItems.push(d);
     }
     QGraphicsScene* getScene(){
         return scene;
@@ -132,6 +151,7 @@ QList<QSharedPointer<QGraphicsItemGroup>> groups;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
+CustomElipse * lastPoint;
 bool setG0 = false;
 bool setG1 = false;
 bool setG2 = false;
