@@ -150,6 +150,19 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event){
         mouseMoveEvent(event);
     }
+
+    int type() const
+    {
+        // Enable the use of qgraphicsitem_cast with this item.
+        return UserType+2;
+    }
+    bool hasFinal(){
+        return final != nullptr;
+    }
+
+    bool hasInital(){
+        return init != nullptr;
+    }
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
@@ -162,7 +175,7 @@ protected:
 
             } else {
                 qDebug() << "Custom item left clicked.";
-                QGraphicsItem::mousePressEvent(event);
+                //QGraphicsItem::mousePressEvent(event);
                 event->accept();
             }
         } else if(event->button() == Qt::RightButton) {

@@ -93,7 +93,6 @@ public:
             case MOVE:
                 break;
             case JOIN:
-                //qDebug()<<redoItems.top().point->getCenter();
                 redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
                 redoItems.top().point->getFinalLine()->updatel();
                 redoItems.top().point->getInitLine()->getFinal()->setFinalLine(redoItems.top().point->getInitLine());
@@ -101,7 +100,6 @@ public:
                 redoItems.top().g->addToGroup(redoItems.top().point->getInitLine());
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
-
                 break;
             case SPLIT:
                 break;
