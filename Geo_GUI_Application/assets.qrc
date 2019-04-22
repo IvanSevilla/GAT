@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/edit.svg</file>
+        <file>assets/plus-circle.svg</file>
+        <file>assets/map.svg</file>
+        <file>assets/search-minus.svg</file>
+        <file>assets/search-plus.svg</file>
+        <file>assets/minus-circle.svg</file>
+        <file>assets/eye-slash.svg</file>
+        <file>assets/eye.svg</file>
+        <file>assets/expand-arrows.svg</file>
+        <file>assets/redo.svg</file>
+        <file>assets/undo.svg</file>
+        <file>assets/image-plus.svg</file>
+        <file>assets/file-plus.svg</file>
+    </qresource>
+</RCC>

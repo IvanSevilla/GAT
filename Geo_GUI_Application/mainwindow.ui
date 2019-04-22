@@ -78,21 +78,33 @@
         <item>
          <widget class="QPushButton" name="Btn_Zoom_In">
           <property name="text">
-           <string>Zoom In</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="assets.qrc">
+            <normaloff>:/assets/search-plus.svg</normaloff>:/assets/search-plus.svg</iconset>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="Btn_Zoom_Out">
           <property name="text">
-           <string>Zoom Out</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="assets.qrc">
+            <normaloff>:/assets/search-minus.svg</normaloff>:/assets/search-minus.svg</iconset>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="Btn_Edit">
           <property name="text">
-           <string>Edit</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="assets.qrc">
+            <normaloff>:/assets/edit.svg</normaloff>:/assets/edit.svg</iconset>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -104,7 +116,11 @@
           <item>
            <widget class="QPushButton" name="Btn_Add_Point">
             <property name="text">
-             <string>Add Point</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/plus-circle.svg</normaloff>:/assets/plus-circle.svg</iconset>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -117,7 +133,11 @@
           <item>
            <widget class="QPushButton" name="Btn_Del_Point">
             <property name="text">
-             <string>Del Point</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/minus-circle.svg</normaloff>:/assets/minus-circle.svg</iconset>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -130,7 +150,11 @@
           <item>
            <widget class="QPushButton" name="Btn_Move">
             <property name="text">
-             <string>Move</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/expand-arrows.svg</normaloff>:/assets/expand-arrows.svg</iconset>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -140,7 +164,11 @@
           <item>
            <widget class="QPushButton" name="Btn_Undo">
             <property name="text">
-             <string>Undo</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/undo.svg</normaloff>:/assets/undo.svg</iconset>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -150,7 +178,11 @@
           <item>
            <widget class="QPushButton" name="Btn_Do">
             <property name="text">
-             <string>ReDo</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/redo.svg</normaloff>:/assets/redo.svg</iconset>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -165,89 +197,126 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
+          <item row="1" column="0">
            <widget class="QRadioButton" name="Group0">
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+background-color: rgb(228,26,28);</string>
+            </property>
             <property name="text">
-             <string>Group 0</string>
+             <string/>
             </property>
             <property name="checked">
              <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="Group1">
-            <property name="text">
-             <string>Group 1</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QRadioButton" name="Group2">
+           <widget class="QRadioButton" name="Group1">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(55,126,184);</string>
+            </property>
             <property name="text">
-             <string>Group 2</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QRadioButton" name="Group3">
+           <widget class="QRadioButton" name="Group2">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(77,175,74);</string>
+            </property>
             <property name="text">
-             <string>Group 3</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QRadioButton" name="Group4">
+           <widget class="QRadioButton" name="Group3">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(152,78,163);</string>
+            </property>
             <property name="text">
-             <string>Group 4</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QRadioButton" name="Group5">
+           <widget class="QRadioButton" name="Group4">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255,127,0);</string>
+            </property>
             <property name="text">
-             <string>Group 5</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="6" column="0">
-           <widget class="QRadioButton" name="Group6">
+           <widget class="QRadioButton" name="Group5">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255,255,51);</string>
+            </property>
             <property name="text">
-             <string>Group 6</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="7" column="0">
+           <widget class="QRadioButton" name="Group6">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(166,86,40);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
            <widget class="QRadioButton" name="Group7">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(247,129,191);</string>
+            </property>
             <property name="text">
-             <string>Group 7</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="Visibility2">
-            <property name="text">
-             <string>Visible</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="Visiblity0">
-            <property name="text">
-             <string>Visible</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
+             <string/>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QCheckBox" name="Visiblity1">
+           <widget class="QPushButton" name="Visibility0">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>
+              <activeoff>assets/eye-slash.svg</activeoff>
+              <selectedoff>:/assets/eye-slash.svg</selectedoff>
+              <selectedon>assets/eye.svg</selectedon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="Visibility1">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -255,9 +324,18 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QCheckBox" name="Visiblity3">
+           <widget class="QPushButton" name="Visibility2">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>
+              <disabledoff>:/assets/eye-slash.svg</disabledoff>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -265,9 +343,17 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QCheckBox" name="Visiblity4">
+           <widget class="QPushButton" name="Visibility3">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -275,9 +361,17 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QCheckBox" name="Visiblity5">
+           <widget class="QPushButton" name="Visibility4">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -285,9 +379,17 @@
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="QCheckBox" name="Visiblity6">
+           <widget class="QPushButton" name="Visibility5">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -295,9 +397,35 @@
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QCheckBox" name="Visiblity7">
+           <widget class="QPushButton" name="Visibility6">
             <property name="text">
-             <string>Visible</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="Visibility7">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/assets/eye-slash.svg</normaloff>
+              <normalon>:/assets/eye.svg</normalon>:/assets/eye-slash.svg</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -367,6 +495,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionAdd_Image"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionLoad">
@@ -390,6 +519,10 @@
    </property>
   </action>
   <action name="actionAdd_Image">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/assets/image-plus.svg</normaloff>:/assets/image-plus.svg</iconset>
+   </property>
    <property name="text">
     <string>Add Image</string>
    </property>
@@ -432,6 +565,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="assets.qrc"/>
+ </resources>
  <connections/>
 </ui>

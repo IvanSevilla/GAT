@@ -203,13 +203,6 @@ void MainWindow::on_Group0_clicked(bool checked)
 
 }
 
-void MainWindow::on_Visiblity0_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(0,checked);
-    }
-}
-
 void MainWindow::on_Group1_clicked(bool checked)
 {
     if(image){
@@ -221,13 +214,6 @@ void MainWindow::on_Group1_clicked(bool checked)
     }
 }
 
-void MainWindow::on_Visiblity1_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(1,checked);
-
-    }
-}
 
 void MainWindow::on_Group2_clicked(bool checked)
 {
@@ -240,14 +226,7 @@ void MainWindow::on_Group2_clicked(bool checked)
     }
 }
 
-void MainWindow::on_Visibility2_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(2,checked);
 
-    }
-
-}
 
 void MainWindow::on_Group3_clicked(bool checked)
 {
@@ -260,14 +239,6 @@ void MainWindow::on_Group3_clicked(bool checked)
     }
 }
 
-void MainWindow::on_Visiblity3_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(3,checked);
-
-    }
-
-}
 
 void MainWindow::on_Group4_clicked(bool checked)
 {    if(image){
@@ -280,15 +251,6 @@ void MainWindow::on_Group4_clicked(bool checked)
 
 }
 
-void MainWindow::on_Visiblity4_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(4,checked);
-
-    }
-
-
-}
 
 void MainWindow::on_Group5_clicked(bool checked)
 {    if(image){
@@ -301,15 +263,6 @@ void MainWindow::on_Group5_clicked(bool checked)
 
 }
 
-void MainWindow::on_Visiblity5_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(5,checked);
-
-    }
-
-
-}
 
 void MainWindow::on_Group6_clicked(bool checked)
 {    if(image){
@@ -322,15 +275,6 @@ void MainWindow::on_Group6_clicked(bool checked)
 
 }
 
-void MainWindow::on_Visiblity6_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(6,checked);
-
-    }
-
-
-}
 
 void MainWindow::on_Group7_clicked(bool checked)
 {    if(image){
@@ -343,15 +287,7 @@ void MainWindow::on_Group7_clicked(bool checked)
 
 }
 
-void MainWindow::on_Visiblity7_clicked(bool checked)
-{
-    if(image){
-        edit->setGroupVisibility(7,checked);
 
-    }
-
-
-}
 
 
 void MainWindow::on_Btn_Undo_pressed()
@@ -368,4 +304,45 @@ void MainWindow::on_Btn_Move_clicked()
 {
     if(image)this->edit->setPaint(3);
 
+}
+
+
+void MainWindow::on_Visibility0_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(0,checked);
+}
+
+void MainWindow::on_Visibility1_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(1,checked);
+}
+
+void MainWindow::on_Visibility2_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(2,checked);
+}
+
+void MainWindow::on_Visibility3_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(3,checked);
+}
+
+void MainWindow::on_Visibility4_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(4,checked);
+}
+
+void MainWindow::on_Visibility5_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(5,checked);
+}
+
+void MainWindow::on_Visibility6_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(6,checked);
+}
+
+void MainWindow::on_Visibility7_clicked(bool checked)
+{
+    if(image)this->edit->setGroupVisibility(7,checked);
 }

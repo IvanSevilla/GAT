@@ -28,14 +28,12 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     gagraphicsview.cpp \
-    customelipse.cpp \
-    customline.cpp
+    customelipse.cpp
 
 HEADERS += \
         mainwindow.h \
     gagraphicsview.h \
-    customelipse.h \
-    customline.h
+    customelipse.h
 
 FORMS += \
         mainwindow.ui
@@ -48,3 +46,6 @@ INCLUDEPATH += /usr/local/Cellar/armadillo/9.100.5_2/include/
 LIBS += -L/usr/local/Cellar/armadillo/9.100.5_2/lib/ \
     -larmadillo\
     -framework /Accelerate
+
+RESOURCES += \
+    assets.qrc

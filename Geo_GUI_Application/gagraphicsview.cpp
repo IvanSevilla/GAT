@@ -17,6 +17,9 @@ GaGraphicsView::GaGraphicsView(QWidget *parent) :
         groups.push_back(QSharedPointer<QGraphicsItemGroup>(new QGraphicsItemGroup()));
     }
     group = groups.first();
+    for(int i = 0; i<MAX_GROUPS;i++){
+        lastPoints.push_back(nullptr);
+    }
     }
 void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 {
@@ -28,7 +31,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
             CustomElipse* it = new CustomElipse();
             it->setPen(pen);
             it->setBrush(brush);
-            it->setRect(pt.x()-1.5,pt.y()-1.5,3,3);
+            it->setRect(pt.x()-2,pt.y()-2,4,4);
             it->setCenter(pt);
             //qDebug()<<it->hasFinalLine();
             //qDebug()<<it->hasInitLine();
@@ -54,7 +57,10 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
         scene->addItem(it);
         group->addToGroup(it);
+        it->setGroupNumber(getNumber(it));
+        qDebug()<<it->getGroupNumber();
         lastPoint = it;
+        lastPoints.replace(it->getGroupNumber(),it);
         DoneAction d;
         d.a = ADD;
         d.point = it;
@@ -118,6 +124,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                         if(d.point->hasFinalLine()){
                             scene->removeItem(d.point->getFinalLine());
                             lastPoint = d.point->getFinalLine()->getInit();
+                            lastPoints.replace(d.point->getGroupNumber(),lastPoint);
                         }
                     }
                 lastItems.push(d);
@@ -146,7 +153,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 CustomElipse* _e = new CustomElipse();
                 _e->setPen(pen);
                 _e->setBrush(brush);
-                _e->setRect(pt.x()-1.5,pt.y()-1.5,3,3);
+                _e->setRect(pt.x()-2,pt.y()-2,4,4);
                 _e->setCenter(pt);
                 //qDebug()<<it->hasFinalLine();
                 //qDebug()<<it->hasInitLine();
@@ -167,6 +174,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 group->addToGroup(li);
                 scene->addItem(_e);
                 group->addToGroup(_e);
+                _e->setGroupNumber(getNumber(_e));
                 DoneAction d;
                 d.a = SPLIT;
                 d.point = _e;
@@ -221,45 +229,52 @@ void GaGraphicsView::setPaint(int p){
 void GaGraphicsView::setGroup(int g){
     switch(g){
     case 0:
-        pen.setColor(QColor(255,0,0));
-        brush.setColor(QColor(255,0,0));
+        pen.setColor(QColor(228,26,28));
+        brush.setColor(QColor(228,26,28));
         group = groups.first();
-
+        lastPoint = lastPoints.first();
         break;
     case 1:
-        pen.setColor(QColor(0,0,255));
-        brush.setColor(QColor(0,0,255));
+        pen.setColor(QColor(55,126,184));
+        brush.setColor(QColor(55,126,184));
         group = groups.mid(1,1).first();
+        lastPoint = lastPoints.mid(1,1).first();
         break;
     case 2:
-        pen.setColor(QColor(0,255,0));
-        brush.setColor(QColor(0,255,0));
+        pen.setColor(QColor(77,175,74));
+        brush.setColor(QColor(77,175,74));
         group = groups.mid(2,1).first();
+        lastPoint = lastPoints.mid(2,1).first();
         break;
     case 3:
-        pen.setColor(QColor(255,255,0));
-        brush.setColor(QColor(255,255,0));
+        pen.setColor(QColor(152,78,163));
+        brush.setColor(QColor(152,78,163));
         group = groups.mid(3,1).first();
+        lastPoint = lastPoints.mid(3,1).first();
         break;
     case 4:
-        pen.setColor(QColor(0,255,255));
-        brush.setColor(QColor(0,255,255));
+        pen.setColor(QColor(255,127,0));
+        brush.setColor(QColor(255,127,0));
         group = groups.mid(4,1).first();
+        lastPoint = lastPoints.mid(4,1).first();
         break;
     case 5:
-        pen.setColor(QColor(145,170,255));
-        brush.setColor(QColor(145,170,255));
+        pen.setColor(QColor(255,255,51));
+        brush.setColor(QColor(255,255,51));
         group = groups.mid(5,1).first();
+        lastPoint = lastPoints.mid(5,1).first();
         break;
     case 6:
-        pen.setColor(QColor(150,255,150));
-        brush.setColor(QColor(150,255,150));
+        pen.setColor(QColor(166,86,40));
+        brush.setColor(QColor(166,86,40));
         group = groups.mid(6,1).first();
+        lastPoint = lastPoints.mid(6,1).first();
         break;
     case 7:
-        pen.setColor(QColor(255,100,100));
-        brush.setColor(QColor(255,100,100));
-        group = groups.mid(7,1).first();
+        pen.setColor(QColor(247,129,191));
+        brush.setColor(QColor(247,129,191));
+        group = groups.last();
+        lastPoint = lastPoints.last();
         break;
     }
 }

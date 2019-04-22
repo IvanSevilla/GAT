@@ -93,7 +93,6 @@ public:
             case MOVE:
                 break;
             case JOIN:
-                //qDebug()<<redoItems.top().point->getCenter();
                 redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
                 redoItems.top().point->getFinalLine()->updatel();
                 redoItems.top().point->getInitLine()->getFinal()->setFinalLine(redoItems.top().point->getInitLine());
@@ -101,7 +100,6 @@ public:
                 redoItems.top().g->addToGroup(redoItems.top().point->getInitLine());
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
-
                 break;
             case SPLIT:
                 break;
@@ -123,6 +121,7 @@ public:
                 }if(redoItems.top().point->hasFinalLine()){
                     scene->removeItem(redoItems.top().point->getFinalLine());
                     lastPoint = redoItems.top().point->getFinalLine()->getInit();
+                    lastPoints.replace(redoItems.top().point->getGroupNumber(),lastPoint);
                 }
                 lastItems.push(redoItems.pop());
                 break;
@@ -152,6 +151,7 @@ public:
                 scene->removeItem(redoItems.top().point);
                 break;
             case SPLIT:
+
                 break;
             case NONE:
                 break;
@@ -161,6 +161,15 @@ public:
     }
     QGraphicsScene* getScene(){
         return scene;
+    }
+    int getNumber(CustomElipse* it){
+        for(int i = 0; i<groups.size();i++){
+            if(groups.mid(i,1).first().data() == dynamic_cast<QGraphicsItemGroup*>(it->parentItem())){
+                return i;
+
+            }
+        }
+        return 8;
     }
 signals:
 void sendMousePoint(QPointF point);
@@ -179,19 +188,12 @@ QPen penerase;
 QBrush brush;
 QBrush brusherase;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
+QList<CustomElipse*> lastPoints;
 //GROUP actualGroup;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
 CustomElipse * lastPoint;
-bool setG0 = false;
-bool setG1 = false;
-bool setG2 = false;
-bool setG3 = false;
-bool setG4 = false;
-bool setG5 = false;
-bool setG6 = false;
-bool setG7 = false;
 };
 
 

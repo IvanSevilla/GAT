@@ -12,12 +12,16 @@ class CustomLine;
 class CustomElipse: public QGraphicsEllipseItem,QObject
 {
 public:
+
     explicit CustomElipse(QObject *parent = 0);
     bool hasInitLine(){
         return initLine != nullptr;
     }
     bool hasFinalLine(){
         return finalLine != nullptr;
+    }
+    void setGroupNumber(int number){
+        this->groupnumber = number;
     }
     void setInitLine(CustomLine *init){
         initLine = init;
@@ -36,6 +40,9 @@ public:
     }
     QPointF getCenter(){
         return center;
+    }
+    int getGroupNumber(){
+        return groupnumber;
     }
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -101,7 +108,7 @@ private:
     QPointF center;
     CustomLine *initLine = nullptr;
     CustomLine *finalLine = nullptr;
-
+    int groupnumber = 0;
     //bool initial, final = false;
     bool _isResizing;
 };

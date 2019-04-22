@@ -49,35 +49,35 @@ private slots:
 
     void on_Group0_clicked(bool checked);
 
-    void on_Visiblity0_clicked(bool checked);
-
     void on_Group1_clicked(bool checked);
-
-    void on_Visiblity1_clicked(bool checked);
 
     void on_Group2_clicked(bool checked);
 
-    void on_Visibility2_clicked(bool checked);
-
     void on_Group3_clicked(bool checked);
-
-    void on_Visiblity3_clicked(bool checked);
 
     void on_Group4_clicked(bool checked);
 
-    void on_Visiblity4_clicked(bool checked);
-
     void on_Group5_clicked(bool checked);
-
-    void on_Visiblity5_clicked(bool checked);
 
     void on_Group6_clicked(bool checked);
 
-    void on_Visiblity6_clicked(bool checked);
-
     void on_Group7_clicked(bool checked);
 
-    void on_Visiblity7_clicked(bool checked);
+    void on_Visibility0_clicked(bool checked);
+
+    void on_Visibility1_clicked(bool checked);
+
+    void on_Visibility2_clicked(bool checked);
+
+    void on_Visibility3_clicked(bool checked);
+
+    void on_Visibility4_clicked(bool checked);
+
+    void on_Visibility5_clicked(bool checked);
+
+    void on_Visibility6_clicked(bool checked);
+
+    void on_Visibility7_clicked(bool checked);
 
 
     void on_Btn_Undo_pressed();
@@ -85,6 +85,7 @@ private slots:
     void on_Btn_Do_clicked();
 
     void on_Btn_Move_clicked();
+
 
 private:
     Ui::MainWindow *ui;
