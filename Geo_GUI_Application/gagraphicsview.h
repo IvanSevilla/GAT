@@ -102,6 +102,15 @@ public:
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 break;
             case SPLIT:
+
+                CustomElipse* p1,*p3;
+                p1 = redoItems.top().point->getFinalLine()->getInit();
+                p3 = redoItems.top().point->getInitLine()->getFinal();
+                p3->setFinalLine(p1->getInitLine());
+                p3->getFinalLine()->setFinal(p3);
+                p3->getFinalLine()->updatel();
+                scene->removeItem(redoItems.top().point->getInitLine());
+                scene->removeItem(redoItems.top().point);
                 break;
             case NONE:
                 break;
@@ -149,9 +158,17 @@ public:
                 p3->getFinalLine()->updatel();
                 scene->removeItem(redoItems.top().point->getInitLine());
                 scene->removeItem(redoItems.top().point);
+                lastItems.push(redoItems.pop());
                 break;
             case SPLIT:
-
+                redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
+                redoItems.top().point->getFinalLine()->updatel();
+                redoItems.top().point->getInitLine()->getFinal()->setFinalLine(redoItems.top().point->getInitLine());
+                scene->addItem(redoItems.top().point->getInitLine());
+                redoItems.top().g->addToGroup(redoItems.top().point->getInitLine());
+                scene->addItem(redoItems.top().point);
+                redoItems.top().g->addToGroup(redoItems.top().point);
+                lastItems.push(redoItems.pop());
                 break;
             case NONE:
                 break;
