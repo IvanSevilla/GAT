@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>806</width>
-    <height>547</height>
+    <height>601</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -65,7 +65,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="sizeConstraint">
-       <enum>QLayout::SetMaximumSize</enum>
+       <enum>QLayout::SetMinimumSize</enum>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -75,8 +75,38 @@
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <item>
          <widget class="QPushButton" name="Btn_Zoom_In">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="cursor">
+           <cursorShape>ArrowCursor</cursorShape>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="tabletTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string extracomment="Zoom in"/>
+          </property>
+          <property name="toolTipDuration">
+           <number>200000</number>
+          </property>
+          <property name="statusTip">
+           <string extracomment="Zoom in"/>
+          </property>
+          <property name="whatsThis">
+           <string extracomment="Zoom in"/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -84,10 +114,37 @@
            <iconset resource="assets.qrc">
             <normaloff>:/assets/search-plus.svg</normaloff>:/assets/search-plus.svg</iconset>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="Btn_Zoom_Out">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="tabletTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string extracomment="Zoom out"/>
+          </property>
+          <property name="toolTipDuration">
+           <number>200000</number>
+          </property>
+          <property name="statusTip">
+           <string extracomment="Zoom out"/>
+          </property>
+          <property name="whatsThis">
+           <string extracomment="Zoom out"/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -95,10 +152,37 @@
            <iconset resource="assets.qrc">
             <normaloff>:/assets/search-minus.svg</normaloff>:/assets/search-minus.svg</iconset>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="Btn_Edit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="tabletTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string extracomment="Edit"/>
+          </property>
+          <property name="toolTipDuration">
+           <number>200000</number>
+          </property>
+          <property name="statusTip">
+           <string extracomment="Edit"/>
+          </property>
+          <property name="whatsThis">
+           <string extracomment="Edit"/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -109,12 +193,42 @@
           <property name="checkable">
            <bool>true</bool>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <item>
            <widget class="QPushButton" name="Btn_Add_Point">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string extracomment="Add"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>200000</number>
+            </property>
+            <property name="statusTip">
+             <string extracomment="Add"/>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Add"/>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -125,6 +239,9 @@
             <property name="checkable">
              <bool>false</bool>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
             <property name="flat">
              <bool>false</bool>
             </property>
@@ -132,6 +249,30 @@
           </item>
           <item>
            <widget class="QPushButton" name="Btn_Del_Point">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string extracomment="Delete &amp; Join"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>200000</number>
+            </property>
+            <property name="statusTip">
+             <string extracomment="Delete &amp; Join"/>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Delete &amp; Join"/>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -142,6 +283,9 @@
             <property name="checkable">
              <bool>false</bool>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
             <property name="flat">
              <bool>false</bool>
             </property>
@@ -149,12 +293,39 @@
           </item>
           <item>
            <widget class="QPushButton" name="Btn_Move">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string comment="Move &amp; Split" extracomment="Move &amp; Split"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>200000</number>
+            </property>
+            <property name="statusTip">
+             <string comment="Move &amp; Split" extracomment="Move &amp; Split"/>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Move &amp; Split"/>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset resource="assets.qrc">
               <normaloff>:/assets/expand-arrows.svg</normaloff>:/assets/expand-arrows.svg</iconset>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -163,12 +334,36 @@
           </item>
           <item>
            <widget class="QPushButton" name="Btn_Undo">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string extracomment="Undo"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>200000</number>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Undo"/>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset resource="assets.qrc">
               <normaloff>:/assets/undo.svg</normaloff>:/assets/undo.svg</iconset>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -177,12 +372,36 @@
           </item>
           <item>
            <widget class="QPushButton" name="Btn_Do">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string extracomment="Redo"/>
+            </property>
+            <property name="toolTipDuration">
+             <number>-3</number>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Redo"/>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset resource="assets.qrc">
               <normaloff>:/assets/redo.svg</normaloff>:/assets/redo.svg</iconset>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -194,11 +413,36 @@
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Categories</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <item>
          <layout class="QFormLayout" name="formLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <item row="1" column="0">
            <widget class="QRadioButton" name="Group0">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
@@ -216,6 +460,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="2" column="0">
            <widget class="QRadioButton" name="Group1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(55,126,184);</string>
             </property>
@@ -226,6 +476,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="3" column="0">
            <widget class="QRadioButton" name="Group2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(77,175,74);</string>
             </property>
@@ -236,6 +492,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="4" column="0">
            <widget class="QRadioButton" name="Group3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(152,78,163);</string>
             </property>
@@ -246,6 +508,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="5" column="0">
            <widget class="QRadioButton" name="Group4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255,127,0);</string>
             </property>
@@ -256,6 +524,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="6" column="0">
            <widget class="QRadioButton" name="Group5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255,255,51);</string>
             </property>
@@ -266,6 +540,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="7" column="0">
            <widget class="QRadioButton" name="Group6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(166,86,40);</string>
             </property>
@@ -276,6 +556,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="8" column="0">
            <widget class="QRadioButton" name="Group7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(247,129,191);</string>
             </property>
@@ -286,6 +572,15 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="1" column="1">
            <widget class="QPushButton" name="Visibility0">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTipDuration">
+             <number>5</number>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -307,6 +602,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="Visibility1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -325,6 +626,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="3" column="1">
            <widget class="QPushButton" name="Visibility2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -344,6 +651,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="4" column="1">
            <widget class="QPushButton" name="Visibility3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -362,6 +675,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="5" column="1">
            <widget class="QPushButton" name="Visibility4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -380,6 +699,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="6" column="1">
            <widget class="QPushButton" name="Visibility5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -398,6 +723,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="7" column="1">
            <widget class="QPushButton" name="Visibility6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -416,6 +747,12 @@ background-color: rgb(228,26,28);</string>
           </item>
           <item row="8" column="1">
            <widget class="QPushButton" name="Visibility7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>

@@ -187,6 +187,55 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
     }
     if(paint == 3){
         QGraphicsView::mousePressEvent(e);
+            QGraphicsItem * itemToRemove = nullptr;
+            QPointF pt = mapToScene(e->pos());
+            //qDebug()<<scene->items(pt);
+            foreach(auto item, scene->items(pt)) {
+                if(item->type() == QGraphicsItem::UserType+2) {
+                    itemToRemove = item;
+                    qDebug()<<"HEY";
+                    break;
+                }
+
+            }
+            if(itemToRemove != nullptr){
+                CustomLine * _l = dynamic_cast<CustomLine*>(itemToRemove);
+
+                if(_l->hasFinal()){
+                    qDebug()<<_l->getFinal()->getCenter();
+                    CustomElipse* _e = new CustomElipse();
+                    _e->setPen(pen);
+                    _e->setBrush(brush);
+                    _e->setRect(pt.x()-2,pt.y()-2,4,4);
+                    _e->setCenter(pt);
+                    //qDebug()<<it->hasFinalLine();
+                    //qDebug()<<it->hasInitLine();
+                    _e->setFlag(QGraphicsItem::ItemIsMovable,true);
+                    _e->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                    _e->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                    CustomLine * li = new CustomLine();
+                    li->setPen(pen);
+                    li->setInitial(_e);
+                    li->setFinal(_l->getFinal());
+                    _e->setInitLine(li);
+                    _e->setFinalLine(_l);
+                    _l->getFinal()->setFinalLine(li);
+                    _l->setFinal(_e);
+                    //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                    //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                    scene->addItem(li);
+                    group->addToGroup(li);
+                    scene->addItem(_e);
+                    group->addToGroup(_e);
+                    _e->setGroupNumber(getNumber(_e));
+                    DoneAction d;
+                    d.a = SPLIT;
+                    d.point = _e;
+                    d.g = dynamic_cast<QGraphicsItemGroup*>(_e->parentItem());
+                    lastItems.push(d);
+                    }
+                }
+
 
     }
 

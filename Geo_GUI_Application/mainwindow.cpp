@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Btn_Move->setHidden(1);
     ui->Btn_Add_Point->setHidden(1);
     ui->Btn_Del_Point->setHidden(1);
+    ui->Btn_Zoom_In->setToolTip("Zoom In");
+    ui->Btn_Edit->setToolTip("Edit");
+    ui->Btn_Zoom_Out->setToolTip("Zoom Out");
     scene = new QGraphicsScene(this);
     editscene = new QGraphicsScene(this);
 
@@ -121,6 +124,11 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         ui->Btn_Move->setHidden(!checked);
         ui->Btn_Add_Point->setHidden(!checked);
         ui->Btn_Del_Point->setHidden(!checked);
+        ui->Btn_Do->setToolTip("Redo");
+        ui->Btn_Undo->setToolTip("Undo");
+        ui->Btn_Move->setToolTip("Move & Split");
+        ui->Btn_Add_Point->setToolTip("Add");
+        ui->Btn_Del_Point->setToolTip("Delete & Join");
     }else{
         if(image){
 
