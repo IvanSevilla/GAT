@@ -17,6 +17,7 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -43,6 +44,7 @@ public:
     QAction *actionDelete_Matrix;
     QAction *actionDelete_Matrix_2;
     QAction *actionMiniMap;
+    QAction *actionDelete_Poliline;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout_9;
     QHBoxLayout *horizontalLayout_7;
@@ -62,21 +64,24 @@ public:
     QVBoxLayout *verticalLayout_2;
     QFormLayout *formLayout;
     QRadioButton *Group0;
-    QRadioButton *Group1;
-    QRadioButton *Group2;
-    QRadioButton *Group3;
-    QRadioButton *Group4;
-    QRadioButton *Group5;
-    QRadioButton *Group6;
-    QRadioButton *Group7;
     QPushButton *Visibility0;
+    QRadioButton *Group1;
     QPushButton *Visibility1;
+    QRadioButton *Group2;
     QPushButton *Visibility2;
+    QRadioButton *Group3;
     QPushButton *Visibility3;
+    QRadioButton *Group4;
     QPushButton *Visibility4;
+    QRadioButton *Group5;
     QPushButton *Visibility5;
+    QRadioButton *Group6;
     QPushButton *Visibility6;
+    QRadioButton *Group7;
     QPushButton *Visibility7;
+    QPushButton *showPolilines;
+    QLabel *labelPolilines;
+    QListWidget *polilines;
     QMenuBar *menuBar;
     QMenu *menuGEOApp;
     QMenu *menuFile;
@@ -90,7 +95,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(806, 601);
+        MainWindow->resize(806, 626);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -98,6 +103,8 @@ public:
         MainWindow->setSizePolicy(sizePolicy);
         MainWindow->setMinimumSize(QSize(0, 0));
         MainWindow->setMaximumSize(QSize(16777215, 16777215));
+        MainWindow->setAutoFillBackground(false);
+        MainWindow->setStyleSheet(QString::fromUtf8(""));
         MainWindow->setUnifiedTitleAndToolBarOnMac(false);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
@@ -126,6 +133,8 @@ public:
         actionMiniMap->setObjectName(QString::fromUtf8("actionMiniMap"));
         actionMiniMap->setCheckable(true);
         actionMiniMap->setChecked(false);
+        actionDelete_Poliline = new QAction(MainWindow);
+        actionDelete_Poliline->setObjectName(QString::fromUtf8("actionDelete_Poliline"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout_9 = new QHBoxLayout(centralWidget);
@@ -217,7 +226,7 @@ public:
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/assets/plus-circle.svg"), QSize(), QIcon::Normal, QIcon::Off);
         Btn_Add_Point->setIcon(icon4);
-        Btn_Add_Point->setCheckable(false);
+        Btn_Add_Point->setCheckable(true);
         Btn_Add_Point->setAutoDefault(false);
         Btn_Add_Point->setFlat(false);
 
@@ -233,7 +242,7 @@ public:
         QIcon icon5;
         icon5.addFile(QString::fromUtf8(":/assets/minus-circle.svg"), QSize(), QIcon::Normal, QIcon::Off);
         Btn_Del_Point->setIcon(icon5);
-        Btn_Del_Point->setCheckable(false);
+        Btn_Del_Point->setCheckable(true);
         Btn_Del_Point->setAutoDefault(false);
         Btn_Del_Point->setFlat(false);
 
@@ -249,6 +258,7 @@ public:
         QIcon icon6;
         icon6.addFile(QString::fromUtf8(":/assets/expand-arrows.svg"), QSize(), QIcon::Normal, QIcon::Off);
         Btn_Move->setIcon(icon6);
+        Btn_Move->setCheckable(true);
         Btn_Move->setAutoDefault(false);
         Btn_Move->setFlat(false);
 
@@ -264,6 +274,7 @@ public:
         QIcon icon7;
         icon7.addFile(QString::fromUtf8(":/assets/undo.svg"), QSize(), QIcon::Normal, QIcon::Off);
         Btn_Undo->setIcon(icon7);
+        Btn_Undo->setCheckable(false);
         Btn_Undo->setAutoDefault(false);
         Btn_Undo->setFlat(false);
 
@@ -279,6 +290,7 @@ public:
         QIcon icon8;
         icon8.addFile(QString::fromUtf8(":/assets/redo.svg"), QSize(), QIcon::Normal, QIcon::Off);
         Btn_Do->setIcon(icon8);
+        Btn_Do->setCheckable(false);
         Btn_Do->setAutoDefault(false);
         Btn_Do->setFlat(false);
 
@@ -300,77 +312,23 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        verticalLayout_2->setSizeConstraint(QLayout::SetMinimumSize);
+        verticalLayout_2->setSizeConstraint(QLayout::SetFixedSize);
         formLayout = new QFormLayout();
         formLayout->setSpacing(6);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setSizeConstraint(QLayout::SetMinimumSize);
+        formLayout->setLabelAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        formLayout->setFormAlignment(Qt::AlignJustify|Qt::AlignTop);
         Group0 = new QRadioButton(centralWidget);
         Group0->setObjectName(QString::fromUtf8("Group0"));
         sizePolicy.setHeightForWidth(Group0->sizePolicy().hasHeightForWidth());
         Group0->setSizePolicy(sizePolicy);
         Group0->setAutoFillBackground(false);
-        Group0->setStyleSheet(QString::fromUtf8("\n"
+        Group0->setStyleSheet(QString::fromUtf8("color: rgb(228,26,28);\n"
 "background-color: rgb(228,26,28);"));
         Group0->setChecked(true);
 
         formLayout->setWidget(1, QFormLayout::LabelRole, Group0);
-
-        Group1 = new QRadioButton(centralWidget);
-        Group1->setObjectName(QString::fromUtf8("Group1"));
-        sizePolicy.setHeightForWidth(Group1->sizePolicy().hasHeightForWidth());
-        Group1->setSizePolicy(sizePolicy);
-        Group1->setStyleSheet(QString::fromUtf8("background-color: rgb(55,126,184);"));
-
-        formLayout->setWidget(2, QFormLayout::LabelRole, Group1);
-
-        Group2 = new QRadioButton(centralWidget);
-        Group2->setObjectName(QString::fromUtf8("Group2"));
-        sizePolicy.setHeightForWidth(Group2->sizePolicy().hasHeightForWidth());
-        Group2->setSizePolicy(sizePolicy);
-        Group2->setStyleSheet(QString::fromUtf8("background-color: rgb(77,175,74);"));
-
-        formLayout->setWidget(3, QFormLayout::LabelRole, Group2);
-
-        Group3 = new QRadioButton(centralWidget);
-        Group3->setObjectName(QString::fromUtf8("Group3"));
-        sizePolicy.setHeightForWidth(Group3->sizePolicy().hasHeightForWidth());
-        Group3->setSizePolicy(sizePolicy);
-        Group3->setStyleSheet(QString::fromUtf8("background-color: rgb(152,78,163);"));
-
-        formLayout->setWidget(4, QFormLayout::LabelRole, Group3);
-
-        Group4 = new QRadioButton(centralWidget);
-        Group4->setObjectName(QString::fromUtf8("Group4"));
-        sizePolicy.setHeightForWidth(Group4->sizePolicy().hasHeightForWidth());
-        Group4->setSizePolicy(sizePolicy);
-        Group4->setStyleSheet(QString::fromUtf8("background-color: rgb(255,127,0);"));
-
-        formLayout->setWidget(5, QFormLayout::LabelRole, Group4);
-
-        Group5 = new QRadioButton(centralWidget);
-        Group5->setObjectName(QString::fromUtf8("Group5"));
-        sizePolicy.setHeightForWidth(Group5->sizePolicy().hasHeightForWidth());
-        Group5->setSizePolicy(sizePolicy);
-        Group5->setStyleSheet(QString::fromUtf8("background-color: rgb(255,255,51);"));
-
-        formLayout->setWidget(6, QFormLayout::LabelRole, Group5);
-
-        Group6 = new QRadioButton(centralWidget);
-        Group6->setObjectName(QString::fromUtf8("Group6"));
-        sizePolicy.setHeightForWidth(Group6->sizePolicy().hasHeightForWidth());
-        Group6->setSizePolicy(sizePolicy);
-        Group6->setStyleSheet(QString::fromUtf8("background-color: rgb(166,86,40);"));
-
-        formLayout->setWidget(7, QFormLayout::LabelRole, Group6);
-
-        Group7 = new QRadioButton(centralWidget);
-        Group7->setObjectName(QString::fromUtf8("Group7"));
-        sizePolicy.setHeightForWidth(Group7->sizePolicy().hasHeightForWidth());
-        Group7->setSizePolicy(sizePolicy);
-        Group7->setStyleSheet(QString::fromUtf8("background-color: rgb(247,129,191);"));
-
-        formLayout->setWidget(8, QFormLayout::LabelRole, Group7);
 
         Visibility0 = new QPushButton(centralWidget);
         Visibility0->setObjectName(QString::fromUtf8("Visibility0"));
@@ -389,6 +347,16 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, Visibility0);
 
+        Group1 = new QRadioButton(centralWidget);
+        Group1->setObjectName(QString::fromUtf8("Group1"));
+        sizePolicy.setHeightForWidth(Group1->sizePolicy().hasHeightForWidth());
+        Group1->setSizePolicy(sizePolicy);
+        Group1->setAutoFillBackground(false);
+        Group1->setStyleSheet(QString::fromUtf8("background-color: rgb(55,126,184);\n"
+"color: rgb(55,126,184);"));
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, Group1);
+
         Visibility1 = new QPushButton(centralWidget);
         Visibility1->setObjectName(QString::fromUtf8("Visibility1"));
         sizePolicy.setHeightForWidth(Visibility1->sizePolicy().hasHeightForWidth());
@@ -401,6 +369,15 @@ public:
         Visibility1->setChecked(true);
 
         formLayout->setWidget(2, QFormLayout::FieldRole, Visibility1);
+
+        Group2 = new QRadioButton(centralWidget);
+        Group2->setObjectName(QString::fromUtf8("Group2"));
+        sizePolicy.setHeightForWidth(Group2->sizePolicy().hasHeightForWidth());
+        Group2->setSizePolicy(sizePolicy);
+        Group2->setAutoFillBackground(false);
+        Group2->setStyleSheet(QString::fromUtf8("background-color: rgb(77,175,74);"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, Group2);
 
         Visibility2 = new QPushButton(centralWidget);
         Visibility2->setObjectName(QString::fromUtf8("Visibility2"));
@@ -416,6 +393,15 @@ public:
 
         formLayout->setWidget(3, QFormLayout::FieldRole, Visibility2);
 
+        Group3 = new QRadioButton(centralWidget);
+        Group3->setObjectName(QString::fromUtf8("Group3"));
+        sizePolicy.setHeightForWidth(Group3->sizePolicy().hasHeightForWidth());
+        Group3->setSizePolicy(sizePolicy);
+        Group3->setAutoFillBackground(false);
+        Group3->setStyleSheet(QString::fromUtf8("background-color: rgb(152,78,163);"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, Group3);
+
         Visibility3 = new QPushButton(centralWidget);
         Visibility3->setObjectName(QString::fromUtf8("Visibility3"));
         sizePolicy.setHeightForWidth(Visibility3->sizePolicy().hasHeightForWidth());
@@ -425,6 +411,15 @@ public:
         Visibility3->setChecked(true);
 
         formLayout->setWidget(4, QFormLayout::FieldRole, Visibility3);
+
+        Group4 = new QRadioButton(centralWidget);
+        Group4->setObjectName(QString::fromUtf8("Group4"));
+        sizePolicy.setHeightForWidth(Group4->sizePolicy().hasHeightForWidth());
+        Group4->setSizePolicy(sizePolicy);
+        Group4->setAutoFillBackground(false);
+        Group4->setStyleSheet(QString::fromUtf8("background-color: rgb(255,127,0);"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, Group4);
 
         Visibility4 = new QPushButton(centralWidget);
         Visibility4->setObjectName(QString::fromUtf8("Visibility4"));
@@ -436,6 +431,15 @@ public:
 
         formLayout->setWidget(5, QFormLayout::FieldRole, Visibility4);
 
+        Group5 = new QRadioButton(centralWidget);
+        Group5->setObjectName(QString::fromUtf8("Group5"));
+        sizePolicy.setHeightForWidth(Group5->sizePolicy().hasHeightForWidth());
+        Group5->setSizePolicy(sizePolicy);
+        Group5->setAutoFillBackground(false);
+        Group5->setStyleSheet(QString::fromUtf8("background-color: rgb(255,255,51);"));
+
+        formLayout->setWidget(6, QFormLayout::LabelRole, Group5);
+
         Visibility5 = new QPushButton(centralWidget);
         Visibility5->setObjectName(QString::fromUtf8("Visibility5"));
         sizePolicy.setHeightForWidth(Visibility5->sizePolicy().hasHeightForWidth());
@@ -445,6 +449,15 @@ public:
         Visibility5->setChecked(true);
 
         formLayout->setWidget(6, QFormLayout::FieldRole, Visibility5);
+
+        Group6 = new QRadioButton(centralWidget);
+        Group6->setObjectName(QString::fromUtf8("Group6"));
+        sizePolicy.setHeightForWidth(Group6->sizePolicy().hasHeightForWidth());
+        Group6->setSizePolicy(sizePolicy);
+        Group6->setAutoFillBackground(false);
+        Group6->setStyleSheet(QString::fromUtf8("background-color: rgb(166,86,40);"));
+
+        formLayout->setWidget(7, QFormLayout::LabelRole, Group6);
 
         Visibility6 = new QPushButton(centralWidget);
         Visibility6->setObjectName(QString::fromUtf8("Visibility6"));
@@ -456,6 +469,16 @@ public:
 
         formLayout->setWidget(7, QFormLayout::FieldRole, Visibility6);
 
+        Group7 = new QRadioButton(centralWidget);
+        Group7->setObjectName(QString::fromUtf8("Group7"));
+        sizePolicy.setHeightForWidth(Group7->sizePolicy().hasHeightForWidth());
+        Group7->setSizePolicy(sizePolicy);
+        Group7->setLayoutDirection(Qt::LeftToRight);
+        Group7->setAutoFillBackground(false);
+        Group7->setStyleSheet(QString::fromUtf8("background-color: rgb(247,129,191);"));
+
+        formLayout->setWidget(8, QFormLayout::LabelRole, Group7);
+
         Visibility7 = new QPushButton(centralWidget);
         Visibility7->setObjectName(QString::fromUtf8("Visibility7"));
         sizePolicy.setHeightForWidth(Visibility7->sizePolicy().hasHeightForWidth());
@@ -466,8 +489,36 @@ public:
 
         formLayout->setWidget(8, QFormLayout::FieldRole, Visibility7);
 
+        showPolilines = new QPushButton(centralWidget);
+        showPolilines->setObjectName(QString::fromUtf8("showPolilines"));
+        sizePolicy.setHeightForWidth(showPolilines->sizePolicy().hasHeightForWidth());
+        showPolilines->setSizePolicy(sizePolicy);
+        showPolilines->setCheckable(true);
+
+        formLayout->setWidget(9, QFormLayout::LabelRole, showPolilines);
+
 
         verticalLayout_2->addLayout(formLayout);
+
+        labelPolilines = new QLabel(centralWidget);
+        labelPolilines->setObjectName(QString::fromUtf8("labelPolilines"));
+
+        verticalLayout_2->addWidget(labelPolilines);
+
+        polilines = new QListWidget(centralWidget);
+        polilines->setObjectName(QString::fromUtf8("polilines"));
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy2.setHorizontalStretch(1);
+        sizePolicy2.setVerticalStretch(1);
+        sizePolicy2.setHeightForWidth(polilines->sizePolicy().hasHeightForWidth());
+        polilines->setSizePolicy(sizePolicy2);
+        polilines->setMinimumSize(QSize(60, 200));
+        polilines->setMaximumSize(QSize(60, 400));
+        polilines->setBaseSize(QSize(50, 200));
+        polilines->setBatchSize(100);
+        polilines->setItemAlignment(Qt::AlignCenter);
+
+        verticalLayout_2->addWidget(polilines);
 
 
         verticalLayout->addLayout(verticalLayout_2);
@@ -512,6 +563,8 @@ public:
         menuEdit->addAction(actionDelete_Image);
         menuEdit->addAction(actionDelete_Matrix);
         menuEdit->addAction(actionDelete_Matrix_2);
+        menuEdit->addSeparator();
+        menuEdit->addAction(actionDelete_Poliline);
         menuView->addAction(actionMiniMap);
         mainToolBar->addAction(actionAdd_Image);
 
@@ -534,6 +587,7 @@ public:
         actionDelete_Matrix->setText(QApplication::translate("MainWindow", "Delete Point Cloud", nullptr));
         actionDelete_Matrix_2->setText(QApplication::translate("MainWindow", "Delete Matrix", nullptr));
         actionMiniMap->setText(QApplication::translate("MainWindow", "MiniMap", nullptr));
+        actionDelete_Poliline->setText(QApplication::translate("MainWindow", "Delete Poliline", nullptr));
 #ifndef QT_NO_TOOLTIP
         Btn_Zoom_In->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
@@ -610,21 +664,23 @@ public:
         Btn_Do->setText(QString());
         label->setText(QApplication::translate("MainWindow", "Categories", nullptr));
         Group0->setText(QString());
-        Group1->setText(QString());
-        Group2->setText(QString());
-        Group3->setText(QString());
-        Group4->setText(QString());
-        Group5->setText(QString());
-        Group6->setText(QString());
-        Group7->setText(QString());
         Visibility0->setText(QString());
+        Group1->setText(QString());
         Visibility1->setText(QString());
+        Group2->setText(QString());
         Visibility2->setText(QString());
+        Group3->setText(QString());
         Visibility3->setText(QString());
+        Group4->setText(QString());
         Visibility4->setText(QString());
+        Group5->setText(QString());
         Visibility5->setText(QString());
+        Group6->setText(QString());
         Visibility6->setText(QString());
+        Group7->setText(QString());
         Visibility7->setText(QString());
+        showPolilines->setText(QApplication::translate("MainWindow", "...", nullptr));
+        labelPolilines->setText(QApplication::translate("MainWindow", "Polilines List", nullptr));
         menuGEOApp->setTitle(QApplication::translate("MainWindow", "GEOApp", nullptr));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", nullptr));
         menuEdit->setTitle(QApplication::translate("MainWindow", "Edit", nullptr));

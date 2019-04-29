@@ -2,14 +2,23 @@
 #include "mainwindow.h"
 #include <QPointF>
 #include <QDebug>
+#include <string.h>
 
 GaGraphicsView::GaGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
     {
     this->setSceneRect(50, 50, 350, 350);
-    pen.setColor(QColor(255,0,0));
+    _color.push_back(QColor(228,26,28));
+    _color.push_back(QColor(55,126,184));
+    _color.push_back(QColor(77,175,74));
+    _color.push_back(QColor(152,78,163));
+    _color.push_back(QColor(255,127,0));
+    _color.push_back(QColor(255,255,51));
+    _color.push_back(QColor(166,86,40));
+    _color.push_back(QColor(247,129,191));
+    pen.setColor(_color.first());
     brush = QBrush(Qt::SolidPattern);
-    brush.setColor(QColor(255,0,0));
+    brush.setColor(_color.first());
 
     this->setToggle(false);
     this->setPaint(false);
@@ -19,54 +28,73 @@ GaGraphicsView::GaGraphicsView(QWidget *parent) :
     group = groups.first();
     for(int i = 0; i<MAX_GROUPS;i++){
         lastPoints.push_back(nullptr);
+        poliLines.push_back(new QList<CustomElipse*>());
     }
+    lastPoint = nullptr;
     }
 void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 {
     if(toggle){
         if(paint == 1){
+
+            if(e->button() == Qt::RightButton){
+
+                if(lastPoint != nullptr){
+                    poliLines.mid(lastPoint->getGroupNumber(),1).first()->push_back(lastPoint);
+                    std::string log = "FINISH LINE: "+std::to_string(poliLines.mid(lastPoint->getGroupNumber(),1).first()->length());
+                    WriteLogFile(log.c_str());
+                    lastPoints.replace(lastPoint->getGroupNumber(),nullptr);
+                    lastPoint = nullptr;
+                }
+
+            }else{
         //double rad = 1;
-            QPointF pt = mapToScene(e->pos());
-            qDebug()<<pt;
-            CustomElipse* it = new CustomElipse();
-            it->setPen(pen);
-            it->setBrush(brush);
-            it->setRect(pt.x()-2,pt.y()-2,4,4);
-            it->setCenter(pt);
-            //qDebug()<<it->hasFinalLine();
-            //qDebug()<<it->hasInitLine();
-            it->setFlag(QGraphicsItem::ItemIsMovable,true);
-            it->setFlag(QGraphicsItem::ItemIsSelectable,true);
-            it->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                QPointF pt = mapToScene(e->pos());
+                std::string log = "ADD POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
 
-            if(group->childItems().size()>1){
-                CustomLine * li = new CustomLine();
-                li->setPen(pen);
-                li->setInitial(lastPoint);
-                qDebug()<<"1: "<<lastPoint->getCenter();
-                li->setFinal(it);
-                lastPoint->setInitLine(li);
-                it->setFinalLine(li);
-                qDebug()<<"2: "<<it->getCenter();
-                qDebug()<<"3: "<<li->line();
-                //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
-                scene->addItem(li);
-                group->addToGroup(li);
+                WriteLogFile(log.c_str());
+                //qDebug()<<pt;
+                CustomElipse* it = new CustomElipse();
+                it->setPen(pen);
+                it->setBrush(brush);
+                it->setRect(pt.x()-2,pt.y()-2,4,4);
+                it->setCenter(pt);
+                //qDebug()<<it->hasFinalLine();
+                //qDebug()<<it->hasInitLine();
+                it->setFlag(QGraphicsItem::ItemIsMovable,true);
+                it->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                it->setFlag(QGraphicsItem::ItemClipsToShape,true);
+
+                if(lastPoint != nullptr){
+                    CustomLine * li = new CustomLine();
+                    li->setPen(pen);
+                    li->setInitial(lastPoint);
+                    //qDebug()<<"1: "<<lastPoint->getCenter();
+                    li->setFinal(it);
+                    lastPoint->setInitLine(li);
+                    it->setFinalLine(li);
+                    //qDebug()<<"2: "<<it->getCenter();
+                    //qDebug()<<"3: "<<li->line();
+                    //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                    //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                    scene->addItem(li);
+                    group->addToGroup(li);
+                }
+
+            scene->addItem(it);
+            group->addToGroup(it);
+            it->setGroupNumber(getNumber(it));
+            //qDebug()<<it->getGroupNumber();
+            lastPoint = it;
+            lastPoints.replace(it->getGroupNumber(),it);
+            DoneAction d;
+            d.a = ADD;
+            d.point = it;
+            d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
+            lastItems.push(d);
+            redoItems.clear();
+
             }
-
-        scene->addItem(it);
-        group->addToGroup(it);
-        it->setGroupNumber(getNumber(it));
-        qDebug()<<it->getGroupNumber();
-        lastPoint = it;
-        lastPoints.replace(it->getGroupNumber(),it);
-        DoneAction d;
-        d.a = ADD;
-        d.point = it;
-        d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
-        lastItems.push(d);
-
         }
         //QGraphicsItem* line = scene->addLine(pt.x(),pt.y(),pt.x()+7.0,pt.y()+4.0,pen);
         //line->setFlag(QGraphicsItem::ItemIsMovable,true);
@@ -97,31 +125,43 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 }
                 //qDebug()<<itemToRemove->pos();
                 if(itemToRemove != nullptr){
+                    redoItems.clear();
                     DoneAction d;
+
                     d.point = dynamic_cast<CustomElipse*>(itemToRemove);
                     d.a = DELETE;
                     d.g = dynamic_cast<QGraphicsItemGroup*>(d.point->parentItem());
-                    qDebug()<<d.point->hasInitLine();
-                    qDebug()<<d.point->hasFinalLine();
+                    //qDebug()<<d.point->hasInitLine();
+                    //qDebug()<<d.point->hasFinalLine();
                     if(d.point->hasInitLine()){
                         if(d.point->hasFinalLine()){
+                            std::string log = "JOIN POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
+
+                            WriteLogFile(log.c_str());
                             d.a = JOIN;
+
                             CustomElipse* p1,*p3;
                             p1 = d.point->getFinalLine()->getInit();
                             p3 = d.point->getInitLine()->getFinal();
                             p3->setFinalLine(p1->getInitLine());
                             p3->getFinalLine()->setFinal(p3);
                             p3->getFinalLine()->updatel();
-                            qDebug()<<p1->getCenter();
-                            qDebug()<<p3->getFinalLine()->getInit()->getCenter();
-                            qDebug()<<d.point->getCenter();
-                            qDebug()<<d.point->getFinalLine()->getInit()->getCenter();
+                           // qDebug()<<p1->getCenter();
+                            //qDebug()<<p3->getFinalLine()->getInit()->getCenter();
+                            //qDebug()<<d.point->getCenter();
+                            //qDebug()<<d.point->getFinalLine()->getInit()->getCenter();
                             scene->removeItem(d.point->getInitLine());
                         }else{
+                            std::string log = "DELETE POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
+
+                            WriteLogFile(log.c_str());
                             scene->removeItem(d.point->getInitLine());
                         }
                     }else{
                         if(d.point->hasFinalLine()){
+                            std::string log = "DELETE POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
+
+                            WriteLogFile(log.c_str());
                             scene->removeItem(d.point->getFinalLine());
                             lastPoint = d.point->getFinalLine()->getInit();
                             lastPoints.replace(d.point->getGroupNumber(),lastPoint);
@@ -129,71 +169,24 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     }
                 lastItems.push(d);
                 scene->removeItem(lastItems.top().point);
-                qDebug()<<d.a;
+                //qDebug()<<d.a;
             }
         }
     //qDebug()<<scene->items();
-    }else{
-        QGraphicsItem * itemToRemove = nullptr;
-        QPointF pt = mapToScene(e->pos());
-        //qDebug()<<scene->items(pt);
-        foreach(auto item, scene->items(pt)) {
-            if(item->type() == QGraphicsItem::UserType+2) {
-                itemToRemove = item;
-                qDebug()<<"HEY";
-                break;
-            }
-
-        }
-        if(itemToRemove != nullptr){
-            CustomLine * _l = dynamic_cast<CustomLine*>(itemToRemove);
-
-            if(_l->hasFinal()){
-                qDebug()<<_l->getFinal()->getCenter();
-                CustomElipse* _e = new CustomElipse();
-                _e->setPen(pen);
-                _e->setBrush(brush);
-                _e->setRect(pt.x()-2,pt.y()-2,4,4);
-                _e->setCenter(pt);
-                //qDebug()<<it->hasFinalLine();
-                //qDebug()<<it->hasInitLine();
-                _e->setFlag(QGraphicsItem::ItemIsMovable,true);
-                _e->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                _e->setFlag(QGraphicsItem::ItemClipsToShape,true);
-                CustomLine * li = new CustomLine();
-                li->setPen(pen);
-                li->setInitial(_e);
-                li->setFinal(_l->getFinal());
-                _e->setInitLine(li);
-                _e->setFinalLine(_l);
-                _l->getFinal()->setFinalLine(li);
-                _l->setFinal(_e);
-                //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
-                scene->addItem(li);
-                group->addToGroup(li);
-                scene->addItem(_e);
-                group->addToGroup(_e);
-                _e->setGroupNumber(getNumber(_e));
-                DoneAction d;
-                d.a = SPLIT;
-                d.point = _e;
-                d.g = dynamic_cast<QGraphicsItemGroup*>(_e->parentItem());
-                lastItems.push(d);
-                }
-            }
 
         }
     }
     if(paint == 3){
+        if(e->button() == Qt::LeftButton){
         QGraphicsView::mousePressEvent(e);
+        }else{
             QGraphicsItem * itemToRemove = nullptr;
             QPointF pt = mapToScene(e->pos());
             //qDebug()<<scene->items(pt);
             foreach(auto item, scene->items(pt)) {
                 if(item->type() == QGraphicsItem::UserType+2) {
                     itemToRemove = item;
-                    qDebug()<<"HEY";
+                    //qDebug()<<"HEY";
                     break;
                 }
 
@@ -229,12 +222,16 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     group->addToGroup(_e);
                     _e->setGroupNumber(getNumber(_e));
                     DoneAction d;
+                    std::string log = "SPLIT LINE: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
+
+                    WriteLogFile(log.c_str());
                     d.a = SPLIT;
                     d.point = _e;
                     d.g = dynamic_cast<QGraphicsItemGroup*>(_e->parentItem());
                     lastItems.push(d);
                     }
-                }
+            }
+        }
 
 
     }
@@ -254,7 +251,7 @@ void GaGraphicsView::mouseMoveEvent(QMouseEvent * e){
             foreach(auto item, scene->items(pt)) {
                 if(item->type() == QGraphicsItem::UserType+1) {
                     itemToUpdate = dynamic_cast<CustomElipse*>(item);
-                    qDebug()<<itemToUpdate->getCenter();
+                    //qDebug()<<itemToUpdate->getCenter();
                     if(itemToUpdate->hasInitLine()){
                         itemToUpdate->getInitLine()->updatel();
                     }if(itemToUpdate->hasFinalLine()){
@@ -278,50 +275,50 @@ void GaGraphicsView::setPaint(int p){
 void GaGraphicsView::setGroup(int g){
     switch(g){
     case 0:
-        pen.setColor(QColor(228,26,28));
-        brush.setColor(QColor(228,26,28));
+        pen.setColor(_color.first());
+        brush.setColor(_color.first());
         group = groups.first();
         lastPoint = lastPoints.first();
         break;
     case 1:
-        pen.setColor(QColor(55,126,184));
-        brush.setColor(QColor(55,126,184));
+        pen.setColor(_color.mid(1,1).first());
+        brush.setColor(_color.mid(1,1).first());
         group = groups.mid(1,1).first();
         lastPoint = lastPoints.mid(1,1).first();
         break;
     case 2:
-        pen.setColor(QColor(77,175,74));
-        brush.setColor(QColor(77,175,74));
+        pen.setColor(_color.mid(2,1).first());
+        brush.setColor(_color.mid(2,1).first());
         group = groups.mid(2,1).first();
         lastPoint = lastPoints.mid(2,1).first();
         break;
     case 3:
-        pen.setColor(QColor(152,78,163));
-        brush.setColor(QColor(152,78,163));
+        pen.setColor(_color.mid(3,1).first());
+        brush.setColor(_color.mid(3,1).first());
         group = groups.mid(3,1).first();
         lastPoint = lastPoints.mid(3,1).first();
         break;
     case 4:
-        pen.setColor(QColor(255,127,0));
-        brush.setColor(QColor(255,127,0));
+        pen.setColor(_color.mid(4,1).first());
+        brush.setColor(_color.mid(4,1).first());
         group = groups.mid(4,1).first();
         lastPoint = lastPoints.mid(4,1).first();
         break;
     case 5:
-        pen.setColor(QColor(255,255,51));
-        brush.setColor(QColor(255,255,51));
+        pen.setColor(_color.mid(5,1).first());
+        brush.setColor(_color.mid(5,1).first());
         group = groups.mid(5,1).first();
         lastPoint = lastPoints.mid(5,1).first();
         break;
     case 6:
-        pen.setColor(QColor(166,86,40));
-        brush.setColor(QColor(166,86,40));
+        pen.setColor(_color.mid(6,1).first());
+        brush.setColor(_color.mid(6,1).first());
         group = groups.mid(6,1).first();
         lastPoint = lastPoints.mid(6,1).first();
         break;
     case 7:
-        pen.setColor(QColor(247,129,191));
-        brush.setColor(QColor(247,129,191));
+        pen.setColor(_color.last());
+        brush.setColor(_color.last());
         group = groups.last();
         lastPoint = lastPoints.last();
         break;

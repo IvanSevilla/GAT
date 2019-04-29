@@ -47,31 +47,31 @@ public:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-        qDebug()<<"here";
+        //qDebug()<<"here";
         if(event->button() == Qt::LeftButton) {
             if(event->modifiers() == Qt::ShiftModifier) {
-                qDebug() << "Custom item left clicked with shift key.";
+                //qDebug() << "Custom item left clicked with shift key.";
 
             } else if(event->modifiers() == Qt::AltModifier){
-                qDebug() << "Custom item left clicked with alt key.";
+                //qDebug() << "Custom item left clicked with alt key.";
 
             } else {
-                qDebug() << "Custom item left clicked.";
+                //qDebug() << "Custom item left clicked.";
                 event->accept();
             }
         } else if(event->button() == Qt::RightButton) {
-            qDebug() << "Custom item right clicked.";
+            //qDebug() << "Custom item right clicked.";
             event->ignore();
         }
     }
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
-        qDebug() << "Custom item moved.";
+        //qDebug() << "Custom item moved.";
         QGraphicsItem::mouseMoveEvent(event);
-        qDebug()<<"item center before: "<<center;
+        //qDebug()<<"item center before: "<<center;
         center = event->scenePos();
-        qDebug()<<"Event: "<<event;
-        qDebug()<<"item center after: "<<center;
+        //qDebug()<<"Event: "<<event;
+        //qDebug()<<"item center after: "<<center;
         event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing){
 
@@ -83,10 +83,10 @@ protected:
     }
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
-        qDebug()<<"here";
+        //qDebug()<<"here";
         QGraphicsItem::mouseReleaseEvent(event);
-        qDebug()<<"center at release time: "<<center;
-        qDebug()<<"cursor position at release time: "<<event->scenePos();
+        //qDebug()<<"center at release time: "<<center;
+        //qDebug()<<"cursor position at release time: "<<event->scenePos();
         //center = event->scenePos();
         event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing) {
@@ -175,30 +175,30 @@ protected:
     {
         if(event->button() == Qt::LeftButton) {
             if(event->modifiers() == Qt::ShiftModifier) {
-                qDebug() << "Custom item left clicked with shift key.";
+                //qDebug() << "Custom item left clicked with shift key.";
 
             } else if(event->modifiers() == Qt::AltModifier){
-                qDebug() << "Custom item left clicked with alt key.";
+                //qDebug() << "Custom item left clicked with alt key.";
 
             } else {
-                qDebug() << "Custom item left clicked.";
+                //qDebug() << "Custom item left clicked.";
                 //QGraphicsItem::mousePressEvent(event);
                 event->accept();
             }
         } else if(event->button() == Qt::RightButton) {
-            qDebug() << "Custom item right clicked.";
+            //qDebug() << "Custom item right clicked.";
             event->ignore();
         }
     }
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
-        qDebug() << "Custom item moved.";
+        //qDebug() << "Custom item moved.";
         if(event->modifiers() == Qt::AltModifier && _isResizing){
 
         } else if(event->modifiers() != Qt::AltModifier) {
-            qDebug() << "Custom item moved.";
+            //qDebug() << "Custom item moved.";
             QGraphicsItem::mouseMoveEvent(event);
-            qDebug()<<"moved"<<pos();
+            //qDebug()<<"moved"<<pos();
         }
     }
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

@@ -13,7 +13,8 @@
 #include <QDebug>
 #include <QPointF>
 #include "customelipse.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 
 
 class GaGraphicsView : public QGraphicsView
@@ -22,6 +23,17 @@ Q_OBJECT
 public:
     explicit GaGraphicsView(QWidget *parent = 0);
     typedef enum {ADD,DELETE,JOIN,SPLIT,MOVE,NONE} ACTION;
+
+
+    void WriteLogFile(const char* szString)
+    {
+
+      FILE* pFile = fopen("logFile.txt", "a");
+      fprintf(pFile, "%s\n",szString);
+      fclose(pFile);
+
+
+    }
     struct DoneAction
     {
         ACTION a = NONE;
@@ -48,16 +60,17 @@ public:
     }
     void setGroup(int g);
     void setGroupVisibility(int vis, bool bvis);
-
-    void removeLastPoint(){ //clear si afegeixes coses a la llista
-        qDebug()<<groups.first().data()->childItems().last();
+    void setGroupColor(int position, QColor _new){
+        if(position <= _color.size())
+            _color.replace(position,_new);
+    }
+    QList<CustomElipse*>* getPolilines(int _group){
+        return poliLines.value(_group);
+    }
+    void removeLastPoint(){
+        //qDebug()<<groups.first().data()->childItems().last();
         if(scene->items().size() > 16){
-            qDebug()<<scene->items();
-            if(!redoItems.isEmpty()){
-                if(lastItems.top().a != redoItems.top().a){
-                    redoItems.clear();
-                }
-            }
+            //qDebug()<<scene->items();
 
             while(!scene->items().contains(lastItems.top().point)){
                 lastItems.pop();
@@ -65,9 +78,10 @@ public:
             redoItems.push(lastItems.pop());
 
 
-            qDebug()<<redoItems.top().a;
+            //qDebug()<<redoItems.top().a;
             switch (redoItems.top().a) {
             case DELETE:
+                WriteLogFile("UNDO DELETE");
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 if(redoItems.top().point->hasInitLine()){
@@ -82,6 +96,7 @@ public:
 
                 break;
             case ADD:
+                WriteLogFile("UNDO ADD");
                 if(redoItems.top().point->hasFinalLine()){
                     scene->removeItem(redoItems.top().point->getFinalLine());
                     scene->removeItem(redoItems.top().point);
@@ -93,6 +108,7 @@ public:
             case MOVE:
                 break;
             case JOIN:
+                WriteLogFile("UNDO JOIN");
                 redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
                 redoItems.top().point->getFinalLine()->updatel();
                 redoItems.top().point->getInitLine()->getFinal()->setFinalLine(redoItems.top().point->getInitLine());
@@ -102,7 +118,7 @@ public:
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 break;
             case SPLIT:
-
+                WriteLogFile("UNDO SPLIT");
                 CustomElipse* p1,*p3;
                 p1 = redoItems.top().point->getFinalLine()->getInit();
                 p3 = redoItems.top().point->getInitLine()->getFinal();
@@ -124,6 +140,7 @@ public:
         if(!redoItems.isEmpty()){
             switch (redoItems.top().a) {
             case DELETE:
+                WriteLogFile("REDO DELETE");
                 scene->removeItem(redoItems.top().point);
                 if(redoItems.top().point->hasInitLine()){
                     scene->removeItem(redoItems.top().point->getInitLine());
@@ -135,6 +152,7 @@ public:
                 lastItems.push(redoItems.pop());
                 break;
             case ADD:
+                WriteLogFile("REDO ADD");
                 //scene->removeItem(redoItems.top().point->getFinalLine());
                 //scene->removeItem(redoItems.top().point);
                 //qDebug()<<d.point->hasInitLine();
@@ -150,6 +168,7 @@ public:
             case MOVE:
                 break;
             case JOIN:
+                WriteLogFile("REDO JOIN");
                 CustomElipse* p1,*p3;
                 p1 = redoItems.top().point->getFinalLine()->getInit();
                 p3 = redoItems.top().point->getInitLine()->getFinal();
@@ -161,6 +180,7 @@ public:
                 lastItems.push(redoItems.pop());
                 break;
             case SPLIT:
+                WriteLogFile("REDO SPLIT");
                 redoItems.top().point->getFinalLine()->setFinal(redoItems.top().point);
                 redoItems.top().point->getFinalLine()->updatel();
                 redoItems.top().point->getInitLine()->getFinal()->setFinalLine(redoItems.top().point->getInitLine());
@@ -206,11 +226,13 @@ QBrush brush;
 QBrush brusherase;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
 QList<CustomElipse*> lastPoints;
+QList<QList<CustomElipse*>*> poliLines;
 //GROUP actualGroup;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
 CustomElipse * lastPoint;
+QList<QColor> _color;
 };
 
 

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[31];
-    char stringdata0[620];
+    QByteArrayData data[33];
+    char stringdata0[680];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -61,7 +61,9 @@ QT_MOC_LITERAL(26, 516, 22), // "on_Visibility6_clicked"
 QT_MOC_LITERAL(27, 539, 22), // "on_Visibility7_clicked"
 QT_MOC_LITERAL(28, 562, 19), // "on_Btn_Undo_pressed"
 QT_MOC_LITERAL(29, 582, 17), // "on_Btn_Do_clicked"
-QT_MOC_LITERAL(30, 600, 19) // "on_Btn_Move_clicked"
+QT_MOC_LITERAL(30, 600, 19), // "on_Btn_Move_clicked"
+QT_MOC_LITERAL(31, 620, 24), // "on_showPolilines_clicked"
+QT_MOC_LITERAL(32, 645, 34) // "on_actionDelete_Poliline_trig..."
 
     },
     "MainWindow\0on_actionLoad_Project_triggered\0"
@@ -80,7 +82,8 @@ QT_MOC_LITERAL(30, 600, 19) // "on_Btn_Move_clicked"
     "on_Visibility4_clicked\0on_Visibility5_clicked\0"
     "on_Visibility6_clicked\0on_Visibility7_clicked\0"
     "on_Btn_Undo_pressed\0on_Btn_Do_clicked\0"
-    "on_Btn_Move_clicked"
+    "on_Btn_Move_clicked\0on_showPolilines_clicked\0"
+    "on_actionDelete_Poliline_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -90,7 +93,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      27,   14, // methods
+      29,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -98,33 +101,35 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  149,    2, 0x08 /* Private */,
-       3,    0,  150,    2, 0x08 /* Private */,
-       4,    1,  151,    2, 0x08 /* Private */,
-       6,    0,  154,    2, 0x08 /* Private */,
-       7,    0,  155,    2, 0x08 /* Private */,
-       8,    0,  156,    2, 0x08 /* Private */,
-       9,    0,  157,    2, 0x08 /* Private */,
-      10,    1,  158,    2, 0x08 /* Private */,
-      12,    1,  161,    2, 0x08 /* Private */,
-      13,    1,  164,    2, 0x08 /* Private */,
-      14,    1,  167,    2, 0x08 /* Private */,
-      15,    1,  170,    2, 0x08 /* Private */,
-      16,    1,  173,    2, 0x08 /* Private */,
-      17,    1,  176,    2, 0x08 /* Private */,
-      18,    1,  179,    2, 0x08 /* Private */,
-      19,    1,  182,    2, 0x08 /* Private */,
-      20,    1,  185,    2, 0x08 /* Private */,
-      21,    1,  188,    2, 0x08 /* Private */,
-      22,    1,  191,    2, 0x08 /* Private */,
-      23,    1,  194,    2, 0x08 /* Private */,
-      24,    1,  197,    2, 0x08 /* Private */,
-      25,    1,  200,    2, 0x08 /* Private */,
-      26,    1,  203,    2, 0x08 /* Private */,
-      27,    1,  206,    2, 0x08 /* Private */,
-      28,    0,  209,    2, 0x08 /* Private */,
-      29,    0,  210,    2, 0x08 /* Private */,
-      30,    0,  211,    2, 0x08 /* Private */,
+       1,    0,  159,    2, 0x08 /* Private */,
+       3,    0,  160,    2, 0x08 /* Private */,
+       4,    1,  161,    2, 0x08 /* Private */,
+       6,    0,  164,    2, 0x08 /* Private */,
+       7,    0,  165,    2, 0x08 /* Private */,
+       8,    0,  166,    2, 0x08 /* Private */,
+       9,    0,  167,    2, 0x08 /* Private */,
+      10,    1,  168,    2, 0x08 /* Private */,
+      12,    1,  171,    2, 0x08 /* Private */,
+      13,    1,  174,    2, 0x08 /* Private */,
+      14,    1,  177,    2, 0x08 /* Private */,
+      15,    1,  180,    2, 0x08 /* Private */,
+      16,    1,  183,    2, 0x08 /* Private */,
+      17,    1,  186,    2, 0x08 /* Private */,
+      18,    1,  189,    2, 0x08 /* Private */,
+      19,    1,  192,    2, 0x08 /* Private */,
+      20,    1,  195,    2, 0x08 /* Private */,
+      21,    1,  198,    2, 0x08 /* Private */,
+      22,    1,  201,    2, 0x08 /* Private */,
+      23,    1,  204,    2, 0x08 /* Private */,
+      24,    1,  207,    2, 0x08 /* Private */,
+      25,    1,  210,    2, 0x08 /* Private */,
+      26,    1,  213,    2, 0x08 /* Private */,
+      27,    1,  216,    2, 0x08 /* Private */,
+      28,    0,  219,    2, 0x08 /* Private */,
+      29,    0,  220,    2, 0x08 /* Private */,
+      30,    0,  221,    2, 0x08 /* Private */,
+      31,    1,  222,    2, 0x08 /* Private */,
+      32,    0,  225,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -153,6 +158,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,    5,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,    5,
     QMetaType::Void,
 
        0        // eod
@@ -191,6 +198,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 24: _t->on_Btn_Undo_pressed(); break;
         case 25: _t->on_Btn_Do_clicked(); break;
         case 26: _t->on_Btn_Move_clicked(); break;
+        case 27: _t->on_showPolilines_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 28: _t->on_actionDelete_Poliline_triggered(); break;
         default: ;
         }
     }
@@ -225,14 +234,84 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 27)
+        if (_id < 29)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 27;
+        _id -= 29;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 27)
+        if (_id < 29)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 27;
+        _id -= 29;
     }
+    return _id;
+}
+struct qt_meta_stringdata_Dialog_t {
+    QByteArrayData data[1];
+    char stringdata0[7];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_Dialog_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_Dialog_t qt_meta_stringdata_Dialog = {
+    {
+QT_MOC_LITERAL(0, 0, 6) // "Dialog"
+
+    },
+    "Dialog"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_Dialog[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void Dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+QT_INIT_METAOBJECT const QMetaObject Dialog::staticMetaObject = { {
+    &QWidget::staticMetaObject,
+    qt_meta_stringdata_Dialog.data,
+    qt_meta_data_Dialog,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
+
+const QMetaObject *Dialog::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *Dialog::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_Dialog.stringdata0))
+        return static_cast<void*>(this);
+    return QWidget::qt_metacast(_clname);
+}
+
+int Dialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

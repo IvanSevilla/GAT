@@ -1,6 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#define MESSAGE \
+    Dialog::tr("<p>Message boxes have a caption, a text, " \
+               "and any number of buttons, each with standard or custom texts." \
+               "<p>Click a button to close the message box. Pressing the Esc button " \
+               "will activate the detected escape button (if any).")
+#define MESSAGE_DETAILS \
+    Dialog::tr("If a message box has detailed text, the user can reveal it " \
+               "by pressing the Show Details... button.")
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
 
     QTimer::singleShot(0, this, SLOT(showMaximized()));
+
     ui->horizontalLayout_7->addWidget(ui->graphicsView);
     ui->Btn_Do->setHidden(1);
     ui->Btn_Undo->setHidden(1);
@@ -25,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Btn_Zoom_In->setToolTip("Zoom In");
     ui->Btn_Edit->setToolTip("Edit");
     ui->Btn_Zoom_Out->setToolTip("Zoom Out");
+    this->ui->polilines->setHidden(1);
+    this->ui->labelPolilines->setHidden(1);
     scene = new QGraphicsScene(this);
     editscene = new QGraphicsScene(this);
 
@@ -113,35 +124,33 @@ void MainWindow::ZoomOut(double h, double w){
 
 void MainWindow::on_Btn_Edit_clicked(bool checked)
 {
-    if(checked){
-        if(image){
-
+    if(image){
+        if(checked){
             edit->setToggle(true);
             edit->setPaint(0);
-        }
-        ui->Btn_Do->setHidden(!checked);
-        ui->Btn_Undo->setHidden(!checked);
-        ui->Btn_Move->setHidden(!checked);
-        ui->Btn_Add_Point->setHidden(!checked);
-        ui->Btn_Del_Point->setHidden(!checked);
-        ui->Btn_Do->setToolTip("Redo");
-        ui->Btn_Undo->setToolTip("Undo");
-        ui->Btn_Move->setToolTip("Move & Split");
-        ui->Btn_Add_Point->setToolTip("Add");
-        ui->Btn_Del_Point->setToolTip("Delete & Join");
-    }else{
-        if(image){
-
+            ui->Btn_Do->setHidden(!checked);
+            ui->Btn_Undo->setHidden(!checked);
+            ui->Btn_Move->setHidden(!checked);
+            ui->Btn_Add_Point->setHidden(!checked);
+            ui->Btn_Del_Point->setHidden(!checked);
+            ui->Btn_Do->setToolTip("Redo");
+            ui->Btn_Undo->setToolTip("Undo");
+            ui->Btn_Move->setToolTip("Move & Split");
+            ui->Btn_Add_Point->setToolTip("Add");
+            ui->Btn_Del_Point->setToolTip("Delete & Join");
+        }else{
             ui->centralWidget->setMouseTracking(false);
             edit->setToggle(false);
             edit->setPaint(0);
+            //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+            ui->Btn_Do->setHidden(!checked);
+            ui->Btn_Undo->setHidden(!checked);
+            ui->Btn_Move->setHidden(!checked);
+            ui->Btn_Add_Point->setHidden(!checked);
+            ui->Btn_Del_Point->setHidden(!checked);
         }
-        //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
-        ui->Btn_Do->setHidden(!checked);
-        ui->Btn_Undo->setHidden(!checked);
-        ui->Btn_Move->setHidden(!checked);
-        ui->Btn_Add_Point->setHidden(!checked);
-        ui->Btn_Del_Point->setHidden(!checked);
+    }else{
+        ui->Btn_Edit->setChecked(false);
     }
 }
 
@@ -160,12 +169,26 @@ void MainWindow::setMousePoint (QPointF point){
 
 void MainWindow::on_Btn_Del_Point_clicked()
 {
-    if(image)this->edit->setPaint(2);
+    if(image){
+        this->edit->setPaint(2);
+        this->ui->Btn_Move->setChecked(false);
+        this->ui->Btn_Add_Point->setChecked(false);
+        this->ui->Btn_Del_Point->setChecked(true);
+    }else{
+        this->ui->Btn_Del_Point->setChecked(false);
+    }
 }
 
 void MainWindow::on_Btn_Add_Point_clicked()
 {
-    if(image)this->edit->setPaint(1);
+    if(image){
+        this->edit->setPaint(1);
+        this->ui->Btn_Move->setChecked(false);
+        this->ui->Btn_Add_Point->setChecked(true);
+        this->ui->Btn_Del_Point->setChecked(false);
+    }else{
+        this->ui->Btn_Add_Point->setChecked(false);
+    }
 }
 
 void MainWindow::on_actionMiniMap_triggered(bool tiggered)
@@ -310,7 +333,14 @@ void MainWindow::on_Btn_Do_clicked()
 
 void MainWindow::on_Btn_Move_clicked()
 {
-    if(image)this->edit->setPaint(3);
+    if(image){
+        this->edit->setPaint(3);
+        this->ui->Btn_Move->setChecked(true);
+        this->ui->Btn_Add_Point->setChecked(false);
+        this->ui->Btn_Del_Point->setChecked(false);
+    }else{
+        this->ui->Btn_Move->setChecked(false);
+    }
 
 }
 
@@ -354,3 +384,93 @@ void MainWindow::on_Visibility7_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(7,checked);
 }
+
+void MainWindow::on_showPolilines_clicked(bool checked)
+{
+    if(image){
+        if(checked){
+            this->ui->polilines->setHidden(!checked);
+            this->ui->labelPolilines->setHidden(!checked);
+        }else{
+            this->ui->polilines->setHidden(!checked);
+            this->ui->labelPolilines->setHidden(!checked);
+        }
+    }else{
+        this->ui->showPolilines->setChecked(false);
+    }
+}
+
+void MainWindow::on_actionDelete_Poliline_triggered()
+{
+    if(image){
+            Dialog* _d = new Dialog();
+            bool _dp = _d->questionMessage("This action cannot be undone");
+            if(_dp){
+                qDebug()<<"Borra";
+                QString _log = "DELETE POLILINE NUM:";
+                _log = _log + ui->polilines->currentItem()->toolTip();
+                QByteArray ba = _log.toLocal8Bit();
+                const char* c_str = ba.data();
+                edit->WriteLogFile(c_str);
+            }else{
+                qDebug()<<"no";
+
+    }
+
+    }
+}
+
+// DIALOG
+Dialog::Dialog(QWidget *parent)
+    : QWidget(parent){}
+void Dialog::criticalMessage()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::critical(this, tr("QMessageBox::critical()"),
+                                    MESSAGE,
+                                    QMessageBox::Abort | QMessageBox::Retry | QMessageBox::Ignore);
+    if (reply == QMessageBox::Abort)
+        criticalLabel->setText(tr("Abort"));
+    else if (reply == QMessageBox::Retry)
+        criticalLabel->setText(tr("Retry"));
+    else
+        criticalLabel->setText(tr("Ignore"));
+}
+
+void Dialog::informationMessage()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::information(this, tr("QMessageBox::information()"), MESSAGE);
+    if (reply == QMessageBox::Ok)
+        informationLabel->setText(tr("OK"));
+    else
+        informationLabel->setText(tr("Escape"));
+}
+
+bool Dialog::questionMessage(const char* _message)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("QMessageBox::question()"),
+                                    _message,
+                                    QMessageBox::Yes | QMessageBox::Cancel);
+    if (reply == QMessageBox::Yes)
+        return true;
+    else
+        return false;
+}
+
+void Dialog::warningMessage()
+{
+    QMessageBox msgBox(QMessageBox::Warning, tr("QMessageBox::warning()"),
+                       MESSAGE, 0, this);
+    msgBox.setDetailedText(MESSAGE_DETAILS);
+    msgBox.addButton(tr("Save &Again"), QMessageBox::AcceptRole);
+    msgBox.addButton(tr("&Continue"), QMessageBox::RejectRole);
+    if (msgBox.exec() == QMessageBox::AcceptRole)
+        warningLabel->setText(tr("Save Again"));
+    else
+        warningLabel->setText(tr("Continue"));
+
+}
+
+

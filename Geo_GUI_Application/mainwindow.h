@@ -87,6 +87,12 @@ private slots:
     void on_Btn_Move_clicked();
 
 
+
+
+    void on_showPolilines_clicked(bool checked);
+
+    void on_actionDelete_Poliline_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -106,6 +112,37 @@ private:
     QGraphicsProxyWidget *proxyedit;
     QGraphicsProxyWidget *proxymini;
 
+};
+class Dialog : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Dialog(QWidget *parent = nullptr);
+    void criticalMessage();
+    void informationMessage();
+    bool questionMessage(const char* _message);
+    void warningMessage();
+    void errorMessage();
+
+private:
+    QLabel *integerLabel;
+    QLabel *doubleLabel;
+    QLabel *itemLabel;
+    QLabel *textLabel;
+    QLabel *multiLineTextLabel;
+    QLabel *colorLabel;
+    QLabel *fontLabel;
+    QLabel *directoryLabel;
+    QLabel *openFileNameLabel;
+    QLabel *openFileNamesLabel;
+    QLabel *saveFileNameLabel;
+    QLabel *criticalLabel;
+    QLabel *informationLabel;
+    QLabel *questionLabel;
+    QLabel *warningLabel;
+    QLabel *errorLabel;
+    QString openFilesPath;
 };
 
 #endif // MAINWINDOW_H
