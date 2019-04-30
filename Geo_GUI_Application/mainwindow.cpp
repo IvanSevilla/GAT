@@ -102,6 +102,7 @@ void MainWindow::on_actionAdd_Image_triggered()
         edit->setSceneG(editscene);
         edit->setToggle(false);
         edit->setAttribute(Qt::WA_AcceptTouchEvents);
+        edit->setUpdater(ui->showPolilines);
         QVBoxLayout *layoutedit = new QVBoxLayout(edit);
         layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
         //probar anidar
@@ -227,7 +228,10 @@ void MainWindow::on_Group0_clicked(bool checked)
 {
     if(image){
         if(checked){
+            unSelectPoliline();
             edit->setGroup(0);
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -238,8 +242,10 @@ void MainWindow::on_Group1_clicked(bool checked)
 {
     if(image){
         if(checked){
+            unSelectPoliline();
             edit->setGroup(1);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -250,8 +256,10 @@ void MainWindow::on_Group2_clicked(bool checked)
 {
     if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(2);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -263,8 +271,10 @@ void MainWindow::on_Group3_clicked(bool checked)
 {
     if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(3);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -274,8 +284,10 @@ void MainWindow::on_Group3_clicked(bool checked)
 void MainWindow::on_Group4_clicked(bool checked)
 {    if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(4);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -286,8 +298,10 @@ void MainWindow::on_Group4_clicked(bool checked)
 void MainWindow::on_Group5_clicked(bool checked)
 {    if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(5);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -298,8 +312,10 @@ void MainWindow::on_Group5_clicked(bool checked)
 void MainWindow::on_Group6_clicked(bool checked)
 {    if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(6);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
@@ -310,14 +326,20 @@ void MainWindow::on_Group6_clicked(bool checked)
 void MainWindow::on_Group7_clicked(bool checked)
 {    if(image){
         if(checked ){
+            unSelectPoliline();
             edit->setGroup(7);
-
+            ui->polilines->clear();
+            ui->showPolilines->clicked(true);
         }
 
     }
 
 }
 
+void MainWindow::unSelectPoliline(){
+    ui->showPolilines->setChecked(false);
+    ui->showPolilines->clicked();
+}
 
 
 
@@ -348,52 +370,100 @@ void MainWindow::on_Btn_Move_clicked()
 void MainWindow::on_Visibility0_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(0,checked);
+    else {
+        this->ui->Visibility0->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility1_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(1,checked);
+    else {
+        this->ui->Visibility1->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility2_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(2,checked);
+    else {
+        this->ui->Visibility2->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility3_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(3,checked);
+    else {
+        this->ui->Visibility3->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility4_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(4,checked);
+    else {
+        this->ui->Visibility4->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility5_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(5,checked);
+    else {
+        this->ui->Visibility5->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility6_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(6,checked);
+    else {
+        this->ui->Visibility6->setChecked(true);
+    }
 }
 
 void MainWindow::on_Visibility7_clicked(bool checked)
 {
     if(image)this->edit->setGroupVisibility(7,checked);
+    else {
+        this->ui->Visibility7->setChecked(true);
+    }
 }
 
 void MainWindow::on_showPolilines_clicked(bool checked)
 {
     if(image){
         if(checked){
-            this->ui->polilines->setHidden(!checked);
-            this->ui->labelPolilines->setHidden(!checked);
+            if(this->ui->showPolilines->isChecked()){
+                ui->polilines->clear();
+                QList<CustomElipse*>* _p= edit->getCurrentGroupPolilines();
+                qDebug()<<_p->size();
+                if(!_p->isEmpty() || _p->size()!=0){
+                    this->ui->polilines->setHidden(!checked);
+                    this->ui->labelPolilines->setHidden(!checked);
+                    for(int i = 0;i<_p->length();i++){
+                        QString _line = "Line "+QString::number(i+1);
+                        ui->polilines->addItem(_line);
+                        ui->polilines->item(i)->setWhatsThis(QString::number(i));
+                    }
+                    this->ui->showPolilines->setChecked(true);
+                }else{
+                    this->ui->showPolilines->setChecked(false);
+                    this->ui->polilines->setHidden(true);
+                    this->ui->labelPolilines->setHidden(true);
+                }
+            }else{
+                this->ui->polilines->setHidden(1);
+                ui->polilines->clear();
+                this->ui->labelPolilines->setHidden(1);
+                this->ui->showPolilines->setChecked(false);
+            }
         }else{
             this->ui->polilines->setHidden(!checked);
+            ui->polilines->clear();
             this->ui->labelPolilines->setHidden(!checked);
+            this->ui->showPolilines->setChecked(false);
         }
     }else{
         this->ui->showPolilines->setChecked(false);
@@ -406,17 +476,46 @@ void MainWindow::on_actionDelete_Poliline_triggered()
             Dialog* _d = new Dialog();
             bool _dp = _d->questionMessage("This action cannot be undone");
             if(_dp){
-                qDebug()<<"Borra";
+                //qDebug()<<"Borra";
                 QString _log = "DELETE POLILINE NUM:";
                 _log = _log + ui->polilines->currentItem()->toolTip();
                 QByteArray ba = _log.toLocal8Bit();
                 const char* c_str = ba.data();
                 edit->WriteLogFile(c_str);
             }else{
-                qDebug()<<"no";
+                //qDebug()<<"no";
 
     }
 
+    }
+}
+void MainWindow::on_polilines_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    //qDebug()<<"hey";
+    if(current != nullptr){
+        CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(current->whatsThis().toInt());
+        while (_poli->hasFinalLine()){
+            _poli->setPen(QPen(QColor(0,0,0)));
+            _poli->setBrush(QBrush(QColor(0,0,0)));
+            _poli->getFinalLine()->setPen(QPen(QColor(0,0,0)));
+            _poli= _poli->getFinalLine()->getInit();
+        }
+        _poli->setPen(QPen(QColor(0,0,0)));
+        _poli->setBrush(QBrush(QColor(0,0,0)));
+    }
+    if (previous != nullptr){
+        if(previous->whatsThis().toInt()<=7 && previous->whatsThis().toInt()>=0){
+            //qDebug()<<"has another";
+            CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(previous->whatsThis().toInt());
+            while (_poli->hasFinalLine()){
+                _poli->setPen(QPen(edit->getCurrentColor()));
+                _poli->setBrush(QBrush(edit->getCurrentColor()));
+                _poli->getFinalLine()->setPen(QPen(edit->getCurrentColor()));
+                _poli= _poli->getFinalLine()->getInit();
+            }
+            _poli->setPen(QPen(edit->getCurrentColor()));
+            _poli->setBrush(QBrush(edit->getCurrentColor()));
+        }
     }
 }
 
@@ -472,5 +571,7 @@ void Dialog::warningMessage()
         warningLabel->setText(tr("Continue"));
 
 }
+
+
 
 

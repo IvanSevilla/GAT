@@ -14,6 +14,8 @@
 #include <QVBoxLayout>
 #include <iostream>
 #include <QList>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <QSharedPointer>
 #include "gagraphicsview.h"
 
@@ -29,7 +31,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void unSelectPoliline();
 private slots:
     void on_actionLoad_Project_triggered();
 
@@ -92,6 +94,8 @@ private slots:
     void on_showPolilines_clicked(bool checked);
 
     void on_actionDelete_Poliline_triggered();
+
+    void on_polilines_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
     Ui::MainWindow *ui;

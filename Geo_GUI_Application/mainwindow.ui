@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>806</width>
-    <height>626</height>
+    <height>1039</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -450,11 +450,20 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetMinimumSize</enum>
           </property>
+          <property name="rowWrapPolicy">
+           <enum>QFormLayout::DontWrapRows</enum>
+          </property>
           <property name="labelAlignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <set>Qt::AlignCenter</set>
           </property>
           <property name="formAlignment">
            <set>Qt::AlignJustify|Qt::AlignTop</set>
+          </property>
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>0</number>
           </property>
           <item row="1" column="0">
            <widget class="QRadioButton" name="Group0">
@@ -486,6 +495,12 @@ background-color: rgb(228,26,28);</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
             </property>
             <property name="toolTipDuration">
              <number>5</number>
@@ -537,6 +552,12 @@ color: rgb(55,126,184);</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -579,6 +600,12 @@ color: rgb(55,126,184);</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
             </property>
             <property name="text">
              <string/>
@@ -624,6 +651,12 @@ color: rgb(55,126,184);</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -666,6 +699,12 @@ color: rgb(55,126,184);</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
             </property>
             <property name="text">
              <string/>
@@ -710,6 +749,12 @@ color: rgb(55,126,184);</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -752,6 +797,12 @@ color: rgb(55,126,184);</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
             </property>
             <property name="text">
              <string/>
@@ -798,6 +849,12 @@ color: rgb(55,126,184);</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>38</width>
+              <height>38</height>
+             </size>
             </property>
             <property name="text">
              <string/>

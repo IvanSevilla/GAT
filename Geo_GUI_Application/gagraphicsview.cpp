@@ -7,6 +7,7 @@
 GaGraphicsView::GaGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
     {
+    current = 0;
     this->setSceneRect(50, 50, 350, 350);
     _color.push_back(QColor(228,26,28));
     _color.push_back(QColor(55,126,184));
@@ -43,6 +44,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     poliLines.mid(lastPoint->getGroupNumber(),1).first()->push_back(lastPoint);
                     std::string log = "FINISH LINE: "+std::to_string(poliLines.mid(lastPoint->getGroupNumber(),1).first()->length());
                     WriteLogFile(log.c_str());
+                    up_btn->clicked(true);
                     lastPoints.replace(lastPoint->getGroupNumber(),nullptr);
                     lastPoint = nullptr;
                 }
@@ -131,6 +133,10 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     d.point = dynamic_cast<CustomElipse*>(itemToRemove);
                     d.a = DELETE;
                     d.g = dynamic_cast<QGraphicsItemGroup*>(d.point->parentItem());
+                    if(poliLines.value(d.point->getGroupNumber())->contains(d.point)){
+                        int _position = poliLines.value(d.point->getGroupNumber())->indexOf(d.point);
+                        poliLines.value(d.point->getGroupNumber())->replace(_position,d.point->getFinalLine()->getInit());
+                    }
                     //qDebug()<<d.point->hasInitLine();
                     //qDebug()<<d.point->hasFinalLine();
                     if(d.point->hasInitLine()){
@@ -197,8 +203,8 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 if(_l->hasFinal()){
                     qDebug()<<_l->getFinal()->getCenter();
                     CustomElipse* _e = new CustomElipse();
-                    _e->setPen(pen);
-                    _e->setBrush(brush);
+                    _e->setPen(QPen(_color.value(getNumber(_l))));
+                    _e->setBrush(QBrush(_color.value(getNumber(_l))));
                     _e->setRect(pt.x()-2,pt.y()-2,4,4);
                     _e->setCenter(pt);
                     //qDebug()<<it->hasFinalLine();
@@ -207,7 +213,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     _e->setFlag(QGraphicsItem::ItemIsSelectable,true);
                     _e->setFlag(QGraphicsItem::ItemClipsToShape,true);
                     CustomLine * li = new CustomLine();
-                    li->setPen(pen);
+                    li->setPen(QPen(_color.value(getNumber(_l))));
                     li->setInitial(_e);
                     li->setFinal(_l->getFinal());
                     _e->setInitLine(li);
@@ -217,9 +223,9 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
                     //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
                     scene->addItem(li);
-                    group->addToGroup(li);
+                    groups.value(getNumber(_l)).data()->addToGroup(li);
                     scene->addItem(_e);
-                    group->addToGroup(_e);
+                    groups.value(getNumber(_l)).data()->addToGroup(_e);
                     _e->setGroupNumber(getNumber(_e));
                     DoneAction d;
                     std::string log = "SPLIT LINE: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
@@ -273,6 +279,7 @@ void GaGraphicsView::setPaint(int p){
 }
 
 void GaGraphicsView::setGroup(int g){
+    current = g;
     switch(g){
     case 0:
         pen.setColor(_color.first());

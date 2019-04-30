@@ -227,7 +227,6 @@ DIST          = /Applications/Qt/5.12.0/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/qt_config.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/spec_post.prf \
-		../Geo_GUI_Application/.qmake.stash \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/mac/sdk.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/toolchain.prf \
@@ -446,7 +445,6 @@ Makefile: ../Geo_GUI_Application/Geo_GUI_Application.pro /Applications/Qt/5.12.0
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/qt_config.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/mac/sdk.prf \
 		/Applications/Qt/5.12.0/clang_64/mkspecs/features/toolchain.prf \
@@ -644,7 +642,6 @@ Makefile: ../Geo_GUI_Application/Geo_GUI_Application.pro /Applications/Qt/5.12.0
 /Applications/Qt/5.12.0/clang_64/mkspecs/features/qt_config.prf:
 /Applications/Qt/5.12.0/clang_64/mkspecs/macx-clang/qmake.conf:
 /Applications/Qt/5.12.0/clang_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /Applications/Qt/5.12.0/clang_64/mkspecs/features/exclusive_builds.prf:
 /Applications/Qt/5.12.0/clang_64/mkspecs/features/mac/sdk.prf:
 /Applications/Qt/5.12.0/clang_64/mkspecs/features/toolchain.prf:
@@ -720,7 +717,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r Geo_GUI_Application.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -886,6 +882,9 @@ moc_mainwindow.cpp: /Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Hea
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QList \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidget \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidgetItem \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QSharedPointer \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/qsharedpointer.h \
 		../Geo_GUI_Application/gagraphicsview.h \
@@ -1451,6 +1450,8 @@ moc_mainwindow.cpp: /Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Hea
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QtDebug \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../Geo_GUI_Application/mainwindow.h \
 		moc_predefs.h \
 		/Applications/Qt/5.12.0/clang_64/bin/moc
@@ -2024,6 +2025,8 @@ moc_gagraphicsview.cpp: /Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/qpen.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QSharedPointer \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/qsharedpointer.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../Geo_GUI_Application/gagraphicsview.h \
 		moc_predefs.h \
 		/Applications/Qt/5.12.0/clang_64/bin/moc
@@ -2176,6 +2179,9 @@ main.o: ../Geo_GUI_Application/main.cpp ../Geo_GUI_Application/mainwindow.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QList \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidget \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidgetItem \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QSharedPointer \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/qsharedpointer.h \
 		../Geo_GUI_Application/gagraphicsview.h \
@@ -2741,6 +2747,8 @@ main.o: ../Geo_GUI_Application/main.cpp ../Geo_GUI_Application/mainwindow.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QtDebug \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Geo_GUI_Application/main.cpp
@@ -2869,6 +2877,9 @@ mainwindow.o: ../Geo_GUI_Application/mainwindow.cpp ../Geo_GUI_Application/mainw
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QList \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidget \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidgetItem \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QSharedPointer \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/qsharedpointer.h \
 		../Geo_GUI_Application/gagraphicsview.h \
@@ -3434,6 +3445,8 @@ mainwindow.o: ../Geo_GUI_Application/mainwindow.cpp ../Geo_GUI_Application/mainw
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QtDebug \
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QPen \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Geo_GUI_Application/mainwindow.cpp
 
@@ -4006,6 +4019,8 @@ gagraphicsview.o: ../Geo_GUI_Application/gagraphicsview.cpp ../Geo_GUI_Applicati
 		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/qpen.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/QSharedPointer \
 		/Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/Headers/qsharedpointer.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		../Geo_GUI_Application/mainwindow.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -4125,7 +4140,10 @@ gagraphicsview.o: ../Geo_GUI_Application/gagraphicsview.cpp ../Geo_GUI_Applicati
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
-		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QList
+		/Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/Headers/QList \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidget \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Headers/QListWidgetItem
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gagraphicsview.o ../Geo_GUI_Application/gagraphicsview.cpp
 
 customelipse.o: ../Geo_GUI_Application/customelipse.cpp ../Geo_GUI_Application/customelipse.h \

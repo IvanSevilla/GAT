@@ -140,12 +140,12 @@ public:
     }
 
     void updatel(){
-        qDebug()<<"noooo";
-        qDebug()<<"Initial Point"<<init->getCenter();
+        //qDebug()<<"noooo";
+        //qDebug()<<"Initial Point"<<init->getCenter();
         this->setPos(init->getCenter());
         this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
-        qDebug()<<"Initial Point"<<init->getCenter();
-        qDebug()<<"Final Point"<<final->getCenter();
+        //qDebug()<<"Initial Point"<<init->getCenter();
+        //qDebug()<<"Final Point"<<final->getCenter();
     }
     CustomElipse * getInit(){
         return init;

@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QPointF>
 #include "customelipse.h"
+#include <QPushButton>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +24,7 @@ Q_OBJECT
 public:
     explicit GaGraphicsView(QWidget *parent = 0);
     typedef enum {ADD,DELETE,JOIN,SPLIT,MOVE,NONE} ACTION;
-
+    int current;
 
     void WriteLogFile(const char* szString)
     {
@@ -47,7 +48,9 @@ public:
     QGraphicsScene* getGraphicsScene(){
         return scene;
     }
-
+    void setUpdater(QPushButton* _ui){
+        up_btn = _ui;
+    }
     void setSceneG(QGraphicsScene* extsc){
         scene = extsc;
         this->setScene(scene);
@@ -64,9 +67,19 @@ public:
         if(position <= _color.size())
             _color.replace(position,_new);
     }
+    QColor getCurrentColor(){
+        return _color.value(current);
+    }
     QList<CustomElipse*>* getPolilines(int _group){
         return poliLines.value(_group);
     }
+    QList<CustomElipse*>* getCurrentGroupPolilines(){
+        return poliLines.value(current);
+    }
+    QList<QList<CustomElipse*>*> getAllPolilines(){
+        return poliLines;
+    }
+
     void removeLastPoint(){
         //qDebug()<<groups.first().data()->childItems().last();
         if(scene->items().size() > 16){
@@ -92,6 +105,10 @@ public:
                     redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
                     lastPoint = redoItems.top().point;
 
+                }
+                if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
+                    int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());
+                    poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
                 }
 
                 break;
@@ -148,6 +165,10 @@ public:
                     scene->removeItem(redoItems.top().point->getFinalLine());
                     lastPoint = redoItems.top().point->getFinalLine()->getInit();
                     lastPoints.replace(redoItems.top().point->getGroupNumber(),lastPoint);
+                }
+                if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
+                    int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());
+                    poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
                 }
                 lastItems.push(redoItems.pop());
                 break;
@@ -208,6 +229,15 @@ public:
         }
         return 8;
     }
+    int getNumber(CustomLine* _l){
+        for(int i = 0; i<groups.size();i++){
+            if(groups.mid(i,1).first().data() == dynamic_cast<QGraphicsItemGroup*>(_l->parentItem())){
+                return i;
+
+            }
+        }
+        return 8;
+    }
 signals:
 void sendMousePoint(QPointF point);
 
@@ -233,6 +263,7 @@ QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
 CustomElipse * lastPoint;
 QList<QColor> _color;
+QPushButton* up_btn;
 };
 
 

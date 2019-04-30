@@ -95,7 +95,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(806, 626);
+        MainWindow->resize(806, 1039);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -317,8 +317,11 @@ public:
         formLayout->setSpacing(6);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setSizeConstraint(QLayout::SetMinimumSize);
-        formLayout->setLabelAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        formLayout->setRowWrapPolicy(QFormLayout::DontWrapRows);
+        formLayout->setLabelAlignment(Qt::AlignCenter);
         formLayout->setFormAlignment(Qt::AlignJustify|Qt::AlignTop);
+        formLayout->setHorizontalSpacing(0);
+        formLayout->setVerticalSpacing(0);
         Group0 = new QRadioButton(centralWidget);
         Group0->setObjectName(QString::fromUtf8("Group0"));
         sizePolicy.setHeightForWidth(Group0->sizePolicy().hasHeightForWidth());
@@ -334,6 +337,7 @@ public:
         Visibility0->setObjectName(QString::fromUtf8("Visibility0"));
         sizePolicy.setHeightForWidth(Visibility0->sizePolicy().hasHeightForWidth());
         Visibility0->setSizePolicy(sizePolicy);
+        Visibility0->setMaximumSize(QSize(38, 38));
         Visibility0->setToolTipDuration(5);
         QIcon icon9;
         icon9.addFile(QString::fromUtf8(":/assets/eye-slash.svg"), QSize(), QIcon::Normal, QIcon::Off);
@@ -361,6 +365,7 @@ public:
         Visibility1->setObjectName(QString::fromUtf8("Visibility1"));
         sizePolicy.setHeightForWidth(Visibility1->sizePolicy().hasHeightForWidth());
         Visibility1->setSizePolicy(sizePolicy);
+        Visibility1->setMaximumSize(QSize(38, 38));
         QIcon icon10;
         icon10.addFile(QString::fromUtf8(":/assets/eye-slash.svg"), QSize(), QIcon::Normal, QIcon::Off);
         icon10.addFile(QString::fromUtf8(":/assets/eye.svg"), QSize(), QIcon::Normal, QIcon::On);
@@ -383,6 +388,7 @@ public:
         Visibility2->setObjectName(QString::fromUtf8("Visibility2"));
         sizePolicy.setHeightForWidth(Visibility2->sizePolicy().hasHeightForWidth());
         Visibility2->setSizePolicy(sizePolicy);
+        Visibility2->setMaximumSize(QSize(38, 38));
         QIcon icon11;
         icon11.addFile(QString::fromUtf8(":/assets/eye-slash.svg"), QSize(), QIcon::Normal, QIcon::Off);
         icon11.addFile(QString::fromUtf8(":/assets/eye.svg"), QSize(), QIcon::Normal, QIcon::On);
@@ -406,6 +412,7 @@ public:
         Visibility3->setObjectName(QString::fromUtf8("Visibility3"));
         sizePolicy.setHeightForWidth(Visibility3->sizePolicy().hasHeightForWidth());
         Visibility3->setSizePolicy(sizePolicy);
+        Visibility3->setMaximumSize(QSize(38, 38));
         Visibility3->setIcon(icon10);
         Visibility3->setCheckable(true);
         Visibility3->setChecked(true);
@@ -425,6 +432,7 @@ public:
         Visibility4->setObjectName(QString::fromUtf8("Visibility4"));
         sizePolicy.setHeightForWidth(Visibility4->sizePolicy().hasHeightForWidth());
         Visibility4->setSizePolicy(sizePolicy);
+        Visibility4->setMaximumSize(QSize(38, 38));
         Visibility4->setIcon(icon10);
         Visibility4->setCheckable(true);
         Visibility4->setChecked(true);
@@ -444,6 +452,7 @@ public:
         Visibility5->setObjectName(QString::fromUtf8("Visibility5"));
         sizePolicy.setHeightForWidth(Visibility5->sizePolicy().hasHeightForWidth());
         Visibility5->setSizePolicy(sizePolicy);
+        Visibility5->setMaximumSize(QSize(38, 38));
         Visibility5->setIcon(icon10);
         Visibility5->setCheckable(true);
         Visibility5->setChecked(true);
@@ -463,6 +472,7 @@ public:
         Visibility6->setObjectName(QString::fromUtf8("Visibility6"));
         sizePolicy.setHeightForWidth(Visibility6->sizePolicy().hasHeightForWidth());
         Visibility6->setSizePolicy(sizePolicy);
+        Visibility6->setMaximumSize(QSize(38, 38));
         Visibility6->setIcon(icon10);
         Visibility6->setCheckable(true);
         Visibility6->setChecked(true);
@@ -483,6 +493,7 @@ public:
         Visibility7->setObjectName(QString::fromUtf8("Visibility7"));
         sizePolicy.setHeightForWidth(Visibility7->sizePolicy().hasHeightForWidth());
         Visibility7->setSizePolicy(sizePolicy);
+        Visibility7->setMaximumSize(QSize(38, 38));
         Visibility7->setIcon(icon10);
         Visibility7->setCheckable(true);
         Visibility7->setChecked(true);
