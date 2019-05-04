@@ -8,7 +8,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QMouseEvent>
-#include <armadillo>
 #include <QStack>
 #include <QDebug>
 #include <QPointF>
@@ -16,20 +15,57 @@
 #include <QPushButton>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string>
+#include <fstream>
 
 
 class GaGraphicsView : public QGraphicsView
 {
-Q_OBJECT
+
 public:
     explicit GaGraphicsView(QWidget *parent = 0);
     typedef enum {ADD,DEL,JOIN,SPLIT,MOVE,NONE} ACTION;
     int current;
+    std::string _file ="logFile"+current_date()+".txt";
+    std::string current_time(){
+        time_t now = time(NULL);
+        struct tm tstruct;
+        char buf[40];
+        tstruct = *localtime(&now);
+        //format: HH:mm:ss
+        strftime(buf, sizeof(buf), "%X", &tstruct);
+        return buf;
+    }
+    std::string current_date(){
+        time_t now = time(0);
+        struct tm tstruct;
+        char buf[40];
+        tstruct = *localtime(&now);
+        //format: day DD-MM-YYYY
+        strftime(buf, sizeof(buf), "%d-%m-%Y", &tstruct);
+        return buf;
+    }
+    inline bool exists_file (const std::string& name) {
+      struct stat buffer;
+      return (stat (name.c_str(), &buffer) == 0);
+    }
+    void CreateLogFile(){
+        FILE* pFile;
+        if(exists_file(_file)){
+            pFile = fopen(_file.c_str(), "w");
+        }else{
+            pFile = fopen(_file.c_str(), "a");
+        }
 
+        fprintf(pFile, "%s\n",current_time().c_str());
+        fclose(pFile);
+    }
     void WriteLogFile(const char* szString)
     {
-
-      FILE* pFile = fopen("logFile.txt", "a");
+      FILE* pFile = fopen(_file.c_str(), "a");
       fprintf(pFile, "%s\n",szString);
       fclose(pFile);
 
@@ -95,6 +131,7 @@ public:
             switch (redoItems.top().a) {
             case DEL:
                 WriteLogFile("UNDO DELETE");
+                //qDebug()<<redoItems.top().point->hasInitLine();
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 if(redoItems.top().point->hasInitLine()){
@@ -103,15 +140,19 @@ public:
                 }if(redoItems.top().point->hasFinalLine()){
                     scene->addItem(redoItems.top().point->getFinalLine());
                     redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
-                    if(lastPoint != nullptr){
-                        lastPoint = redoItems.top().point;
+                    if(redoItems.top().point->hasInitLine()){
+                        if(lastPoint != nullptr){
+                            lastPoint = redoItems.top().point;
+                        }
+                        if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
+                            int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());
+                            poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
+                        }
                     }
 
+
                 }
-                if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
-                    int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());
-                    poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
-                }
+
 
                 break;
             case ADD:

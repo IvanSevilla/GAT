@@ -42,7 +42,10 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
                 if(lastPoint != nullptr){
                     poliLines.mid(lastPoint->getGroupNumber(),1).first()->push_back(lastPoint);
-                    std::string log = "FINISH LINE: "+std::to_string(poliLines.mid(lastPoint->getGroupNumber(),1).first()->length());
+                    std::string log = "FINISH LINE: "+
+                            std::to_string(poliLines.mid(lastPoint->getGroupNumber(),1).first()->length())+
+                            " Point: "+ std::to_string(lastPoint->getCenter().x()) +
+                            "," +std::to_string(lastPoint->getCenter().y());
                     WriteLogFile(log.c_str());
                     up_btn->clicked(true);
                     lastPoints.replace(lastPoint->getGroupNumber(),nullptr);

@@ -97,8 +97,8 @@ void MainWindow::on_actionAdd_Image_triggered()
         proxyedit = new QGraphicsProxyWidget();
 
         edit->setGeometry(pix.rect());
-        //edit->setHidden(true);
-        edit->setStyleSheet("background-color: rgba(200,0,0,0.1)");
+        edit->CreateLogFile();        //edit->setHidden(true);
+        edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
         edit->setSceneG(editscene);
         edit->setToggle(false);
         edit->setAttribute(Qt::WA_AcceptTouchEvents);
@@ -499,7 +499,7 @@ void MainWindow::on_actionDelete_Poliline_triggered()
                     edit->WriteLogFile(c_str);
                     CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(ui->polilines->currentItem()->whatsThis().toInt());
                     CustomElipse* _last;
-                    while(_last->hasFinalLine()){
+                    while(_poli->hasFinalLine()){
                         qDebug()<<_poli->hasFinalLine();
                         _last = _poli->getFinalLine()->getInit();
                         edit->getScene()->removeItem(_poli);
