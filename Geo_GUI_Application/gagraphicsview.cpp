@@ -56,6 +56,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
                 WriteLogFile(log.c_str());
                 //qDebug()<<pt;
+                up_btn->clicked(true);
                 CustomElipse* it = new CustomElipse();
                 it->setPen(pen);
                 it->setBrush(brush);
@@ -131,7 +132,7 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     DoneAction d;
 
                     d.point = dynamic_cast<CustomElipse*>(itemToRemove);
-                    d.a = DELETE;
+                    d.a = DEL;
                     d.g = dynamic_cast<QGraphicsItemGroup*>(d.point->parentItem());
                     if(poliLines.value(d.point->getGroupNumber())->contains(d.point)){
                         int _position = poliLines.value(d.point->getGroupNumber())->indexOf(d.point);
@@ -169,8 +170,11 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
                             WriteLogFile(log.c_str());
                             scene->removeItem(d.point->getFinalLine());
-                            lastPoint = d.point->getFinalLine()->getInit();
-                            lastPoints.replace(d.point->getGroupNumber(),lastPoint);
+                            if(lastPoint != nullptr){
+                                lastPoint = d.point->getFinalLine()->getInit();
+                                lastPoints.replace(d.point->getGroupNumber(),lastPoint);
+                            }
+
                         }
                     }
                 lastItems.push(d);

@@ -85,7 +85,7 @@ public:
         if(scene->items().size() > 16){
             //qDebug()<<scene->items();
 
-            while(!scene->items().contains(lastItems.top().point)){
+            while(!scene->items().contains(lastItems.top().point) && lastItems.top().a == ADD){
                 lastItems.pop();
             }
             redoItems.push(lastItems.pop());
@@ -103,7 +103,9 @@ public:
                 }if(redoItems.top().point->hasFinalLine()){
                     scene->addItem(redoItems.top().point->getFinalLine());
                     redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
-                    lastPoint = redoItems.top().point;
+                    if(lastPoint != nullptr){
+                        lastPoint = redoItems.top().point;
+                    }
 
                 }
                 if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
@@ -163,8 +165,11 @@ public:
                     scene->removeItem(redoItems.top().point->getInitLine());
                 }if(redoItems.top().point->hasFinalLine()){
                     scene->removeItem(redoItems.top().point->getFinalLine());
-                    lastPoint = redoItems.top().point->getFinalLine()->getInit();
-                    lastPoints.replace(redoItems.top().point->getGroupNumber(),lastPoint);
+                    if(lastPoint != nullptr){
+                        lastPoint = redoItems.top().point->getFinalLine()->getInit();
+                        lastPoints.replace(redoItems.top().point->getGroupNumber(),lastPoint);
+                    }
+
                 }
                 if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
                     int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());

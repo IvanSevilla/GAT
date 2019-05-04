@@ -454,6 +454,21 @@ void MainWindow::on_showPolilines_clicked(bool checked)
                     this->ui->labelPolilines->setHidden(true);
                 }
             }else{
+                QList<CustomElipse*>* _curr = edit->getCurrentGroupPolilines();
+                QColor _c = edit->getCurrentColor();
+                _c.setAlphaF(0.5);
+                for (int i = 0; i<_curr->length();i++){
+                    CustomElipse* _last = _curr->value(i);
+                    while(_last->hasFinalLine()){
+
+                        _last->setPen(QPen(_c));
+                        _last->setBrush(QBrush(_c));
+                        _last->getFinalLine()->setPen(QPen(_c));
+                        _last= _last->getFinalLine()->getInit();
+                    }
+                    _last->setPen(QPen(_c));
+                    _last->setBrush(QBrush(_c));
+                }
                 this->ui->polilines->setHidden(1);
                 ui->polilines->clear();
                 this->ui->labelPolilines->setHidden(1);
@@ -476,12 +491,34 @@ void MainWindow::on_actionDelete_Poliline_triggered()
             Dialog* _d = new Dialog();
             bool _dp = _d->questionMessage("This action cannot be undone");
             if(_dp){
-                //qDebug()<<"Borra";
-                QString _log = "DELETE POLILINE NUM:";
-                _log = _log + ui->polilines->currentItem()->toolTip();
-                QByteArray ba = _log.toLocal8Bit();
-                const char* c_str = ba.data();
-                edit->WriteLogFile(c_str);
+                //qDebug()<<"Borra";)
+                    QString _log = "DELETE POLILINE NUM: ";
+                    _log = _log + ui->polilines->currentItem()->whatsThis();
+                    QByteArray ba = _log.toLocal8Bit();
+                    const char* c_str = ba.data();
+                    edit->WriteLogFile(c_str);
+                    CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(ui->polilines->currentItem()->whatsThis().toInt());
+                    CustomElipse* _last;
+                    while(_last->hasFinalLine()){
+                        qDebug()<<_poli->hasFinalLine();
+                        _last = _poli->getFinalLine()->getInit();
+                        edit->getScene()->removeItem(_poli);
+                        edit->getScene()->removeItem(_poli->getFinalLine());
+                        delete(_poli->getFinalLine());
+                        delete(_poli);
+
+                        if(_last != nullptr){
+                            _poli = _last;
+                        }else{
+                            break;
+                        }
+                    }
+                    delete(_poli);
+                    edit->getCurrentGroupPolilines()->replace(ui->polilines->currentItem()->whatsThis().toInt(),nullptr);
+
+                    ui->showPolilines->clicked();
+
+
             }else{
                 //qDebug()<<"no";
 
@@ -495,26 +532,33 @@ void MainWindow::on_polilines_currentItemChanged(QListWidgetItem *current, QList
     if(current != nullptr){
         CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(current->whatsThis().toInt());
         while (_poli->hasFinalLine()){
-            _poli->setPen(QPen(QColor(0,0,0)));
-            _poli->setBrush(QBrush(QColor(0,0,0)));
-            _poli->getFinalLine()->setPen(QPen(QColor(0,0,0)));
-            _poli= _poli->getFinalLine()->getInit();
-        }
-        _poli->setPen(QPen(QColor(0,0,0)));
-        _poli->setBrush(QBrush(QColor(0,0,0)));
-    }
-    if (previous != nullptr){
-        if(previous->whatsThis().toInt()<=7 && previous->whatsThis().toInt()>=0){
-            //qDebug()<<"has another";
-            CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(previous->whatsThis().toInt());
-            while (_poli->hasFinalLine()){
-                _poli->setPen(QPen(edit->getCurrentColor()));
-                _poli->setBrush(QBrush(edit->getCurrentColor()));
-                _poli->getFinalLine()->setPen(QPen(edit->getCurrentColor()));
-                _poli= _poli->getFinalLine()->getInit();
-            }
             _poli->setPen(QPen(edit->getCurrentColor()));
             _poli->setBrush(QBrush(edit->getCurrentColor()));
+            _poli->getFinalLine()->setPen(QPen(edit->getCurrentColor()));
+            _poli= _poli->getFinalLine()->getInit();
+        }
+        _poli->setPen(QPen(edit->getCurrentColor()));
+        _poli->setBrush(QBrush(edit->getCurrentColor()));
+    }
+    if (previous != nullptr){
+        if(previous->whatsThis().toInt()<=50000 && previous->whatsThis().toInt()>=0){
+            //qDebug()<<"has another";
+            CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(previous->whatsThis().toInt());
+            if(_poli != nullptr){
+                QColor _c = edit->getCurrentColor();
+                _c.setAlphaF(0.5);
+                while (_poli->hasFinalLine()){
+
+                    _poli->setPen(QPen(_c));
+                    _poli->setBrush(QBrush(_c));
+                    _poli->getFinalLine()->setPen(QPen(_c));
+                    _poli= _poli->getFinalLine()->getInit();
+                }
+                _poli->setPen(QPen(_c));
+                _poli->setBrush(QBrush(_c));
+            }else{
+                edit->getCurrentGroupPolilines()->removeAt(previous->whatsThis().toInt());
+            }
         }
     }
 }
