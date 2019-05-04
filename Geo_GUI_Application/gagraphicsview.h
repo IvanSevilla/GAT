@@ -23,7 +23,7 @@ class GaGraphicsView : public QGraphicsView
 Q_OBJECT
 public:
     explicit GaGraphicsView(QWidget *parent = 0);
-    typedef enum {ADD,DELETE,JOIN,SPLIT,MOVE,NONE} ACTION;
+    typedef enum {ADD,DEL,JOIN,SPLIT,MOVE,NONE} ACTION;
     int current;
 
     void WriteLogFile(const char* szString)
@@ -93,7 +93,7 @@ public:
 
             //qDebug()<<redoItems.top().a;
             switch (redoItems.top().a) {
-            case DELETE:
+            case DEL:
                 WriteLogFile("UNDO DELETE");
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
@@ -158,7 +158,7 @@ public:
     void redoLastPoint(){
         if(!redoItems.isEmpty()){
             switch (redoItems.top().a) {
-            case DELETE:
+            case DEL:
                 WriteLogFile("REDO DELETE");
                 scene->removeItem(redoItems.top().point);
                 if(redoItems.top().point->hasInitLine()){
