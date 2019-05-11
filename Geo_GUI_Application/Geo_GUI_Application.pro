@@ -33,7 +33,8 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     gagraphicsview.h \
-    customelipse.h
+    customelipse.h \
+    nholmann/json.hpp
 
 FORMS += \
         mainwindow.ui
