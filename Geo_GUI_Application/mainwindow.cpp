@@ -61,8 +61,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionLoad_Project_triggered()
 {
-    QString project_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
-    QMessageBox::information(this,"..",project_name);
+    openProject();
 }
 
 void MainWindow::on_actionAdd_Image_triggered()
@@ -73,48 +72,52 @@ void MainWindow::on_actionAdd_Image_triggered()
 
     QString image_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
     if(image_name != ""){
-        image = true;
-        QMessageBox::information(this,"..",image_name);
-        //QImage img;
-        //int gw = ui->graphicsView->width();
-        //int gh = ui->graphicsView->height();
-        pix.load(image_name);
-        minipix.load(image_name);
-        //img.load(image_name);
-        //pix = pix.scaledToHeight(gh);
-        //pix = pix.scaledToWidth(gw);
-        scene->addPixmap(pix);
-        scene->setSceneRect(pix.rect());//QRectF(0,0,gw-1,gh-1));
-
-        //int w = pix.rect().x();
-        //int h = pix.rect().y();
-        //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
-        //ui->imagelabel->show();
-        ui->graphicsView->setScene(scene);
-        //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
-        edit = new GaGraphicsView();
-        deledit = true;
-        proxyedit = new QGraphicsProxyWidget();
-
-        edit->setGeometry(pix.rect());
-        edit->CreateLogFile();        //edit->setHidden(true);
-        edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
-        edit->setSceneG(editscene);
-        edit->setToggle(false);
-        edit->setAttribute(Qt::WA_AcceptTouchEvents);
-        edit->setUpdater(ui->showPolilines);
-        QVBoxLayout *layoutedit = new QVBoxLayout(edit);
-        layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
-        //probar anidar
-        proxyedit->setAcceptTouchEvents(true);
-        proxyedit->setWidget(edit);
-        scene->addItem(proxyedit);
-        ui->centralWidget->setMouseTracking(true);
-        edit->setToggle(true);
+        openImage(image_name);
     }
 
 }
+void MainWindow::openImage(QString image_name){
 
+    image = true;
+    QMessageBox::information(this,"..",image_name);
+    //QImage img;
+    //int gw = ui->graphicsView->width();
+    //int gh = ui->graphicsView->height();
+    pix.load(image_name);
+    minipix.load(image_name);
+    //img.load(image_name);
+    //pix = pix.scaledToHeight(gh);
+    //pix = pix.scaledToWidth(gw);
+    scene->addPixmap(pix);
+    scene->setSceneRect(pix.rect());//QRectF(0,0,gw-1,gh-1));
+
+    //int w = pix.rect().x();
+    //int h = pix.rect().y();
+    //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
+    //ui->imagelabel->show();
+    ui->graphicsView->setScene(scene);
+    //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
+    edit = new GaGraphicsView();
+    deledit = true;
+    proxyedit = new QGraphicsProxyWidget();
+
+    edit->setGeometry(pix.rect());
+    edit->CreateLogFile();        //edit->setHidden(true);
+    edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
+    edit->setSceneG(editscene);
+    edit->setToggle(false);
+    edit->setAttribute(Qt::WA_AcceptTouchEvents);
+    edit->setUpdater(ui->showPolilines);
+    QVBoxLayout *layoutedit = new QVBoxLayout(edit);
+    layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
+    //probar anidar
+    proxyedit->setAcceptTouchEvents(true);
+    proxyedit->setWidget(edit);
+    scene->addItem(proxyedit);
+    ui->centralWidget->setMouseTracking(true);
+    edit->setToggle(true);
+
+}
 
 void MainWindow::ZoomIn(double h, double w){
     ui->graphicsView->scale(h,w);

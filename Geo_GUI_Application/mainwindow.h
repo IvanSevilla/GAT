@@ -19,6 +19,10 @@
 #include <QSharedPointer>
 #include "gagraphicsview.h"
 
+#include <nholmann/json.hpp>
+
+using json = nlohmann::json;
+
 
 namespace Ui {
 class MainWindow;
@@ -29,9 +33,31 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    json project;
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void unSelectPoliline();
+    void openProject(){
+
+        QString filename = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+        if(filename != ""){
+            QMessageBox::information(this,"..",filename);
+            std::ifstream i(filename.toStdString());
+            i >> project;
+            i.close();
+            QMessageBox::information(this,"..",project.at("0").get<std::string>().c_str());
+            std::ifstream subproject(project.at("0").get<std::string>());
+            json images;
+            subproject >> images;
+            subproject.close();
+            QMessageBox::information(this,"..",images.dump().c_str());
+            QMessageBox::information(this,"..",images.at("image").get<std::string>().c_str());
+            qDebug()<<images.dump().c_str();
+            std::string d = images.at("image").get<std::string>();
+            openImage(d.c_str());
+        }
+    }
+    void openImage(QString image_name);
 private slots:
     void on_actionLoad_Project_triggered();
 
