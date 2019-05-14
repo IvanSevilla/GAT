@@ -18,8 +18,9 @@
 #include <QListWidgetItem>
 #include <QSharedPointer>
 #include "gagraphicsview.h"
+#include "projectmanager.h"
 
-#include <nholmann/json.hpp>
+#include "nholmann/json.hpp"
 
 using json = nlohmann::json;
 
@@ -33,31 +34,36 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    json project;
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void unSelectPoliline();
-    void openProject(){
+    // Variable de proyecto de tipo JSON
+    json project;
+    // Variable de subproyecto de tipo JSON
+    json subproject;
+    // Objeto ProjectManager
+    ProjectManager _pm;
 
-        QString filename = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
-        if(filename != ""){
-            QMessageBox::information(this,"..",filename);
-            std::ifstream i(filename.toStdString());
-            i >> project;
-            i.close();
-            QMessageBox::information(this,"..",project.at("0").get<std::string>().c_str());
-            std::ifstream subproject(project.at("0").get<std::string>());
-            json images;
-            subproject >> images;
-            subproject.close();
-            QMessageBox::information(this,"..",images.dump().c_str());
-            QMessageBox::information(this,"..",images.at("image").get<std::string>().c_str());
-            qDebug()<<images.dump().c_str();
-            std::string d = images.at("image").get<std::string>();
-            openImage(d.c_str());
+    void unSelectPoliline();
+    void openProject();
+    void openImage(QString image_name);
+    QString filename = "";
+    void saveFile();
+    void createSubproject(QString image){
+        QFileInfo _f(filename);
+        QFileInfo _im(image);
+        _img.load(image);
+        QDir _d(_f.absolutePath());
+        if(!_d.exists("assets"))_d.mkdir("assets");
+        subproject["image"] = _f.absolutePath().toStdString()+"/assets/"+_im.fileName().toStdString();
+        _img.save(subproject.at("image").get<std::string>().c_str());
+        subproject["matrix"] = "";
+        subproject["pointcloud"] = "";
+        subproject["polylines"] = {};
+        for(int i = 0; i<MAX_GROUPS;i++){
+            subproject["polylines"]["group"+std::to_string(i)] = {};
         }
     }
-    void openImage(QString image_name);
+    void saveSubproject();
 private slots:
     void on_actionLoad_Project_triggered();
 
@@ -107,15 +113,11 @@ private slots:
 
     void on_Visibility7_clicked(bool checked);
 
-
     void on_Btn_Undo_pressed();
 
     void on_Btn_Do_clicked();
 
     void on_Btn_Move_clicked();
-
-
-
 
     void on_showPolilines_clicked(bool checked);
 
@@ -123,19 +125,24 @@ private slots:
 
     void on_polilines_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
+    void on_actionSave_Project_triggered();
+
+    void on_actionNewProject_triggered();
+
 private:
     Ui::MainWindow *ui;
-
+    int currentSubproject=0;
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
     void setMousePoint (QPointF point);
-    GaGraphicsView* edit;
+    CustomGraphicsView* edit;
     QGraphicsView* minimap;
     QPixmap pix;
     QPixmap minipix;
     QGraphicsScene *scene;
     QGraphicsScene *miniscene;
     QGraphicsScene *editscene;
+    QImage _img;
     bool deledit;
     bool delmini;
     bool image;
@@ -152,7 +159,7 @@ public:
     void criticalMessage();
     void informationMessage();
     bool questionMessage(const char* _message);
-    void warningMessage();
+    bool warningMessage();
     void errorMessage();
 
 private:
@@ -173,6 +180,7 @@ private:
     QLabel *warningLabel;
     QLabel *errorLabel;
     QString openFilesPath;
+
 };
 
 #endif // MAINWINDOW_H

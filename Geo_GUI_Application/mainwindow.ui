@@ -955,7 +955,7 @@ color: rgb(55,126,184);</string>
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoad"/>
+    <addaction name="actionNewProject"/>
     <addaction name="actionLoad_Project"/>
     <addaction name="actionSave_Project"/>
     <addaction name="actionClose_Project"/>
@@ -997,7 +997,7 @@ color: rgb(55,126,184);</string>
    <addaction name="actionAdd_Image"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionLoad">
+  <action name="actionNewProject">
    <property name="text">
     <string>New Project</string>
    </property>

@@ -47,7 +47,6 @@ public:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-        //qDebug()<<"here";
         if(event->button() == Qt::LeftButton) {
             if(event->modifiers() == Qt::ShiftModifier) {
                 //qDebug() << "Custom item left clicked with shift key.";
@@ -66,28 +65,16 @@ protected:
     }
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
-        //qDebug() << "Custom item moved.";
         QGraphicsItem::mouseMoveEvent(event);
-        //qDebug()<<"item center before: "<<center;
         center = event->scenePos();
-        //qDebug()<<"Event: "<<event;
-        //qDebug()<<"item center after: "<<center;
         event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing){
 
-        } //else if(event->modifiers() != Qt::AltModifier) {
-            //qDebug() << "Custom item moved.";
-            //QGraphicsItem::mouseMoveEvent(event);
-            //qDebug()<<"moved"<<pos();
-        //}
+        }
     }
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
-        //qDebug()<<"here";
         QGraphicsItem::mouseReleaseEvent(event);
-        //qDebug()<<"center at release time: "<<center;
-        //qDebug()<<"cursor position at release time: "<<event->scenePos();
-        //center = event->scenePos();
         event->accept();
         if(event->modifiers() == Qt::AltModifier && _isResizing) {
             _isResizing = false;
@@ -109,7 +96,6 @@ private:
     CustomLine *initLine = nullptr;
     CustomLine *finalLine = nullptr;
     int groupnumber = 0;
-    //bool initial, final = false;
     bool _isResizing;
 };
 
@@ -140,12 +126,9 @@ public:
     }
 
     void updatel(){
-        //qDebug()<<"noooo";
-        //qDebug()<<"Initial Point"<<init->getCenter();
         this->setPos(init->getCenter());
         this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
-        //qDebug()<<"Initial Point"<<init->getCenter();
-        //qDebug()<<"Final Point"<<final->getCenter();
+
     }
     CustomElipse * getInit(){
         return init;
@@ -182,7 +165,6 @@ protected:
 
             } else {
                 //qDebug() << "Custom item left clicked.";
-                //QGraphicsItem::mousePressEvent(event);
                 event->accept();
             }
         } else if(event->button() == Qt::RightButton) {

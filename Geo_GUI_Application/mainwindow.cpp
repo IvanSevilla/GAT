@@ -19,10 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     deledit = false;
     delmini = false;
     image = false;
-    //w = new GaGraphicsView();
-    //ui->centralWidget->setMouseTracking(true);
-    //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
-
     QTimer::singleShot(0, this, SLOT(showMaximized()));
 
     ui->horizontalLayout_7->addWidget(ui->graphicsView);
@@ -63,46 +59,149 @@ void MainWindow::on_actionLoad_Project_triggered()
 {
     openProject();
 }
+void MainWindow::saveFile(){
+    qDebug()<<project.dump().c_str();
+    _pm.saveProject(filename+"project.json",project);
+    saveSubproject();
+}
+void MainWindow::openProject(){
+
+    filename = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+    if(filename != ""){
+        if(!project.empty()){
+            saveFile();
+            project.clear();
+            subproject.clear();
+        }
+        project = _pm.loadProject(filename);
+        subproject = _pm.loadProject(QString(project.at("0").get<std::string>().c_str()));
+        std::string d = subproject.at("image").get<std::string>();
+        QFileInfo _f(filename);
+        filename = _f.absolutePath()+"/";
+        openImage(d.c_str());
+    }
+}
+void MainWindow::saveSubproject()
+{
+    for(int j = 0; j<MAX_GROUPS;j++){
+        QList<CustomElipse*>* _list = edit->getPolilines(j);
+        if(!_list->empty()){
+            for (int i = 0; i<_list->length();i++){
+                CustomElipse* _last = _list->value(i);
+                QList<std::array<qreal,2>> _savedpoints;
+                while(_last->hasFinalLine()){
+                    std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
+                    _savedpoints.push_back(_a);
+                    _last= _last->getFinalLine()->getInit();
+                }
+                std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
+                _savedpoints.push_back(_a);
+                subproject["polylines"]["group"+std::to_string(j)]["line"+std::to_string(i)] = _savedpoints.toStdList();
+            }
+        }else{
+            subproject["polylines"]["group"+std::to_string(j)] ={};
+        }
+    }
+    std::string _filename;
+    if(filename!= ""){
+        QFileInfo _f(filename);
+        _filename = _f.dir().path().toStdString()+"/subproject"+std::to_string(this->currentSubproject)+".json";
+    }else{
+        _filename += "/subproject"+std::to_string(this->currentSubproject)+".json";
+    }
+    _pm.saveProject(QString(_filename.c_str()),subproject);
+
+}
+
+
 
 void MainWindow::on_actionAdd_Image_triggered()
 {
-    //delete w;
-    //ui->centralWidget->setMouseTracking(true);
-    //QWidget::connect (this->w, SIGNAL(sendMousePoint(QPointF)),this, SLOT(setMousePoint(QPointF)));
-
     QString image_name = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
     if(image_name != ""){
+        if(project.empty()){
+        std::string _filename;
+#if defined(_WIN32) || defined(_WIN64)
+_filename = "C:/Documents/GATProjects/Project"
+if(QDir(_filename)){
+
+}
+#endif
+#if defined(__unix) || defined(__unix__)
+#endif
+#if defined( __APPLE__ ) || defined(__MACH__)
+    _filename = "../../../../GATProjects";
+    QDir _directory(".");
+    if(!_directory.exists(_filename.c_str())){
+        _directory.mkdir(_filename.c_str());
+    }
+    _filename+="/Project";
+        if(!_directory.exists(_filename.c_str())){
+            _directory.mkdir(_filename.c_str());
+            _filename+="/";
+            filename = _filename.c_str();
+        }else{
+            for(int i = 0;;i++){
+                std::string _pr = _filename+std::to_string(i);
+                if(!_directory.exists(_pr.c_str())){
+                    _directory.mkdir(_pr.c_str());
+                    _filename=_pr+"/";
+                    filename = _filename.c_str();
+                    break;
+            }
+        }
+        }
+#endif
+#ifdef __linux__
+qDebug()<<"_filename";
+#endif
+        QFileInfo _dir(filename);
+        project["0"]=_dir.absolutePath().toStdString()+"/subproject0.json";
+        }
+
+        if(subproject.empty()){
+            createSubproject(image_name);
+
+        }else{
+            saveSubproject();
+            QFileInfo _directory(filename);
+            project[std::to_string(currentSubproject)] =_directory.absolutePath().toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
+            if(filename != "")saveFile();
+            currentSubproject++;
+            createSubproject(image_name);
+            project[std::to_string(currentSubproject)] = _directory.absolutePath().toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
+            scene->clear();
+            edit->getScene()->clear();
+            edit->getAllPolilines().clear();
+        }
+
         openImage(image_name);
     }
 
-}
-void MainWindow::openImage(QString image_name){
+    }
 
-    image = true;
+void MainWindow::openImage(QString image_name){
+    if(image){
+        delete(proxyedit);
+        scene->clear();
+    }else{
+        image = true;
+    }
+
     QMessageBox::information(this,"..",image_name);
-    //QImage img;
-    //int gw = ui->graphicsView->width();
-    //int gh = ui->graphicsView->height();
     pix.load(image_name);
     minipix.load(image_name);
-    //img.load(image_name);
-    //pix = pix.scaledToHeight(gh);
-    //pix = pix.scaledToWidth(gw);
     scene->addPixmap(pix);
-    scene->setSceneRect(pix.rect());//QRectF(0,0,gw-1,gh-1));
+    scene->setSceneRect(pix.rect());
 
-    //int w = pix.rect().x();
-    //int h = pix.rect().y();
-    //ui->imagelabel->setPixmap(pix.scaled(h,w,Qt::KeepAspectRatio));
-    //ui->imagelabel->show();
+
     ui->graphicsView->setScene(scene);
-    //QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
-    edit = new GaGraphicsView();
+    edit = new CustomGraphicsView();
     deledit = true;
     proxyedit = new QGraphicsProxyWidget();
 
     edit->setGeometry(pix.rect());
-    edit->CreateLogFile();        //edit->setHidden(true);
+    edit->CreateLogFile();
     edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
     edit->setSceneG(editscene);
     edit->setToggle(false);
@@ -116,6 +215,55 @@ void MainWindow::openImage(QString image_name){
     scene->addItem(proxyedit);
     ui->centralWidget->setMouseTracking(true);
     edit->setToggle(true);
+    if(!subproject.empty()){
+        for(int i = 0; i<MAX_GROUPS;i++){
+            std::string g = "group"+std::to_string(i);
+            if(!subproject.at("polylines").at(g).empty()){
+                u_long size = subproject.at("polylines").at(g).size();
+                for(u_long _i = 0;_i<size; _i++){
+                    QMessageBox::information(this,"..",std::to_string(subproject.at("polylines").at(g).at("line"+std::to_string(_i)).size()).c_str());
+                    auto a = subproject.at("polylines").at(g).at("line"+std::to_string(_i));
+                    CustomElipse* last;
+                    for(u_long k = 0; k<a.size();k++){
+                        CustomElipse* _ce = new CustomElipse();
+                        QPoint _point(a[k][0].get<qreal>(),a[k][1].get<qreal>());
+                        _ce->setCenter(_point);
+                        _ce->setPen(QPen(edit->getGroupColor(i)));
+                        _ce->setBrush(QBrush(edit->getGroupColor(i)));
+                        _ce->setRect(_point.x()-2,_point.y()-2,4,4);
+                        _ce->setGroupNumber(i);
+                        _ce->setFlag(QGraphicsItem::ItemIsMovable,true);
+                        _ce->setFlag(QGraphicsItem::ItemIsSelectable,true);
+                        _ce->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                        edit->getScene()->addItem(_ce);
+                        edit->getGroup(i).data()->addToGroup(_ce);
+                        if(k == 0){
+                            edit->addPolylineGroup(i,_ce);
+                            last = _ce;
+                        }else{
+                            CustomLine* _li = new CustomLine();
+                            _li->setFinal(_ce);
+                            _li->setInitial(last);
+                            _li->setPen(QPen(edit->getGroupColor(i)));
+                            last->setInitLine(_li);
+                            _ce->setFinalLine(_li);
+                            edit->getScene()->addItem(_li);
+                            edit->getGroup(i).data()->addToGroup(_li);
+                            if(k == a.size()-1){
+
+                                last = nullptr;
+                                delete(last);
+                            }else{
+                                last = _ce;
+                            }
+                        }
+
+
+                    }
+                }
+            }
+        }
+    }
 
 }
 
@@ -146,7 +294,6 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
             ui->centralWidget->setMouseTracking(false);
             edit->setToggle(false);
             edit->setPaint(0);
-            //w->setStyleSheet("background-color: rgba(200,0,0,0.1)");
             ui->Btn_Do->setHidden(!checked);
             ui->Btn_Undo->setHidden(!checked);
             ui->Btn_Move->setHidden(!checked);
@@ -201,26 +348,19 @@ void MainWindow::on_actionMiniMap_triggered(bool tiggered)
         minimap = new QGraphicsView();
         minimap->setDragMode(QGraphicsView::NoDrag);
         delmini = true;
-        //proxymini = new QGraphicsProxyWidget();
-        //int aspectratio = pix.width()/pix.height();
         minipix = minipix.scaled(450,300,Qt::KeepAspectRatio);
         minimap->setGeometry(QRect(900,0,450,300));
         miniscene = new QGraphicsScene(this);
         miniscene->addPixmap(minipix);
         miniscene->setSceneRect(minipix.rect());
         minimap->setScene(miniscene);
-        //minimap->setStyleSheet("background-color: rgba(200,0,0,255)");
         QVBoxLayout *layoutmini = new QVBoxLayout(minimap);
         layoutmini->setAlignment(Qt::AlignRight | Qt::AlignTop);
         minimap->setParent(ui->graphicsView);
         minimap->show();
-        //proxymini->setWidget(minimap);
-        //scene->addItem(proxymini);
     }else{
         delmini = false;
         delete minimap;
-        //delete miniscene;
-        //scene->removeItem(proxymini);
 
     }}else{
         ui->actionMiniMap->setChecked(false);
@@ -494,7 +634,6 @@ void MainWindow::on_actionDelete_Poliline_triggered()
             Dialog* _d = new Dialog();
             bool _dp = _d->questionMessage("This action cannot be undone");
             if(_dp){
-                //qDebug()<<"Borra";)
                     QString _log = "DELETE POLILINE NUM: ";
                     _log = _log + ui->polilines->currentItem()->whatsThis();
                     QByteArray ba = _log.toLocal8Bit();
@@ -522,16 +661,12 @@ void MainWindow::on_actionDelete_Poliline_triggered()
                     ui->showPolilines->clicked();
 
 
-            }else{
-                //qDebug()<<"no";
-
-    }
+            }
 
     }
 }
 void MainWindow::on_polilines_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    //qDebug()<<"hey";
     if(current != nullptr){
         CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(current->whatsThis().toInt());
         while (_poli->hasFinalLine()){
@@ -545,7 +680,6 @@ void MainWindow::on_polilines_currentItemChanged(QListWidgetItem *current, QList
     }
     if (previous != nullptr){
         if(previous->whatsThis().toInt()<=50000 && previous->whatsThis().toInt()>=0){
-            //qDebug()<<"has another";
             CustomElipse* _poli = edit->getCurrentGroupPolilines()->value(previous->whatsThis().toInt());
             if(_poli != nullptr){
                 QColor _c = edit->getCurrentColor();
@@ -565,6 +699,34 @@ void MainWindow::on_polilines_currentItemChanged(QListWidgetItem *current, QList
         }
     }
 }
+
+
+void MainWindow::on_actionSave_Project_triggered()
+{   if(image){
+        if(filename == ""){
+            //QFileInfo f(filename);
+            //qDebug()<<f.dir().path();
+            filename = QFileDialog::getSaveFileName(this, "Save file");
+        }
+        saveFile();
+    }
+}
+
+
+
+void MainWindow::on_actionNewProject_triggered()
+{
+
+    if(!project.empty()){
+        Dialog d;
+        bool save = d.warningMessage();
+        if(save)saveFile();
+    }
+    project.clear();
+    project["0"]="../../../subproject0.json";
+
+}
+
 
 // DIALOG
 Dialog::Dialog(QWidget *parent)
@@ -605,7 +767,7 @@ bool Dialog::questionMessage(const char* _message)
         return false;
 }
 
-void Dialog::warningMessage()
+bool Dialog::warningMessage()
 {
     QMessageBox msgBox(QMessageBox::Warning, tr("QMessageBox::warning()"),
                        MESSAGE, 0, this);
@@ -613,12 +775,9 @@ void Dialog::warningMessage()
     msgBox.addButton(tr("Save &Again"), QMessageBox::AcceptRole);
     msgBox.addButton(tr("&Continue"), QMessageBox::RejectRole);
     if (msgBox.exec() == QMessageBox::AcceptRole)
-        warningLabel->setText(tr("Save Again"));
+        return false;
     else
-        warningLabel->setText(tr("Continue"));
+        return true;
 
 }
-
-
-
 

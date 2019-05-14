@@ -28,13 +28,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     gagraphicsview.cpp \
-    customelipse.cpp
+    customelipse.cpp \
+    projectmanager.cpp
 
 HEADERS += \
         mainwindow.h \
     gagraphicsview.h \
     customelipse.h \
-    nholmann/json.hpp
+    nholmann/json.hpp \
+    projectmanager.h
 
 FORMS += \
         mainwindow.ui

@@ -4,9 +4,10 @@
 #include <QDebug>
 #include <string.h>
 
-GaGraphicsView::GaGraphicsView(QWidget *parent) :
+CustomGraphicsView::CustomGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
     {
+    _file ="logFile"+current_date()+".txt";
     current = 0;
     this->setSceneRect(50, 50, 350, 350);
     _color.push_back(QColor(228,26,28));
@@ -33,7 +34,7 @@ GaGraphicsView::GaGraphicsView(QWidget *parent) :
     }
     lastPoint = nullptr;
     }
-void GaGraphicsView::mousePressEvent(QMouseEvent * e)
+void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
 {
     if(toggle){
         if(paint == 1){
@@ -53,44 +54,42 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                 }
 
             }else{
-        //double rad = 1;
                 QPointF pt = mapToScene(e->pos());
                 std::string log = "ADD POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
 
                 WriteLogFile(log.c_str());
-                //qDebug()<<pt;
                 up_btn->clicked(true);
                 CustomElipse* it = new CustomElipse();
                 it->setPen(pen);
                 it->setBrush(brush);
                 it->setRect(pt.x()-2,pt.y()-2,4,4);
                 it->setCenter(pt);
-                //qDebug()<<it->hasFinalLine();
-                //qDebug()<<it->hasInitLine();
                 it->setFlag(QGraphicsItem::ItemIsMovable,true);
                 it->setFlag(QGraphicsItem::ItemIsSelectable,true);
                 it->setFlag(QGraphicsItem::ItemClipsToShape,true);
 
                 if(lastPoint != nullptr){
+                    // Si hay ultimo punto generamos una linea
                     CustomLine * li = new CustomLine();
+                    // Le añadimos el color
                     li->setPen(pen);
+                    // Asociamos el punto inicial de la linea
                     li->setInitial(lastPoint);
-                    //qDebug()<<"1: "<<lastPoint->getCenter();
+                    // Asociamos el punto final de la linea
                     li->setFinal(it);
+                    // En el punto inicial, lo asociamos como linea inicial
                     lastPoint->setInitLine(li);
+                    // En el punto final, lo asociamos como linea final
                     it->setFinalLine(li);
-                    //qDebug()<<"2: "<<it->getCenter();
-                    //qDebug()<<"3: "<<li->line();
-                    //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                    //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                    // Añadimos la linea a la escena
                     scene->addItem(li);
+                    // Añadimos la linea al grupo del punto
                     group->addToGroup(li);
                 }
 
             scene->addItem(it);
             group->addToGroup(it);
             it->setGroupNumber(getNumber(it));
-            //qDebug()<<it->getGroupNumber();
             lastPoint = it;
             lastPoints.replace(it->getGroupNumber(),it);
             DoneAction d;
@@ -102,34 +101,21 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
             }
         }
-        //QGraphicsItem* line = scene->addLine(pt.x(),pt.y(),pt.x()+7.0,pt.y()+4.0,pen);
-        //line->setFlag(QGraphicsItem::ItemIsMovable,true);
-        //line->setFlag(QGraphicsItem::ItemIsSelectable,true);
-        //line->setFlag(QGraphicsItem::ItemClipsToShape,true);
     }
     if(paint == 2){
 
-        //penerase.setColor(QColor(0,0,0));
-        //brusherase= QBrush(Qt::SolidPattern);
-        //brusherase.setColor(QColor(0,0,0));
-        //double rad = 1;
-        //scene->addEllipse(pt.x()-rad, pt.y()-rad, rad+2.0, rad+2.0,
-        //penerase, brusherase);
         QGraphicsView::mousePressEvent(e);
-        //qDebug()<<e->button();
         if(!e->isAccepted()) {
             //remove item
             if(e->button() == Qt::RightButton) {
                 QGraphicsItem * itemToRemove = nullptr;
                 QPointF pt = mapToScene(e->pos());
-                //qDebug()<<scene->items(pt);
                 foreach(auto item, scene->items(pt)) {
                     if(item->type() == QGraphicsItem::UserType+1) {
                         itemToRemove = item;
                         break;
                     }
                 }
-                //qDebug()<<itemToRemove->pos();
                 if(itemToRemove != nullptr){
                     redoItems.clear();
                     DoneAction d;
@@ -141,8 +127,6 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                         int _position = poliLines.value(d.point->getGroupNumber())->indexOf(d.point);
                         poliLines.value(d.point->getGroupNumber())->replace(_position,d.point->getFinalLine()->getInit());
                     }
-                    //qDebug()<<d.point->hasInitLine();
-                    //qDebug()<<d.point->hasFinalLine();
                     if(d.point->hasInitLine()){
                         if(d.point->hasFinalLine()){
                             std::string log = "JOIN POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
@@ -156,10 +140,6 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                             p3->setFinalLine(p1->getInitLine());
                             p3->getFinalLine()->setFinal(p3);
                             p3->getFinalLine()->updatel();
-                           // qDebug()<<p1->getCenter();
-                            //qDebug()<<p3->getFinalLine()->getInit()->getCenter();
-                            //qDebug()<<d.point->getCenter();
-                            //qDebug()<<d.point->getFinalLine()->getInit()->getCenter();
                             scene->removeItem(d.point->getInitLine());
                         }else{
                             std::string log = "DELETE POINT: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
@@ -182,10 +162,8 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     }
                 lastItems.push(d);
                 scene->removeItem(lastItems.top().point);
-                //qDebug()<<d.a;
             }
         }
-    //qDebug()<<scene->items();
 
         }
     }
@@ -195,11 +173,9 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
         }else{
             QGraphicsItem * itemToRemove = nullptr;
             QPointF pt = mapToScene(e->pos());
-            //qDebug()<<scene->items(pt);
             foreach(auto item, scene->items(pt)) {
                 if(item->type() == QGraphicsItem::UserType+2) {
                     itemToRemove = item;
-                    //qDebug()<<"HEY";
                     break;
                 }
 
@@ -214,8 +190,6 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     _e->setBrush(QBrush(_color.value(getNumber(_l))));
                     _e->setRect(pt.x()-2,pt.y()-2,4,4);
                     _e->setCenter(pt);
-                    //qDebug()<<it->hasFinalLine();
-                    //qDebug()<<it->hasInitLine();
                     _e->setFlag(QGraphicsItem::ItemIsMovable,true);
                     _e->setFlag(QGraphicsItem::ItemIsSelectable,true);
                     _e->setFlag(QGraphicsItem::ItemClipsToShape,true);
@@ -227,8 +201,6 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
                     _e->setFinalLine(_l);
                     _l->getFinal()->setFinalLine(li);
                     _l->setFinal(_e);
-                    //li->setFlag(QGraphicsItem::ItemIsSelectable,true);
-                    //li->setFlag(QGraphicsItem::ItemClipsToShape,true);
                     scene->addItem(li);
                     groups.value(getNumber(_l)).data()->addToGroup(li);
                     scene->addItem(_e);
@@ -251,20 +223,15 @@ void GaGraphicsView::mousePressEvent(QMouseEvent * e)
 
 }
 
-void GaGraphicsView::mouseMoveEvent(QMouseEvent * e){
+void CustomGraphicsView::mouseMoveEvent(QMouseEvent * e){
     QGraphicsView::mouseMoveEvent(e);
-    //qDebug()<<e->isAccepted();
     if(e->isAccepted()) {
-        //qDebug()<<e;
         if(paint == 3){
-           // qDebug()<<scene->items();
             CustomElipse * itemToUpdate = nullptr;
             QPointF pt = mapToScene(e->pos());
-            //qDebug()<<scene->items(pt);
             foreach(auto item, scene->items(pt)) {
                 if(item->type() == QGraphicsItem::UserType+1) {
                     itemToUpdate = dynamic_cast<CustomElipse*>(item);
-                    //qDebug()<<itemToUpdate->getCenter();
                     if(itemToUpdate->hasInitLine()){
                         itemToUpdate->getInitLine()->updatel();
                     }if(itemToUpdate->hasFinalLine()){
@@ -278,14 +245,14 @@ void GaGraphicsView::mouseMoveEvent(QMouseEvent * e){
     }
 }
 
-void GaGraphicsView::setToggle(bool t){
+void CustomGraphicsView::setToggle(bool t){
     this->toggle = t;
 }
-void GaGraphicsView::setPaint(int p){
+void CustomGraphicsView::setPaint(int p){
     this->paint = p;
 }
 
-void GaGraphicsView::setGroup(int g){
+void CustomGraphicsView::setGroup(int g){
     current = g;
     switch(g){
     case 0:
@@ -338,11 +305,44 @@ void GaGraphicsView::setGroup(int g){
         break;
     }
 }
-void GaGraphicsView::setGroupVisibility(int vis, bool bvis){
+void CustomGraphicsView::setGroupVisibility(int vis, bool bvis){
     if(!bvis){
         groups.mid(vis,1).first().data()->hide();
     }else{
         groups.mid(vis,1).first().data()->show();
     }
 
+}
+std::string CustomGraphicsView::current_time(){
+    time_t now = time(nullptr);
+    struct tm tstruct;
+    char buf[40];
+    tstruct = *localtime(&now);
+    //format: HH:mm:ss
+    strftime(buf, sizeof(buf), "%X", &tstruct);
+    return buf;
+}
+std::string CustomGraphicsView::current_date(){
+        time_t now = time(nullptr);
+        struct tm tstruct;
+        char buf[40];
+        tstruct = *localtime(&now);
+        //format: day DD-MM-YYYY
+        strftime(buf, sizeof(buf), "%d-%m-%Y", &tstruct);
+        return buf;
+    }
+bool CustomGraphicsView::exists_file (const std::string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+  }
+void CustomGraphicsView::CreateLogFile(){
+    FILE* pFile;
+    if(exists_file(_file)){
+        pFile = fopen(_file.c_str(), "w");
+    }else{
+        pFile = fopen(_file.c_str(), "a");
+    }
+
+    fprintf(pFile, "%s\n",current_time().c_str());
+    fclose(pFile);
 }

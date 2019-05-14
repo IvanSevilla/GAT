@@ -22,47 +22,18 @@
 #include <fstream>
 
 
-class GaGraphicsView : public QGraphicsView
+class CustomGraphicsView : public QGraphicsView
 {
 
 public:
-    explicit GaGraphicsView(QWidget *parent = 0);
+    explicit CustomGraphicsView(QWidget *parent = 0);
     typedef enum {ADD,DEL,JOIN,SPLIT,MOVE,NONE} ACTION;
     int current;
-    std::string _file ="logFile"+current_date()+".txt";
-    std::string current_time(){
-        time_t now = time(NULL);
-        struct tm tstruct;
-        char buf[40];
-        tstruct = *localtime(&now);
-        //format: HH:mm:ss
-        strftime(buf, sizeof(buf), "%X", &tstruct);
-        return buf;
-    }
-    std::string current_date(){
-        time_t now = time(0);
-        struct tm tstruct;
-        char buf[40];
-        tstruct = *localtime(&now);
-        //format: day DD-MM-YYYY
-        strftime(buf, sizeof(buf), "%d-%m-%Y", &tstruct);
-        return buf;
-    }
-    inline bool exists_file (const std::string& name) {
-      struct stat buffer;
-      return (stat (name.c_str(), &buffer) == 0);
-    }
-    void CreateLogFile(){
-        FILE* pFile;
-        if(exists_file(_file)){
-            pFile = fopen(_file.c_str(), "w");
-        }else{
-            pFile = fopen(_file.c_str(), "a");
-        }
-
-        fprintf(pFile, "%s\n",current_time().c_str());
-        fclose(pFile);
-    }
+    std::string _file;
+    std::string current_time();
+    std::string current_date();
+    bool exists_file (const std::string& name);
+    void CreateLogFile();
     void WriteLogFile(const char* szString)
     {
       FILE* pFile = fopen(_file.c_str(), "a");
@@ -103,11 +74,14 @@ public:
         if(position <= _color.size())
             _color.replace(position,_new);
     }
+    QColor getGroupColor(int group){
+        return _color.at(group);
+    }
     QColor getCurrentColor(){
         return _color.value(current);
     }
     QList<CustomElipse*>* getPolilines(int _group){
-        return poliLines.value(_group);
+        return poliLines.at(_group);
     }
     QList<CustomElipse*>* getCurrentGroupPolilines(){
         return poliLines.value(current);
@@ -117,9 +91,7 @@ public:
     }
 
     void removeLastPoint(){
-        //qDebug()<<groups.first().data()->childItems().last();
         if(scene->items().size() > 16){
-            //qDebug()<<scene->items();
 
             while(!scene->items().contains(lastItems.top().point) && lastItems.top().a == ADD){
                 lastItems.pop();
@@ -127,11 +99,9 @@ public:
             redoItems.push(lastItems.pop());
 
 
-            //qDebug()<<redoItems.top().a;
             switch (redoItems.top().a) {
             case DEL:
                 WriteLogFile("UNDO DELETE");
-                //qDebug()<<redoItems.top().point->hasInitLine();
                 scene->addItem(redoItems.top().point);
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 if(redoItems.top().point->hasInitLine()){
@@ -220,13 +190,9 @@ public:
                 break;
             case ADD:
                 WriteLogFile("REDO ADD");
-                //scene->removeItem(redoItems.top().point->getFinalLine());
-                //scene->removeItem(redoItems.top().point);
-                //qDebug()<<d.point->hasInitLine();
                 scene->addItem(redoItems.top().point);
                 scene->addItem(redoItems.top().point->getFinalLine());
 
-                //qDebug()<<scene->items().first();
                 redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
                 redoItems.top().g->addToGroup(redoItems.top().point);
                 lastItems.push(redoItems.pop());
@@ -284,12 +250,17 @@ public:
         }
         return 8;
     }
+    QSharedPointer<QGraphicsItemGroup> getGroup(int number){
+        return groups.at(number);
+    }
+    void addPolylineGroup(int group, CustomElipse*poly){
+        poliLines.at(group)->push_back(poly);
+    }
 signals:
 void sendMousePoint(QPointF point);
 
 public slots:
 void mousePressEvent(QMouseEvent * e);
-//void mouseReleaseEvent(QMouseEvent * e);
 void mouseMoveEvent(QMouseEvent * e);
 
 private:
@@ -303,7 +274,6 @@ QBrush brusherase;
 QList<QSharedPointer<QGraphicsItemGroup>> groups;
 QList<CustomElipse*> lastPoints;
 QList<QList<CustomElipse*>*> poliLines;
-//GROUP actualGroup;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QSharedPointer<QGraphicsItemGroup> group;
