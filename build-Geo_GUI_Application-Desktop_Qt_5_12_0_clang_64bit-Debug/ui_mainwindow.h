@@ -45,6 +45,8 @@ public:
     QAction *actionDelete_Matrix_2;
     QAction *actionMiniMap;
     QAction *actionDelete_Poliline;
+    QAction *actionNext_Image;
+    QAction *actionPrevious_Image;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout_9;
     QHBoxLayout *horizontalLayout_7;
@@ -135,6 +137,10 @@ public:
         actionMiniMap->setChecked(false);
         actionDelete_Poliline = new QAction(MainWindow);
         actionDelete_Poliline->setObjectName(QString::fromUtf8("actionDelete_Poliline"));
+        actionNext_Image = new QAction(MainWindow);
+        actionNext_Image->setObjectName(QString::fromUtf8("actionNext_Image"));
+        actionPrevious_Image = new QAction(MainWindow);
+        actionPrevious_Image->setObjectName(QString::fromUtf8("actionPrevious_Image"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout_9 = new QHBoxLayout(centralWidget);
@@ -577,6 +583,8 @@ public:
         menuEdit->addSeparator();
         menuEdit->addAction(actionDelete_Poliline);
         menuView->addAction(actionMiniMap);
+        menuView->addAction(actionNext_Image);
+        menuView->addAction(actionPrevious_Image);
         mainToolBar->addAction(actionAdd_Image);
 
         retranslateUi(MainWindow);
@@ -599,6 +607,8 @@ public:
         actionDelete_Matrix_2->setText(QApplication::translate("MainWindow", "Delete Matrix", nullptr));
         actionMiniMap->setText(QApplication::translate("MainWindow", "MiniMap", nullptr));
         actionDelete_Poliline->setText(QApplication::translate("MainWindow", "Delete Poliline", nullptr));
+        actionNext_Image->setText(QApplication::translate("MainWindow", "Next Image", nullptr));
+        actionPrevious_Image->setText(QApplication::translate("MainWindow", "Previous Image", nullptr));
 #ifndef QT_NO_TOOLTIP
         Btn_Zoom_In->setToolTip(QString());
 #endif // QT_NO_TOOLTIP

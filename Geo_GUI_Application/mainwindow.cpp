@@ -61,7 +61,7 @@ void MainWindow::on_actionLoad_Project_triggered()
 }
 void MainWindow::saveFile(){
     qDebug()<<project.dump().c_str();
-    _pm.saveProject(filename+"project.json",project);
+    _pm.saveProject(filename,project);
     saveSubproject();
 }
 void MainWindow::openProject(){
@@ -69,7 +69,6 @@ void MainWindow::openProject(){
     filename = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
     if(filename != ""){
         if(!project.empty()){
-            saveFile();
             project.clear();
             subproject.clear();
         }
@@ -85,18 +84,28 @@ void MainWindow::saveSubproject()
 {
     for(int j = 0; j<MAX_GROUPS;j++){
         QList<CustomElipse*>* _list = edit->getPolilines(j);
+        qDebug()<<_list->isEmpty();
+
         if(!_list->empty()){
             for (int i = 0; i<_list->length();i++){
+                qDebug()<<i;
                 CustomElipse* _last = _list->value(i);
                 QList<std::array<qreal,2>> _savedpoints;
+                qDebug()<<_last->hasFinalLine();
                 while(_last->hasFinalLine()){
+                    qDebug()<<_last->getCenter().x()<<" "<<_last->getCenter().y();
                     std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
                     _savedpoints.push_back(_a);
                     _last= _last->getFinalLine()->getInit();
                 }
                 std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
                 _savedpoints.push_back(_a);
+
+                if(!subproject["polylines"]["group"+std::to_string(j)]["line"+std::to_string(i)].empty()){
+                    subproject.at("polylines").at("group"+std::to_string(j)).clear();
+                }
                 subproject["polylines"]["group"+std::to_string(j)]["line"+std::to_string(i)] = _savedpoints.toStdList();
+
             }
         }else{
             subproject["polylines"]["group"+std::to_string(j)] ={};
@@ -109,6 +118,7 @@ void MainWindow::saveSubproject()
     }else{
         _filename += "/subproject"+std::to_string(this->currentSubproject)+".json";
     }
+    qDebug()<<subproject.dump().c_str();
     _pm.saveProject(QString(_filename.c_str()),subproject);
 
 }
@@ -157,22 +167,26 @@ qDebug()<<"_filename";
 #endif
         QFileInfo _dir(filename);
         project["0"]=_dir.absolutePath().toStdString()+"/subproject0.json";
+        filename+="/project.json";
+        currentSubproject = 0;
         }
 
         if(subproject.empty()){
             createSubproject(image_name);
-
+            currentSubproject = 0;
         }else{
             saveSubproject();
             QFileInfo _directory(filename);
             project[std::to_string(currentSubproject)] =_directory.absolutePath().toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
             if(filename != "")saveFile();
-            currentSubproject++;
+            qDebug()<<currentSubproject;
+
+
             createSubproject(image_name);
+            currentSubproject = static_cast<int>(project.size());
+            qDebug()<<currentSubproject;
             project[std::to_string(currentSubproject)] = _directory.absolutePath().toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
-            scene->clear();
-            edit->getScene()->clear();
-            edit->getAllPolilines().clear();
+
         }
 
         openImage(image_name);
@@ -182,10 +196,21 @@ qDebug()<<"_filename";
 
 void MainWindow::openImage(QString image_name){
     if(image){
+        scene->removeItem(proxyedit);
+        edit->clear();
         delete(proxyedit);
         scene->clear();
+
+        this->ui->Btn_Edit->setChecked(false);
+        this->ui->Btn_Add_Point->setChecked(false);
+        this->ui->Btn_Del_Point->setChecked(false);
+        this->ui->Btn_Move->setChecked(false);
+
+
     }else{
         image = true;
+
+
     }
 
     QMessageBox::information(this,"..",image_name);
@@ -193,28 +218,29 @@ void MainWindow::openImage(QString image_name){
     minipix.load(image_name);
     scene->addPixmap(pix);
     scene->setSceneRect(pix.rect());
-
-
     ui->graphicsView->setScene(scene);
+
     edit = new CustomGraphicsView();
     deledit = true;
     proxyedit = new QGraphicsProxyWidget();
 
+    QVBoxLayout *layoutedit = new QVBoxLayout(edit);
+    layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
+    //probar anidar
     edit->setGeometry(pix.rect());
+
     edit->CreateLogFile();
     edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
     edit->setSceneG(editscene);
     edit->setToggle(false);
     edit->setAttribute(Qt::WA_AcceptTouchEvents);
     edit->setUpdater(ui->showPolilines);
-    QVBoxLayout *layoutedit = new QVBoxLayout(edit);
-    layoutedit->setAlignment(Qt::AlignRight | Qt::AlignTop);
-    //probar anidar
+    ui->centralWidget->setMouseTracking(true);
+    edit->setToggle(true);
     proxyedit->setAcceptTouchEvents(true);
     proxyedit->setWidget(edit);
     scene->addItem(proxyedit);
-    ui->centralWidget->setMouseTracking(true);
-    edit->setToggle(true);
+
     if(!subproject.empty()){
         for(int i = 0; i<MAX_GROUPS;i++){
             std::string g = "group"+std::to_string(i);
@@ -224,8 +250,12 @@ void MainWindow::openImage(QString image_name){
                     QMessageBox::information(this,"..",std::to_string(subproject.at("polylines").at(g).at("line"+std::to_string(_i)).size()).c_str());
                     auto a = subproject.at("polylines").at(g).at("line"+std::to_string(_i));
                     CustomElipse* last;
+                    CustomElipse* poli;
+                    qDebug()<<i;
                     for(u_long k = 0; k<a.size();k++){
                         CustomElipse* _ce = new CustomElipse();
+
+                        qDebug()<<a[k][0].get<qreal>()<<" "<<a[k][1].get<qreal>();
                         QPoint _point(a[k][0].get<qreal>(),a[k][1].get<qreal>());
                         _ce->setCenter(_point);
                         _ce->setPen(QPen(edit->getGroupColor(i)));
@@ -238,7 +268,7 @@ void MainWindow::openImage(QString image_name){
                         edit->getScene()->addItem(_ce);
                         edit->getGroup(i).data()->addToGroup(_ce);
                         if(k == 0){
-                            edit->addPolylineGroup(i,_ce);
+                            poli = _ce;
                             last = _ce;
                         }else{
                             CustomLine* _li = new CustomLine();
@@ -258,6 +288,7 @@ void MainWindow::openImage(QString image_name){
                             }
                         }
 
+                     edit->addPolylineGroup(i,poli);
 
                     }
                 }
@@ -317,6 +348,24 @@ void MainWindow::on_Btn_Zoom_Out_clicked()
 void MainWindow::setMousePoint (QPointF point){
 
 };
+void MainWindow::createSubproject(QString image){
+    QFileInfo _f(filename);
+    QFileInfo _im(image);
+    _img.load(image);
+    QDir _d(_f.absolutePath());
+    if(!_d.exists("assets"))_d.mkdir("assets");
+    subproject["image"] = _f.absolutePath().toStdString()+"/assets/"+_im.fileName().toStdString();
+    _img.save(subproject.at("image").get<std::string>().c_str());
+    subproject["matrix"] = "";
+    subproject["calibration"] = "";
+    if(!_d.exists("matrix"))_d.mkdir("matrix");
+    if(!_d.exists("calibration"))_d.mkdir("calibration");
+    subproject["pointcloud"] = "";
+    subproject["polylines"] = {};
+    for(int i = 0; i<MAX_GROUPS;i++){
+        subproject["polylines"]["group"+std::to_string(i)] = {};
+    }
+}
 
 void MainWindow::on_Btn_Del_Point_clicked()
 {
@@ -723,8 +772,47 @@ void MainWindow::on_actionNewProject_triggered()
         if(save)saveFile();
     }
     project.clear();
-    project["0"]="../../../subproject0.json";
+    edit->clear();
+    scene->removeItem(proxyedit);
+    delete(proxyedit);
+    scene->clear();
+    std::string _filename;
+#if defined(_WIN32) || defined(_WIN64)
+_filename = "C:/Documents/GATProjects/Project"
+if(QDir(_filename)){
 
+}
+#endif
+#if defined(__unix) || defined(__unix__)
+#endif
+#if defined( __APPLE__ ) || defined(__MACH__)
+    _filename = "../../../../GATProjects";
+    QDir _directory(".");
+    if(!_directory.exists(_filename.c_str())){
+        _directory.mkdir(_filename.c_str());
+    }
+    _filename+="/Project";
+        if(!_directory.exists(_filename.c_str())){
+            _directory.mkdir(_filename.c_str());
+            _filename+="/";
+            filename = _filename.c_str();
+        }else{
+            for(int i = 0;;i++){
+                std::string _pr = _filename+std::to_string(i);
+                if(!_directory.exists(_pr.c_str())){
+                    _directory.mkdir(_pr.c_str());
+                    _filename=_pr+"/";
+                    filename = _filename.c_str();
+                    break;
+            }
+        }
+        }
+#endif
+#ifdef __linux__
+qDebug()<<"_filename";
+#endif
+    project["0"]=_filename+"subproject0.json";
+    filename += "project.json";
 }
 
 
@@ -781,3 +869,55 @@ bool Dialog::warningMessage()
 
 }
 
+
+void MainWindow::on_actionNext_Image_triggered()
+{
+    if(image){
+        qDebug()<<currentSubproject;
+        if((currentSubproject+1) < static_cast<int>(project.size())){
+            qDebug()<<"next";
+            qDebug()<<editscene->items();
+            saveSubproject();
+            qDebug()<<"saved";
+            currentSubproject++;
+            subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
+            openImage(subproject.at("image").get<std::string>().c_str());
+        }
+    }
+}
+
+void MainWindow::on_actionPrevious_Image_triggered()
+{
+    if(image){
+        qDebug()<<currentSubproject;
+        if((currentSubproject-1) >= 0){
+            qDebug()<<"previous";
+            qDebug()<<currentSubproject;
+            saveSubproject();
+            currentSubproject--;
+            qDebug()<<currentSubproject;
+            subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
+            openImage(subproject.at("image").get<std::string>().c_str());
+        }
+    }
+}
+
+void MainWindow::on_actionAdd_Matrix_triggered()
+{
+    if(image){
+      if(subproject.at("matrix").get<std::string>()!= ""){
+        glm::mat4 _test = _pm.readMatrix(subproject.at("matrix").get<std::string>().c_str());
+        qDebug()<<_test[0][0];
+      }
+    }
+
+}
+
+void MainWindow::on_actionAdd_Calibration_triggered()
+{
+    if(image){
+        if(subproject.at("calibration").get<std::string>()!= "")
+            glm::mat4 _test = _pm.readCalibrationMatrix(subproject.at("calibration").get<std::string>().c_str());
+    }
+
+}

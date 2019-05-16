@@ -4,10 +4,13 @@
 
 #include <QString>
 #include <iostream>
+#include <fstream>
 #include <QDir>
+#include <QDebug>
 #include <unistd.h>
 #include <string>
-#include <fstream>
+
+#include "glm/glm.hpp"
 #include "nholmann/json.hpp"
 
 using json = nlohmann::json;
@@ -19,6 +22,8 @@ public:
 
     void saveProject(QString filename,json project);
     void saveSubproject(QString filename, json subproject, int _count);
+    glm::mat4 readMatrix(QString matrixFile);
+    glm::mat4 readCalibrationMatrix(QString calibFile);
     ~ProjectManager();
 };
 

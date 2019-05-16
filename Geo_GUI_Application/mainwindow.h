@@ -12,7 +12,6 @@
 #include <QGraphicsProxyWidget>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <iostream>
 #include <QList>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -20,9 +19,6 @@
 #include "gagraphicsview.h"
 #include "projectmanager.h"
 
-#include "nholmann/json.hpp"
-
-using json = nlohmann::json;
 
 
 namespace Ui {
@@ -48,21 +44,7 @@ public:
     void openImage(QString image_name);
     QString filename = "";
     void saveFile();
-    void createSubproject(QString image){
-        QFileInfo _f(filename);
-        QFileInfo _im(image);
-        _img.load(image);
-        QDir _d(_f.absolutePath());
-        if(!_d.exists("assets"))_d.mkdir("assets");
-        subproject["image"] = _f.absolutePath().toStdString()+"/assets/"+_im.fileName().toStdString();
-        _img.save(subproject.at("image").get<std::string>().c_str());
-        subproject["matrix"] = "";
-        subproject["pointcloud"] = "";
-        subproject["polylines"] = {};
-        for(int i = 0; i<MAX_GROUPS;i++){
-            subproject["polylines"]["group"+std::to_string(i)] = {};
-        }
-    }
+    void createSubproject(QString image);
     void saveSubproject();
 private slots:
     void on_actionLoad_Project_triggered();
@@ -128,6 +110,14 @@ private slots:
     void on_actionSave_Project_triggered();
 
     void on_actionNewProject_triggered();
+
+    void on_actionNext_Image_triggered();
+
+    void on_actionPrevious_Image_triggered();
+
+    void on_actionAdd_Matrix_triggered();
+
+    void on_actionAdd_Calibration_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -6,7 +6,6 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QGraphicsEllipseItem>
 #include <QMouseEvent>
 #include <QStack>
 #include <QDebug>
@@ -255,6 +254,27 @@ public:
     }
     void addPolylineGroup(int group, CustomElipse*poly){
         poliLines.at(group)->push_back(poly);
+    }
+    void clear(){
+        up_btn = nullptr;
+        int _ps = poliLines.size();
+        for(int i =_ps;i>0;i--){
+            QList<CustomElipse*>* _aux = poliLines.back();
+            poliLines.pop_back();
+            _aux->clear();
+            delete(_aux);
+        }
+        QList<QGraphicsItem*> _l = scene->items();
+        for(QGraphicsItem* qg:_l){
+            if(QGraphicsItemGroup* qgp = dynamic_cast<QGraphicsItemGroup*>(qg)){
+
+            }else{
+                scene->removeItem(qg);
+                delete(qg);
+            }
+
+        }
+        _l = scene->items();
     }
 signals:
 void sendMousePoint(QPointF point);

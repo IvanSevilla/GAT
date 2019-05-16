@@ -2,6 +2,7 @@
 #define CUSTOMELIPSE_H
 
 #include <QGraphicsEllipseItem>
+#include <QGraphicsLineItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QtDebug>
 #include <QPen>
