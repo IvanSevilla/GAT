@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <unistd.h>
 #include <string>
+#include <QtMath>
 
 #include "glm/glm.hpp"
 #include "nholmann/json.hpp"
@@ -23,7 +24,7 @@ public:
     void saveProject(QString filename,json project);
     void saveSubproject(QString filename, json subproject, int _count);
     glm::mat4 readMatrix(QString matrixFile);
-    glm::mat4 readCalibrationMatrix(QString calibFile);
+    glm::mat4 readCalibrationMatrix(QString calibFile,int _imWidth,int _imHeight);
     ~ProjectManager();
 };
 

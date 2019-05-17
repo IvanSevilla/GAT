@@ -25,7 +25,7 @@ CustomGraphicsView::CustomGraphicsView(QWidget *parent) :
     this->setToggle(false);
     this->setPaint(false);
     for(int i = 0; i<MAX_GROUPS;i++){
-        groups.push_back(QSharedPointer<QGraphicsItemGroup>(new QGraphicsItemGroup()));
+        groups.push_back(new QGraphicsItemGroup());
     }
     group = groups.first();
     for(int i = 0; i<MAX_GROUPS;i++){
@@ -97,7 +97,13 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
             d.point = it;
             d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
             lastItems.push(d);
-            redoItems.clear();
+            int _i = redoItems.length();
+            for(int i =_i;i>0;i-- ){
+                DoneAction _d = redoItems.pop();
+                if(_d.a == ADD){
+                    delete(_d.point);
+                }
+            }
 
             }
         }
@@ -202,9 +208,9 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     _l->getFinal()->setFinalLine(li);
                     _l->setFinal(_e);
                     scene->addItem(li);
-                    groups.value(getNumber(_l)).data()->addToGroup(li);
+                    groups.value(getNumber(_l))->addToGroup(li);
                     scene->addItem(_e);
-                    groups.value(getNumber(_l)).data()->addToGroup(_e);
+                    groups.value(getNumber(_l))->addToGroup(_e);
                     _e->setGroupNumber(getNumber(_e));
                     DoneAction d;
                     std::string log = "SPLIT LINE: " + std::to_string(pt.x()) + "," +std::to_string(pt.y());
@@ -307,9 +313,9 @@ void CustomGraphicsView::setGroup(int g){
 }
 void CustomGraphicsView::setGroupVisibility(int vis, bool bvis){
     if(!bvis){
-        groups.mid(vis,1).first().data()->hide();
+        groups.mid(vis,1).first()->hide();
     }else{
-        groups.mid(vis,1).first().data()->show();
+        groups.mid(vis,1).first()->show();
     }
 
 }

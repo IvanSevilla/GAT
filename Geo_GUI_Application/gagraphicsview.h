@@ -60,11 +60,11 @@ public:
     void setSceneG(QGraphicsScene* extsc){
         scene = extsc;
         this->setScene(scene);
-        for(QSharedPointer<QGraphicsItemGroup> g: groups){
+        for(QGraphicsItemGroup* g: groups){
             scene->addEllipse(0,0,1,1,QPen(Qt::transparent),QBrush(Qt::transparent));
-            g.data()->addToGroup(scene->items().first());
+            g->addToGroup(scene->items().first());
             g->setHandlesChildEvents(false);
-            scene->addItem(g.data());
+            scene->addItem(g);
         }
     }
     void setGroup(int g);
@@ -233,7 +233,7 @@ public:
     }
     int getNumber(CustomElipse* it){
         for(int i = 0; i<groups.size();i++){
-            if(groups.mid(i,1).first().data() == dynamic_cast<QGraphicsItemGroup*>(it->parentItem())){
+            if(groups.mid(i,1).first() == dynamic_cast<QGraphicsItemGroup*>(it->parentItem())){
                 return i;
 
             }
@@ -242,14 +242,14 @@ public:
     }
     int getNumber(CustomLine* _l){
         for(int i = 0; i<groups.size();i++){
-            if(groups.mid(i,1).first().data() == dynamic_cast<QGraphicsItemGroup*>(_l->parentItem())){
+            if(groups.mid(i,1).first() == dynamic_cast<QGraphicsItemGroup*>(_l->parentItem())){
                 return i;
 
             }
         }
         return 8;
     }
-    QSharedPointer<QGraphicsItemGroup> getGroup(int number){
+    QGraphicsItemGroup* getGroup(int number){
         return groups.at(number);
     }
     void addPolylineGroup(int group, CustomElipse*poly){
@@ -275,6 +275,17 @@ public:
 
         }
         _l = scene->items();
+        for(QGraphicsItem* qg:_l){
+            if(QGraphicsItemGroup* qgp = dynamic_cast<QGraphicsItemGroup*>(qg)){
+                scene->removeItem(qg);
+                delete(qg);
+            }
+
+        }
+        lastPoint = nullptr;
+        lastItems.clear();
+        redoItems.clear();
+
     }
 signals:
 void sendMousePoint(QPointF point);
@@ -291,12 +302,12 @@ QPen pen;
 QPen penerase;
 QBrush brush;
 QBrush brusherase;
-QList<QSharedPointer<QGraphicsItemGroup>> groups;
+QList<QGraphicsItemGroup*> groups;
 QList<CustomElipse*> lastPoints;
 QList<QList<CustomElipse*>*> poliLines;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
-QSharedPointer<QGraphicsItemGroup> group;
+QGraphicsItemGroup* group;
 CustomElipse * lastPoint;
 QList<QColor> _color;
 QPushButton* up_btn;

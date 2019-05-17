@@ -15,7 +15,8 @@
 #include <QList>
 #include <QListWidget>
 #include <QListWidgetItem>
-#include <QSharedPointer>
+#include <QApplication>
+#include <QProcess>
 #include "gagraphicsview.h"
 #include "projectmanager.h"
 

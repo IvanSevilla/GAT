@@ -213,7 +213,6 @@ void MainWindow::openImage(QString image_name){
 
     }
 
-    QMessageBox::information(this,"..",image_name);
     pix.load(image_name);
     minipix.load(image_name);
     scene->addPixmap(pix);
@@ -247,7 +246,6 @@ void MainWindow::openImage(QString image_name){
             if(!subproject.at("polylines").at(g).empty()){
                 u_long size = subproject.at("polylines").at(g).size();
                 for(u_long _i = 0;_i<size; _i++){
-                    QMessageBox::information(this,"..",std::to_string(subproject.at("polylines").at(g).at("line"+std::to_string(_i)).size()).c_str());
                     auto a = subproject.at("polylines").at(g).at("line"+std::to_string(_i));
                     CustomElipse* last;
                     CustomElipse* poli;
@@ -266,7 +264,10 @@ void MainWindow::openImage(QString image_name){
                         _ce->setFlag(QGraphicsItem::ItemIsSelectable,true);
                         _ce->setFlag(QGraphicsItem::ItemClipsToShape,true);
                         edit->getScene()->addItem(_ce);
-                        edit->getGroup(i).data()->addToGroup(_ce);
+                        edit->getGroup(i)->addToGroup(_ce);
+                        _ce->setCenter(_point);
+                        _ce->setX(a[k][0].get<qreal>());
+                        _ce->setX(a[k][1].get<qreal>());
                         if(k == 0){
                             poli = _ce;
                             last = _ce;
@@ -278,7 +279,7 @@ void MainWindow::openImage(QString image_name){
                             last->setInitLine(_li);
                             _ce->setFinalLine(_li);
                             edit->getScene()->addItem(_li);
-                            edit->getGroup(i).data()->addToGroup(_li);
+                            edit->getGroup(i)->addToGroup(_li);
                             if(k == a.size()-1){
 
                                 last = nullptr;
@@ -680,8 +681,8 @@ void MainWindow::on_showPolilines_clicked(bool checked)
 void MainWindow::on_actionDelete_Poliline_triggered()
 {
     if(image){
-            Dialog* _d = new Dialog();
-            bool _dp = _d->questionMessage("This action cannot be undone");
+            Dialog _d;
+            bool _dp = _d.questionMessage("This action cannot be undone");
             if(_dp){
                     QString _log = "DELETE POLILINE NUM: ";
                     _log = _log + ui->polilines->currentItem()->whatsThis();
@@ -769,13 +770,11 @@ void MainWindow::on_actionNewProject_triggered()
     if(!project.empty()){
         Dialog d;
         bool save = d.warningMessage();
-        if(save)saveFile();
+        if(save){
+            saveFile();
+        }
+        project.clear();
     }
-    project.clear();
-    edit->clear();
-    scene->removeItem(proxyedit);
-    delete(proxyedit);
-    scene->clear();
     std::string _filename;
 #if defined(_WIN32) || defined(_WIN64)
 _filename = "C:/Documents/GATProjects/Project"
@@ -876,12 +875,12 @@ void MainWindow::on_actionNext_Image_triggered()
         qDebug()<<currentSubproject;
         if((currentSubproject+1) < static_cast<int>(project.size())){
             qDebug()<<"next";
-            qDebug()<<editscene->items();
             saveSubproject();
             qDebug()<<"saved";
             currentSubproject++;
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
             openImage(subproject.at("image").get<std::string>().c_str());
+            qDebug()<<editscene->items();
         }
     }
 }
@@ -893,11 +892,13 @@ void MainWindow::on_actionPrevious_Image_triggered()
         if((currentSubproject-1) >= 0){
             qDebug()<<"previous";
             qDebug()<<currentSubproject;
+
             saveSubproject();
             currentSubproject--;
             qDebug()<<currentSubproject;
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
             openImage(subproject.at("image").get<std::string>().c_str());
+            qDebug()<<editscene->items();
         }
     }
 }
@@ -907,7 +908,6 @@ void MainWindow::on_actionAdd_Matrix_triggered()
     if(image){
       if(subproject.at("matrix").get<std::string>()!= ""){
         glm::mat4 _test = _pm.readMatrix(subproject.at("matrix").get<std::string>().c_str());
-        qDebug()<<_test[0][0];
       }
     }
 
@@ -917,7 +917,7 @@ void MainWindow::on_actionAdd_Calibration_triggered()
 {
     if(image){
         if(subproject.at("calibration").get<std::string>()!= "")
-            glm::mat4 _test = _pm.readCalibrationMatrix(subproject.at("calibration").get<std::string>().c_str());
+            glm::mat4 _test = _pm.readCalibrationMatrix(subproject.at("calibration").get<std::string>().c_str(),pix.width(),pix.height());
     }
 
 }
