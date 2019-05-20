@@ -168,7 +168,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-
-
+macx {
+CONFIG += link_pkgconfig
+PKGCONFIG += eigen3
+LIBS += -L/usr/local/Cellar/pcl/1.9.1_4/lib
+INCLUDEPATH += /usr/local/Cellar/pcl/1.9.1_4/include/pcl-1.9
+}
 RESOURCES += \
     assets.qrc
