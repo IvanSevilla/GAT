@@ -13,5 +13,8 @@
         <file>assets/undo.svg</file>
         <file>assets/image-plus.svg</file>
         <file>assets/file-plus.svg</file>
+        <file>assets/file-download-alt.svg</file>
+        <file>assets/file-plus-alt.svg</file>
+        <file>assets/file-upload-alt.svg</file>
     </qresource>
 </RCC>

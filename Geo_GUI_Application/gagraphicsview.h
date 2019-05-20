@@ -267,7 +267,7 @@ public:
         QList<QGraphicsItem*> _l = scene->items();
         for(QGraphicsItem* qg:_l){
             if(QGraphicsItemGroup* qgp = dynamic_cast<QGraphicsItemGroup*>(qg)){
-
+                qgp=nullptr;
             }else{
                 scene->removeItem(qg);
                 delete(qg);

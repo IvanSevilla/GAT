@@ -190,7 +190,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                 CustomLine * _l = dynamic_cast<CustomLine*>(itemToRemove);
 
                 if(_l->hasFinal()){
-                    qDebug()<<_l->getFinal()->getCenter();
+                    //qDebug()<<_l->getFinal()->getCenter();
                     CustomElipse* _e = new CustomElipse();
                     _e->setPen(QPen(_color.value(getNumber(_l))));
                     _e->setBrush(QBrush(_color.value(getNumber(_l))));

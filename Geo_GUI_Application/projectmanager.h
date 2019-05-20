@@ -1,3 +1,4 @@
+
 #ifndef PROJECTMANAGER_H
 #define PROJECTMANAGER_H
 
