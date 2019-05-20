@@ -84,23 +84,27 @@ void MainWindow::saveSubproject()
 {
     for(int j = 0; j<MAX_GROUPS;j++){
         QList<CustomElipse*>* _list = edit->getPolilines(j);
-        qDebug()<<_list->isEmpty();
+        qDebug()<<_list->size();
 
         if(!_list->empty()){
             for (int i = 0; i<_list->length();i++){
                 qDebug()<<i;
-                CustomElipse* _last = _list->value(i);
+                CustomElipse* _last = _list->at(i);
                 QList<std::array<qreal,2>> _savedpoints;
-                qDebug()<<_last->hasFinalLine();
+                //qDebug()<<_last->hasFinalLine();
                 while(_last->hasFinalLine()){
+                    qDebug()<<_last->hasFinalLine();
                     qDebug()<<_last->getCenter().x()<<" "<<_last->getCenter().y();
                     std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
                     _savedpoints.push_back(_a);
                     _last= _last->getFinalLine()->getInit();
                 }
                 std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
+                _last = nullptr;
                 _savedpoints.push_back(_a);
-
+                for(std::array<qreal,2> l:_savedpoints){
+                    qDebug()<<l.at(0)<<" "<<l.at(1);
+                }
                 if(!subproject["polylines"]["group"+std::to_string(j)]["line"+std::to_string(i)].empty()){
                     subproject.at("polylines").at("group"+std::to_string(j)).clear();
                 }
@@ -120,6 +124,7 @@ void MainWindow::saveSubproject()
     }
     qDebug()<<subproject.dump().c_str();
     _pm.saveProject(QString(_filename.c_str()),subproject);
+
 
 }
 
@@ -248,7 +253,6 @@ void MainWindow::openImage(QString image_name){
                 for(u_long _i = 0;_i<size; _i++){
                     auto a = subproject.at("polylines").at(g).at("line"+std::to_string(_i));
                     CustomElipse* last;
-                    CustomElipse* poli;
                     qDebug()<<i;
                     for(u_long k = 0; k<a.size();k++){
                         CustomElipse* _ce = new CustomElipse();
@@ -265,31 +269,30 @@ void MainWindow::openImage(QString image_name){
                         _ce->setFlag(QGraphicsItem::ItemClipsToShape,true);
                         edit->getScene()->addItem(_ce);
                         edit->getGroup(i)->addToGroup(_ce);
-                        _ce->setCenter(_point);
-                        _ce->setX(a[k][0].get<qreal>());
-                        _ce->setX(a[k][1].get<qreal>());
                         if(k == 0){
-                            poli = _ce;
                             last = _ce;
+                            edit->addPolylineGroup(i,_ce);
                         }else{
                             CustomLine* _li = new CustomLine();
-                            _li->setFinal(_ce);
-                            _li->setInitial(last);
+                            _li->setFinal(last);
+                            _li->setInitial(_ce);
                             _li->setPen(QPen(edit->getGroupColor(i)));
-                            last->setInitLine(_li);
-                            _ce->setFinalLine(_li);
+                            _ce->setInitLine(_li);
+                            last->setFinalLine(_li);
                             edit->getScene()->addItem(_li);
                             edit->getGroup(i)->addToGroup(_li);
                             if(k == a.size()-1){
-
                                 last = nullptr;
                                 delete(last);
                             }else{
                                 last = _ce;
+                                _ce = nullptr;
+                                _li = nullptr;
                             }
                         }
 
-                     edit->addPolylineGroup(i,poli);
+
+
 
                     }
                 }
@@ -879,8 +882,9 @@ void MainWindow::on_actionNext_Image_triggered()
             qDebug()<<"saved";
             currentSubproject++;
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
+            qDebug()<<subproject.dump().c_str();
             openImage(subproject.at("image").get<std::string>().c_str());
-            qDebug()<<editscene->items();
+            //qDebug()<<editscene->items();
         }
     }
 }

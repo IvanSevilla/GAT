@@ -61,76 +61,75 @@ glm::mat4 ProjectManager::readCalibrationMatrix(QString calibFile,int _imWidth,i
     std::string frase;
     ficheroEntrada.open ( calibFile.toStdString().c_str() , std::ios::in);
        if (ficheroEntrada.is_open()) {
-           ulong _col = 0,_row = 0;
            int _fr = 0;
            QString _frase;
-           float phi,kappa,omega,Ycam,Zcam,Xcam,f,xpp,ypp,k1,k2,psx,psy,P1,P2,skew;
+           double phi,kappa,omega,Ycam,Zcam,Xcam,f,xpp,ypp,k1,k2,psx,psy,P1,P2,skew;
            while (! ficheroEntrada.eof() ) {
                getline (ficheroEntrada,frase);
                _frase = frase.c_str();
                switch(_fr){
                case 1:
-                   phi=_frase.toFloat();
+                   phi=_frase.toDouble();
                    _fr++;
                    break;
                case 2:
-                   kappa=_frase.toFloat();
+                   kappa=_frase.toDouble();
                    _fr++;
                    break;
                case 3:
-                   omega=_frase.toFloat();
+                   omega=_frase.toDouble();
                    _fr++;
                    break;
                case 4:
-                   Ycam=_frase.toFloat();
+                   Ycam=_frase.toDouble();
                    _fr++;
                    break;
                case 5:
-                   Zcam=_frase.toFloat();
+                   Zcam=_frase.toDouble();
                    _fr++;
                    break;
                case 6:
-                   Xcam=_frase.toFloat();
+                   Xcam=_frase.toDouble();
                    _fr++;
                    break;
                case 7:
-                   f=_frase.toFloat();
+                   f=_frase.toDouble();
                    _fr++;
                    break;
                case 8:
-                   xpp=_frase.toFloat();
+                   xpp=_frase.toDouble();
                    _fr++;
                    break;
                case 9:
-                   ypp=_frase.toFloat();
+                   ypp=_frase.toDouble();
                    _fr++;
                    break;
                case 10:
-                   k1=_frase.toFloat();
+                   k1=_frase.toDouble();
                    _fr++;
                    break;
                case 11:
-                   k2=_frase.toFloat();
+                   k2=_frase.toDouble();
                    _fr++;
                    break;
                case 12:
-                   psx=_frase.toFloat();
+                   psx=_frase.toDouble();
                    _fr++;
                    break;
                case 13:
-                   psy=_frase.toFloat();
+                   psy=_frase.toDouble();
                    _fr++;
                    break;
                case 15:
-                   P1=_frase.toFloat();
+                   P1=_frase.toDouble();
                    _fr++;
                    break;
                case 16:
-                   P2=_frase.toFloat();
+                   P2=_frase.toDouble();
                    _fr++;
                    break;
                case 17:
-                   skew=_frase.toFloat();
+                   skew=_frase.toDouble();
                    _fr++;
                    break;
                default:
@@ -149,19 +148,19 @@ glm::mat4 ProjectManager::readCalibrationMatrix(QString calibFile,int _imWidth,i
            psx = psx / 1000000;//15 mida de pixel x (micras/1000000)en metres
            psy = psy / 1000000; //16 mida de pixel y (micras/1000000)en metres
            // Calculs angle camera
-           omega = omega * ((2 * PI) / 360);
-           phi = phi * ((2 * Math.PI) / 360);
-           kappa = kappa * ((2 * Math.PI) / 360);
+           omega = omega * ((2 * M_PI) / 360);
+           phi = phi * ((2 * M_PI) / 360);
+           kappa = kappa * ((2 * M_PI) / 360);
            // Calculs angle camera
-           _matrix[0][0] = Math.Cos(phi) * Math.Cos(kappa);
-           _matrix[0][1] = -Math.Cos(phi) * Math.Sin(kappa);
-           _matrix[0][2] = Math.Sin(phi);
-           _matrix[1][0] = (Math.Cos(omega) * Math.Sin(kappa)) + (Math.Sin(omega) * Math.Sin(phi) * Math.Cos(kappa));
-           _matrix[1][1] = (Math.Cos(omega) * Math.Cos(kappa)) - (Math.Sin(omega) * Math.Sin(phi) * Math.Sin(kappa));
-           _matrix[1][2] = -Math.Sin(omega) * Math.Cos(phi);
-           _matrix[2][0] = (Math.Sin(omega) * Math.Sin(kappa)) - (Math.Cos(omega) * Math.Sin(phi) * Math.Cos(kappa));
-           _matrix[2][1] = (Math.Sin(omega) * Math.Cos(kappa)) + (Math.Cos(omega) * Math.Sin(phi) * Math.Sin(kappa));
-           _matrix[2][2] = Math.Cos(omega) * Math.Cos(phi);
+           _matrix[0][0] = qCos(phi) * qCos(kappa);
+           _matrix[0][1] = -qCos(phi) * qSin(kappa);
+           _matrix[0][2] = qSin(phi);
+           _matrix[1][0] = qCos(omega) * qSin(kappa) + (qSin(omega) * qSin(phi) * qCos(kappa));
+           _matrix[1][1] = (qCos(omega) * qCos(kappa)) - (qSin(omega) * qSin(phi) * qSin(kappa));
+           _matrix[1][2] = -qSin(omega) * qCos(phi);
+           _matrix[2][0] = (qSin(omega) * qSin(kappa)) - (qCos(omega) * qSin(phi) * qCos(kappa));
+           _matrix[2][1] = (qSin(omega) * qCos(kappa)) + (qCos(omega) * qSin(phi) * qSin(kappa));
+           _matrix[2][2] = qCos(omega) * qCos(phi);
        }
     return _matrix;
 }

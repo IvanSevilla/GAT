@@ -282,6 +282,13 @@ public:
             }
 
         }
+        _ps = poliLines.size();
+        for(int i =_ps;i>0;i--){
+            QList<CustomElipse*>* _aux = poliLines.back();
+            poliLines.pop_back();
+            _aux->clear();
+            delete(_aux);
+        }
         lastPoint = nullptr;
         lastItems.clear();
         redoItems.clear();
