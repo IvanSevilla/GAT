@@ -1,1 +1,25 @@
-{"calibration":"/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/calibration/calib.txt","image":"/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/assets/711jfrbnualx.jpg","matrix":"/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/matrix/matriu.txt","pointcloud":"","polylines":{"group0":{"line0":[[332.0,6.0]],"line1":[[332.0,6.0]],"line2":[[332.0,6.0]],"line3":[[464.0,-2.0],[491.0,-101.0],[432.0,-127.0]]},"group1":null,"group2":null,"group3":null,"group4":null,"group5":null,"group6":null,"group7":null}}
+{
+    "calibration": "/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/calibration/calib.txt",
+    "image": "/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/assets/711jfrbnualx.jpg",
+    "matrix": "/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/matrix/matriu.txt",
+    "pointcloud": "/Users/ivan/Documents/GitHub/TFG/GATProjects/Project/pointcloud/281116.txt",
+    "polylines": {
+        "group0": {
+            "line0": [
+                [332.0, 6.0]
+            ],
+            "line1": [
+                [464.0, -2.0],
+                [491.0, -101.0],
+                [432.0, -127.0]
+            ]
+        },
+        "group1": null,
+        "group2": null,
+        "group3": null,
+        "group4": null,
+        "group5": null,
+        "group6": null,
+        "group7": null
+    }
+}

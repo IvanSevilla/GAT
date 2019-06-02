@@ -21,17 +21,18 @@ MainWindow::MainWindow(QWidget *parent) :
     image = false;
     QTimer::singleShot(0, this, SLOT(showMaximized()));
 
-    ui->horizontalLayout_7->addWidget(ui->graphicsView);
-    ui->Btn_Do->setHidden(1);
-    ui->Btn_Undo->setHidden(1);
-    ui->Btn_Move->setHidden(1);
-    ui->Btn_Add_Point->setHidden(1);
-    ui->Btn_Del_Point->setHidden(1);
+    //ui->verticalLayout_5->addWidget(ui->graphicsView);
+    ui->Btn_Do->setDisabled(1);
+    ui->Btn_Undo->setDisabled(1);
+    ui->Btn_Move->setDisabled(1);
+    ui->Btn_Add_Point->setDisabled(1);
+    ui->Btn_Del_Point->setDisabled(1);
     ui->Btn_Zoom_In->setToolTip("Zoom In");
     ui->Btn_Edit->setToolTip("Edit");
     ui->Btn_Zoom_Out->setToolTip("Zoom Out");
     this->ui->polilines->setHidden(1);
     this->ui->labelPolilines->setHidden(1);
+
     scene = new QGraphicsScene(this);
     editscene = new QGraphicsScene(this);
 
@@ -103,9 +104,6 @@ void MainWindow::saveSubproject()
                 std::array<qreal,2> _a = {_last->getCenter().x(),_last->getCenter().y()};
                 _last = nullptr;
                 _savedpoints.push_back(_a);
-                for(std::array<qreal,2> l:_savedpoints){
-                    //qDebug()<<l.at(0)<<" "<<l.at(1);
-                }
                 if(!subproject["polylines"]["group"+std::to_string(j)]["line"+std::to_string(i)].empty()){
                     subproject.at("polylines").at("group"+std::to_string(j)).clear();
                 }
@@ -246,7 +244,13 @@ void MainWindow::openImage(QString image_name){
     scene->addPixmap(pix);
     scene->setSceneRect(pix.rect());
     ui->graphicsView->setScene(scene);
-
+    stereoScene= new QGraphicsScene();
+    ui->graphicsView_2->setScene(stereoScene);
+    stereoScene->addEllipse(0,0,260,260,QPen(QColor(175,175,175)),QBrush(QColor(175,175,175),Qt::SolidPattern));
+    stereoScene->addEllipse(120,130,8,8,QPen(QColor(228,26,28)),QBrush(QColor(228,26,28),Qt::SolidPattern));
+    stereoScene->addEllipse(125,125,8,8,QPen(QColor(228,26,28)),QBrush(QColor(228,26,28),Qt::SolidPattern));
+    stereoScene->addEllipse(100,230,8,8,QPen(QColor(55,126,184)),QBrush(QColor(55,126,184),Qt::SolidPattern));
+    stereoScene->addEllipse(125,225,8,8,QPen(QColor(55,126,184)),QBrush(QColor(55,126,184),Qt::SolidPattern));
     edit = new CustomGraphicsView();
     deledit = true;
     proxyedit = new QGraphicsProxyWidget();
@@ -281,7 +285,7 @@ void MainWindow::openImage(QString image_name){
                         CustomElipse* _ce = new CustomElipse();
 
                         //qDebug()<<a[k][0].get<qreal>()<<" "<<a[k][1].get<qreal>();
-                        QPoint _point(static_cast<int>(a[k][0].get<qreal>()),a[k][1].get<qreal>());
+                        QPoint _point(a[k][0].get<int>(),a[k][1].get<int>());
                         _ce->setCenter(_point);
                         _ce->setPen(QPen(edit->getGroupColor(i)));
                         _ce->setBrush(QBrush(edit->getGroupColor(i)));
@@ -338,11 +342,11 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
         if(checked){
             edit->setToggle(true);
             edit->setPaint(0);
-            ui->Btn_Do->setHidden(!checked);
-            ui->Btn_Undo->setHidden(!checked);
-            ui->Btn_Move->setHidden(!checked);
-            ui->Btn_Add_Point->setHidden(!checked);
-            ui->Btn_Del_Point->setHidden(!checked);
+            ui->Btn_Do->setEnabled(true);
+            ui->Btn_Undo->setEnabled(true);
+            ui->Btn_Move->setEnabled(true);
+            ui->Btn_Add_Point->setEnabled(true);
+            ui->Btn_Del_Point->setEnabled(true);
             ui->Btn_Do->setToolTip("Redo");
             ui->Btn_Undo->setToolTip("Undo");
             ui->Btn_Move->setToolTip("Move & Split");
@@ -352,11 +356,11 @@ void MainWindow::on_Btn_Edit_clicked(bool checked)
             ui->centralWidget->setMouseTracking(false);
             edit->setToggle(false);
             edit->setPaint(0);
-            ui->Btn_Do->setHidden(!checked);
-            ui->Btn_Undo->setHidden(!checked);
-            ui->Btn_Move->setHidden(!checked);
-            ui->Btn_Add_Point->setHidden(!checked);
-            ui->Btn_Del_Point->setHidden(!checked);
+            ui->Btn_Do->setDisabled(!checked);
+            ui->Btn_Undo->setDisabled(!checked);
+            ui->Btn_Move->setDisabled(!checked);
+            ui->Btn_Add_Point->setDisabled(!checked);
+            ui->Btn_Del_Point->setDisabled(!checked);
         }
     }else{
         ui->Btn_Edit->setChecked(false);
@@ -389,6 +393,7 @@ void MainWindow::createSubproject(QString image){
     if(!_d.exists("matrix"))_d.mkdir("matrix");
     if(!_d.exists("calibration"))_d.mkdir("calibration");
     subproject["pointcloud"] = "";
+    if(!_d.exists("pointcloud"))_d.mkdir("pointcloud");
     subproject["polylines"] = {};
     for(int i = 0; i<MAX_GROUPS;i++){
         subproject["polylines"]["group"+std::to_string(i)] = {};
@@ -918,6 +923,22 @@ void MainWindow::on_actionAdd_Calibration_triggered()
 
 }
 
+
+void MainWindow::on_actionAdd_Point_Cloud_triggered()
+{
+    if(image){
+        if(subproject.at("pointcloud").get<std::string>()!=""){
+            _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+        }
+    }
+}
+
+void MainWindow::on_actionClose_Project_triggered()
+{
+
+}
+
+
 // DIALOG
 Dialog::Dialog(QWidget *parent)
     : QWidget(parent){}
@@ -960,7 +981,7 @@ bool Dialog::questionMessage(const char* _message)
 bool Dialog::warningMessage()
 {
     QMessageBox msgBox(QMessageBox::Warning, tr("QMessageBox::warning()"),
-                       "Are you sure to continue?", 0, this);
+                       "Are you sure to continue?", nullptr, this);
     msgBox.addButton(tr("Not Save"), QMessageBox::AcceptRole);
     msgBox.addButton(tr("&Continue"), QMessageBox::RejectRole);
     if (msgBox.exec() == QMessageBox::AcceptRole)

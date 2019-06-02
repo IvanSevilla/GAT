@@ -143,8 +143,8 @@ glm::mat4 ProjectManager::readCalibrationMatrix(QString calibFile,int _imWidth,i
 
            ficheroEntrada.close();
            f = f / 1000; //distancia focal en metros
-           xpp = (xpp - (_imWidth/ 2)); // Punt Principal x (xpp-(nºpixels/2))en pixels*micras
-           ypp = (ypp - (_imHeight / 2)); // Punt Principal y (ypp-(nºpixels/2))en pixels*micras
+           xpp = (xpp - (_imWidth/ 2.0)); // Punt Principal x (xpp-(nºpixels/2))en pixels*micras
+           ypp = (ypp - (_imHeight / 2.0)); // Punt Principal y (ypp-(nºpixels/2))en pixels*micras
            psx = psx / 1000000;//15 mida de pixel x (micras/1000000)en metres
            psy = psy / 1000000; //16 mida de pixel y (micras/1000000)en metres
            // Calculs angle camera
@@ -164,5 +164,26 @@ glm::mat4 ProjectManager::readCalibrationMatrix(QString calibFile,int _imWidth,i
        }
     return _matrix;
 }
+void ProjectManager::readPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr data,QString filename){
+    std::fstream ficheroEntrada;
+    std::string frase;
+    QString _f;
+    float x,y,z;
+    ficheroEntrada.open ( filename.toStdString().c_str() , std::ios::in);
+       if (ficheroEntrada.is_open()) {
 
+           while (! ficheroEntrada.eof() ) {
+               getline (ficheroEntrada,frase);
+               _f = frase.c_str();
+               qDebug()<<_f;
+               QStringList _l=_f.split(" ");
+               x=_l[0].toFloat();
+               y=_l[1].toFloat();
+               z=_l[2].split("/r")[0].toFloat();
+               pcl::PointXYZ _pt(x,y,z);
+               data->push_back(_pt);
+           }
+       }
+    ficheroEntrada.close();
+}
 ProjectManager::~ProjectManager(){}

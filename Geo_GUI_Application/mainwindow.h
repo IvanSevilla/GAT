@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QMainWindow>
 #include <QString>
 #include <QFileDialog>
@@ -39,13 +38,19 @@ public:
     json subproject;
     // Objeto ProjectManager
     ProjectManager _pm;
-
-    void unSelectPoliline();
-    void openProject();
-    void openImage(QString image_name);
+    // Variable de nombre de archivo de tipo String
     QString filename = "";
+    // Metodo para deseleccionar polilinias
+    void unSelectPoliline();
+    // Metodo para abrir un proyecto
+    void openProject();
+    // Metodo para abrir una imagen
+    void openImage(QString image_name);
+    // Metodo para guardar un archivo
     void saveFile();
+    // Metodo para crear un Subproyecto
     void createSubproject(QString image);
+    // Metodo para guardar un Subproyecto
     void saveSubproject();
 private slots:
     void on_actionLoad_Project_triggered();
@@ -120,6 +125,11 @@ private slots:
 
     void on_actionAdd_Calibration_triggered();
 
+
+    void on_actionAdd_Point_Cloud_triggered();
+
+    void on_actionClose_Project_triggered();
+
 private:
     Ui::MainWindow *ui;
     int currentSubproject=0;
@@ -133,12 +143,14 @@ private:
     QGraphicsScene *scene;
     QGraphicsScene *miniscene;
     QGraphicsScene *editscene;
+    QGraphicsScene* stereoScene;
     QImage _img;
     bool deledit;
     bool delmini;
     bool image;
     QGraphicsProxyWidget *proxyedit;
     QGraphicsProxyWidget *proxymini;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr PointCloud;
 
 };
 class Dialog : public QWidget
