@@ -376,9 +376,6 @@ void MainWindow::on_Btn_Zoom_Out_clicked()
     if(image)this->ZoomOut(1/1.2,1/1.2);
 }
 
-void MainWindow::setMousePoint (QPointF point){
-
-};
 void MainWindow::createSubproject(QString image){
     QFileInfo _f(filename);
     QDir _dir(".");
@@ -838,7 +835,7 @@ void MainWindow::on_actionNewProject_triggered()
 #if defined(__unix) || defined(__unix__)
 #endif
 #if defined( __APPLE__ ) || defined(__MACH__)
-    _filename = "../../../../GATProjects";
+    _filename = "../../GATProjects";
     QDir _directory(".");
     if(!_directory.exists(_filename.c_str())){
         _directory.mkdir(_filename.c_str());

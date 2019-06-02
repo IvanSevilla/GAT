@@ -1,0 +1,4 @@
+/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles/rebuild_cache.dir
+/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles/edit_cache.dir
+/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles/Geo_GUI_Application.dir
+/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles/Geo_GUI_Application_autogen.dir

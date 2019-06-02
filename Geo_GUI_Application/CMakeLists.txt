@@ -5,23 +5,20 @@ project(Geo_App_Gui)
 # init_qt: Let's do the CMake job for us
 set(CMAKE_AUTOMOC ON) # For meta object compiler
 set(CMAKE_AUTORCC ON) # Resource files
-set(CMAKE_AUTOUIC ON) # UI files
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Find the QtWidgets library
-
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 find_package(VTK REQUIRED)
 find_package(PCL REQUIRED)
 add_definitions(${QT_DEFINITIONS})
+FIND_PROGRAM(QT_QMAKE_EXECUTABLE NAMES qmake qmake5 qmake-qt5 qmake-mac
+   DOC "The qmake executable for the Qt installation to use")
 # Fix a compilation bug under ubuntu 16.04 (Xenial)
-list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
-
 include_directories(${PCL_INCLUDE_DIRS})
+
 add_definitions(${PCL_DEFINITIONS})
 
 
@@ -74,11 +71,14 @@ set ( RESOURCES
  assets.qrc
 )
 
+qt5_wrap_ui(ui_wrap ${UIS})
+qt5_wrap_cpp(moc_sources ${MOC_HEADERS})
 #include_directory(.)
+include( ${VTK_USE_FILE} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-add_executable(Geo_GUI_Application ${SOURCES} assets.qrc)
-target_link_libraries (Geo_GUI_Application Qt5::Widgets)
-qt5_use_modules(Geo_GUI_Application Core Gui)
+add_executable(Geo_GUI_Application ${SOURCES} ${RESOURCES} ${ui_wrap} ${moc_sources})
+target_link_libraries (Geo_GUI_Application Qt5::Core Qt5::Widgets Qt5::Gui)
+qt5_use_modules(Geo_GUI_Application Core Gui Widgets)
 
 #FORMS += \
  #       mainwindow.ui

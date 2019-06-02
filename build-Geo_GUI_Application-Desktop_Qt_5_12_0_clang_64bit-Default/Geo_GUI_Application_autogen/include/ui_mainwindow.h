@@ -105,7 +105,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(820, 1039);
+        MainWindow->resize(440, 707);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -374,6 +374,16 @@ public:
         polilines->setMinimumSize(QSize(200, 100));
         polilines->setMaximumSize(QSize(60, 400));
         polilines->setBaseSize(QSize(50, 200));
+        polilines->setMouseTracking(true);
+        polilines->setFocusPolicy(Qt::StrongFocus);
+        polilines->setAcceptDrops(true);
+        polilines->setEditTriggers(QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::SelectedClicked);
+        polilines->setSelectionMode(QAbstractItemView::SingleSelection);
+        polilines->setSelectionBehavior(QAbstractItemView::SelectItems);
+        polilines->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
+        polilines->setHorizontalScrollMode(QAbstractItemView::ScrollPerItem);
+        polilines->setProperty("isWrapping", QVariant(false));
+        polilines->setUniformItemSizes(true);
         polilines->setBatchSize(100);
         polilines->setItemAlignment(Qt::AlignCenter);
 
@@ -630,7 +640,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 820, 22));
+        menuBar->setGeometry(QRect(0, 0, 440, 22));
         menuGEOApp = new QMenu(menuBar);
         menuGEOApp->setObjectName(QString::fromUtf8("menuGEOApp"));
         menuFile = new QMenu(menuBar);

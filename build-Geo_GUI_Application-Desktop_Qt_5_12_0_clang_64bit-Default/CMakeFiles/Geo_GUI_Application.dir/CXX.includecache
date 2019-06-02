@@ -490,18 +490,6 @@ QPen
 QSharedPointer
 -
 
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.cpp
-gagraphicsview.h
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.h
-mainwindow.h
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.h
-QPointF
--
-QDebug
--
-string.h
--
-
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.h
 QWidget
 -
@@ -900,12 +888,6 @@ core/setup.hpp
 ./core/_swizzle.hpp
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/glm/./core/_swizzle.hpp
 
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/main.cpp
-mainwindow.h
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.h
-QApplication
--
-
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.cpp
 mainwindow.h
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.h
@@ -1301,18 +1283,6 @@ pcl/point_types.h
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/pcl/point_types.h
 pcl/point_cloud.h
 /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/pcl/point_cloud.h
-
-/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Default/Geo_GUI_Application_autogen/EWIEGA46WW/moc_mainwindow.cpp
-../../../Geo_GUI_Application/mainwindow.h
-/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.h
-QtCore/qbytearray.h
--
-QtCore/qmetatype.h
--
-
-/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Default/Geo_GUI_Application_autogen/mocs_compilation.cpp
-EWIEGA46WW/moc_mainwindow.cpp
-/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Default/Geo_GUI_Application_autogen/EWIEGA46WW/moc_mainwindow.cpp
 
 /usr/local/include/boost/assert.hpp
 boost/config.hpp

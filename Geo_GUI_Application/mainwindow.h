@@ -135,7 +135,6 @@ private:
     int currentSubproject=0;
     void ZoomOut(double h, double w);
     void ZoomIn(double h, double w);
-    void setMousePoint (QPointF point);
     CustomGraphicsView* edit;
     QGraphicsView* minimap;
     QPixmap pix;

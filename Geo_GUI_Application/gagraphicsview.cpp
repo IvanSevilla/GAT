@@ -555,7 +555,11 @@ void CustomGraphicsView::removeLastPoint(){
                     lastPoint = redoItems.top().point->getFinalLine()->getInit();
                 }
             }else {
+                if(!redoItems.top().point->hasInitLine()){
+                    lastPoint = nullptr;
+                }
                 scene->removeItem(redoItems.top().point);
+
             }
             break;
         case MOVE:

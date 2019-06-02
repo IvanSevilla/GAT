@@ -39,9 +39,6 @@ public:
     QAction *actionAdd_Image;
     QAction *actionAdd_Point_Cloud;
     QAction *actionAdd_Matrix;
-    QAction *actionDelete_Image;
-    QAction *actionDelete_Matrix;
-    QAction *actionDelete_Matrix_2;
     QAction *actionMiniMap;
     QAction *actionDelete_Poliline;
     QAction *actionNext_Image;
@@ -108,7 +105,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(820, 1039);
+        MainWindow->resize(440, 707);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -146,12 +143,6 @@ public:
         actionAdd_Point_Cloud->setObjectName(QString::fromUtf8("actionAdd_Point_Cloud"));
         actionAdd_Matrix = new QAction(MainWindow);
         actionAdd_Matrix->setObjectName(QString::fromUtf8("actionAdd_Matrix"));
-        actionDelete_Image = new QAction(MainWindow);
-        actionDelete_Image->setObjectName(QString::fromUtf8("actionDelete_Image"));
-        actionDelete_Matrix = new QAction(MainWindow);
-        actionDelete_Matrix->setObjectName(QString::fromUtf8("actionDelete_Matrix"));
-        actionDelete_Matrix_2 = new QAction(MainWindow);
-        actionDelete_Matrix_2->setObjectName(QString::fromUtf8("actionDelete_Matrix_2"));
         actionMiniMap = new QAction(MainWindow);
         actionMiniMap->setObjectName(QString::fromUtf8("actionMiniMap"));
         actionMiniMap->setCheckable(true);
@@ -383,6 +374,17 @@ public:
         polilines->setMinimumSize(QSize(200, 100));
         polilines->setMaximumSize(QSize(60, 400));
         polilines->setBaseSize(QSize(50, 200));
+        polilines->setMouseTracking(true);
+        polilines->setFocusPolicy(Qt::StrongFocus);
+        polilines->setAcceptDrops(true);
+        polilines->setEditTriggers(QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::SelectedClicked);
+        polilines->setSelectionMode(QAbstractItemView::SingleSelection);
+        polilines->setSelectionBehavior(QAbstractItemView::SelectItems);
+        polilines->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
+        polilines->setHorizontalScrollMode(QAbstractItemView::ScrollPerItem);
+        polilines->setProperty("isWrapping", QVariant(false));
+        polilines->setViewMode(QListView::IconMode);
+        polilines->setUniformItemSizes(true);
         polilines->setBatchSize(100);
         polilines->setItemAlignment(Qt::AlignCenter);
 
@@ -639,7 +641,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 820, 22));
+        menuBar->setGeometry(QRect(0, 0, 440, 22));
         menuGEOApp = new QMenu(menuBar);
         menuGEOApp->setObjectName(QString::fromUtf8("menuGEOApp"));
         menuFile = new QMenu(menuBar);
@@ -672,9 +674,6 @@ public:
         menuEdit->addSeparator();
         menuEdit->addSeparator();
         menuEdit->addSeparator();
-        menuEdit->addAction(actionDelete_Image);
-        menuEdit->addAction(actionDelete_Matrix);
-        menuEdit->addAction(actionDelete_Matrix_2);
         menuEdit->addSeparator();
         menuEdit->addAction(actionDelete_Poliline);
         menuView->addAction(actionMiniMap);
@@ -700,9 +699,6 @@ public:
         actionAdd_Image->setText(QApplication::translate("MainWindow", "Add Image", nullptr));
         actionAdd_Point_Cloud->setText(QApplication::translate("MainWindow", "Add Point Cloud", nullptr));
         actionAdd_Matrix->setText(QApplication::translate("MainWindow", "Add Matrix", nullptr));
-        actionDelete_Image->setText(QApplication::translate("MainWindow", "Delete Image", nullptr));
-        actionDelete_Matrix->setText(QApplication::translate("MainWindow", "Delete Point Cloud", nullptr));
-        actionDelete_Matrix_2->setText(QApplication::translate("MainWindow", "Delete Matrix", nullptr));
         actionMiniMap->setText(QApplication::translate("MainWindow", "MiniMap", nullptr));
         actionDelete_Poliline->setText(QApplication::translate("MainWindow", "Delete Poliline", nullptr));
         actionNext_Image->setText(QApplication::translate("MainWindow", "Next Image", nullptr));
