@@ -18,6 +18,7 @@
 #include <QProcess>
 #include "gagraphicsview.h"
 #include "projectmanager.h"
+#include "fittingplane.h"
 
 
 
@@ -149,7 +150,7 @@ private:
     bool image;
     QGraphicsProxyWidget *proxyedit;
     QGraphicsProxyWidget *proxymini;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr PointCloud;
+    pcl::PointCloud<pcl::PointXYZ>* PointCloud;
 
 };
 class Dialog : public QWidget

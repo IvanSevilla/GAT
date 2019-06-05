@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scene = new QGraphicsScene(this);
     editscene = new QGraphicsScene(this);
+    PointCloud = new pcl::PointCloud<pcl::PointXYZ>();
 
 
 
@@ -76,6 +77,24 @@ void MainWindow::openProject(){
         }
         project = _pm.loadProject(filename);
         subproject = _pm.loadProject(QString(project.at("0").get<std::string>().c_str()));
+        if(subproject.at("pointcloud") != ""){
+            _pm.readPointCloud(PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+            std::vector<pcl::PointXYZ> _testing;
+            pcl::PointXYZ first(401134.00f,4606022.00f,954.93f);
+            _testing.push_back(first);
+            pcl::PointXYZ second(401238.00f, 4606022.00f, 944.29f);
+            _testing.push_back(second);
+            pcl::PointXYZ third(401252.00f,4606022.00f, 937.47f);
+            _testing.push_back(third);
+            pcl::PointXYZ first_2(401354.00f, 4606022.00f, 907.37f);
+            _testing.push_back(first_2);
+            pcl::PointXYZ second_2(401262.00f, 4606018.00f, 930.44f);
+            _testing.push_back(second_2);
+            pcl::PointXYZ third_2(401194.00f, 4606008.00f, 949.06f);
+            _testing.push_back(third_2);
+            FittingPlane _f;
+            _f.planeCalc(_testing);
+        }
         std::string d = subproject.at("image").get<std::string>();
         QFileInfo _f(filename);
         filename = _f.absolutePath()+"/";

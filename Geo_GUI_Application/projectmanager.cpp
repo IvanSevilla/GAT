@@ -164,7 +164,7 @@ glm::mat4 ProjectManager::readCalibrationMatrix(QString calibFile,int _imWidth,i
        }
     return _matrix;
 }
-void ProjectManager::readPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr data,QString filename){
+void ProjectManager::readPointCloud(pcl::PointCloud<pcl::PointXYZ>* data,QString filename){
     std::fstream ficheroEntrada;
     std::string frase;
     QString _f;
@@ -175,13 +175,14 @@ void ProjectManager::readPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr data,QSt
            while (! ficheroEntrada.eof() ) {
                getline (ficheroEntrada,frase);
                _f = frase.c_str();
-               qDebug()<<_f;
+               if(_f != ""){
                QStringList _l=_f.split(" ");
                x=_l[0].toFloat();
                y=_l[1].toFloat();
                z=_l[2].split("/r")[0].toFloat();
                pcl::PointXYZ _pt(x,y,z);
                data->push_back(_pt);
+               }
            }
        }
     ficheroEntrada.close();

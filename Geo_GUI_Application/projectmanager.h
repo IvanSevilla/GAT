@@ -30,7 +30,7 @@ public:
     glm::mat4 readMatrix(QString matrixFile);
     glm::mat4 readCalibrationMatrix(QString calibFile,int _imWidth,int _imHeight);
 
-    void readPointCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr data,QString filename);
+    void readPointCloud(pcl::PointCloud<pcl::PointXYZ>* data,QString filename);
     ~ProjectManager();
 };
 

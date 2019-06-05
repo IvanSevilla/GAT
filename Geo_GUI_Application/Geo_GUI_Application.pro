@@ -29,7 +29,8 @@ SOURCES += \
         mainwindow.cpp \
     gagraphicsview.cpp \
     customelipse.cpp \
-    projectmanager.cpp
+    projectmanager.cpp \
+    fittingplane.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -158,7 +159,8 @@ HEADERS += \
     glm/gtx/wrap.hpp \
     glm/virtrev/xstream.hpp \
     glm/ext.hpp \
-    glm/glm.hpp
+    glm/glm.hpp \
+    fittingplane.h
 
 FORMS += \
         mainwindow.ui
