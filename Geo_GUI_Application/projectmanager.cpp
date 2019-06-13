@@ -181,10 +181,58 @@ void ProjectManager::readPointCloud(pcl::PointCloud<pcl::PointXYZ>* data,QString
                y=_l[1].toFloat();
                z=_l[2].split("/r")[0].toFloat();
                pcl::PointXYZ _pt(x,y,z);
-               data->push_back(_pt);
+               if(!isContained(_pt,data)){
+                  data->push_back(_pt);
                }
+            }
+       }
+    }
+    ficheroEntrada.close();
+}
+std::pair<float,std::pair<float,float>> ProjectManager::readGeoData(QString filename){
+    std::fstream ficheroEntrada;
+    std::string frase;
+    QString _f;
+    int i = 0;
+    float pixelsize = 0;
+    float xcoord,ycoord;
+    ficheroEntrada.open ( filename.toStdString().c_str() , std::ios::in);
+       if (ficheroEntrada.is_open()) {
+
+           while (! ficheroEntrada.eof() ) {
+               getline (ficheroEntrada,frase);
+               _f = frase.c_str();
+               if(_f != ""){
+                   if(i == 0){
+                       pixelsize = _f.toFloat();
+                   }if(i == 4){
+                       xcoord = _f.toFloat();
+                   }if(i == 5){
+                       ycoord = _f.toFloat();
+                   }
+                   i++;
+
+
+               }
+
            }
        }
     ficheroEntrada.close();
+    std::pair<float,float> _pt(xcoord,ycoord);
+
+    std::pair<float,std::pair<float,float>> _coord (pixelsize,_pt);
+    return _coord;
+
+}
+bool ProjectManager::isContained(pcl::PointXYZ pt, pcl::PointCloud<pcl::PointXYZ> *data){
+    if(!data->empty()){
+        return false;
+    }
+    for(size_t i = 0; i<data->size();i++){
+        if(qFabs(data->at(i).x -pt.x) <= std::numeric_limits<qreal>::epsilon()&& qFabs(data->at(i).y-pt.y)<= std::numeric_limits<qreal>::epsilon() && qFabs(data->at(i).z- pt.z)<= std::numeric_limits<qreal>::epsilon()){
+            return true;
+        }
+    }
+    return false;
 }
 ProjectManager::~ProjectManager(){}

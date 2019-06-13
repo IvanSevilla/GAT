@@ -14,7 +14,7 @@ public:
     FittingPlane();
     pcl::PointXYZI planeCoef;
     // Extret i modificat de http://pointclouds.org/documentation/tutorials/planar_segmentation.php
-    void planeCalc(std::vector<pcl::PointXYZ> & _vec );
+    std::pair<float,float> planeCalc(std::vector<pcl::PointXYZ> & _vec );
 
 };
 

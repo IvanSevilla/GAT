@@ -5,8 +5,8 @@ FittingPlane::FittingPlane()
 
 }
 
-void FittingPlane::planeCalc(std::vector<pcl::PointXYZ> &_vec){
-
+std::pair<float,float> FittingPlane::planeCalc(std::vector<pcl::PointXYZ> &_vec){
+    std::pair<float,float> _n= {-1,-1};
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
     for(u_long i = 0; i<_vec.size();i++){
@@ -36,6 +36,7 @@ void FittingPlane::planeCalc(std::vector<pcl::PointXYZ> &_vec){
         if (inliers->indices.size () == 0)
         {
           PCL_ERROR ("Could not estimate a planar model for the given dataset.");
+          return _n;
         }else{
 
         qDebug() << "Model coefficients: " << coefficients->values[0] << " "
@@ -48,6 +49,9 @@ void FittingPlane::planeCalc(std::vector<pcl::PointXYZ> &_vec){
           qDebug() << inliers->indices[i] << "    " << cloud->points[inliers->indices[i]].x << " "
                                                      << cloud->points[inliers->indices[i]].y << " "
                                                      << cloud->points[inliers->indices[i]].z ;
-      }
+        _n.first=coefficients->values[0];
+        _n.second=coefficients->values[1];
+        return _n;
+       }
 
 }

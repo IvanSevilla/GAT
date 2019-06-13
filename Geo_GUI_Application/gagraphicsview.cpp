@@ -67,6 +67,9 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                 it->setFlag(QGraphicsItem::ItemIsMovable,true);
                 it->setFlag(QGraphicsItem::ItemIsSelectable,true);
                 it->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                // Buscamos el punto en el pointcloud
+                it->setPCPoint(this->searchPoint(pt));
+                qDebug()<<"x = "<< it->getPointCloudp().x<<"y = "<< it->getPointCloudp().y<<"z = "<< it->getPointCloudp().z;
 
                 if(lastPoint != nullptr){
                     // Si hay ultimo punto generamos una linea
@@ -85,6 +88,12 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     scene->addItem(li);
                     // Añadimos la linea al grupo del punto
                     group->addToGroup(li);
+                    // Buscamos el punto intermedio
+                    qreal _x = li->getFinal()->getCenter().x()-li->getInit()->getCenter().x();
+                    qreal _y = li->getFinal()->getCenter().y()-li->getInit()->getCenter().y();
+                    QPointF _p(_x,_y) ;
+                    li->setPCPoint(this->searchPoint(_p));
+                    qDebug()<<"x = "<< li->getPointCloudp().x<<"y = "<< li->getPointCloudp().y<<"z = "<< li->getPointCloudp().z;
                 }
 
             scene->addItem(it);
@@ -98,6 +107,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
             d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
             lastItems.push(d);
             int _i = redoItems.length();
+            qDebug()<<pt;
             for(int i =_i;i>0;i-- ){
                 DoneAction _d = redoItems.pop();
                 if(_d.a == ADD){
@@ -352,8 +362,9 @@ void CustomGraphicsView::CreateLogFile(){
     fprintf(pFile, "%s\n",current_time().c_str());
     fclose(pFile);
 }
-void CustomGraphicsView::setStereoPlot(QGraphicsView *_stereo){
+void CustomGraphicsView::setStereoPlot(QGraphicsScene *_stereo,QGraphicsView* ste){
     stereoplot = _stereo;
+    _stereoview = ste;
 }
 void CustomGraphicsView::setUpdater(QPushButton* _ui){
     up_btn = _ui;
@@ -417,8 +428,10 @@ void CustomGraphicsView::clear(){
     lastPoint = nullptr;
     lastItems.clear();
     redoItems.clear();
-    stereoplot->scene()->clear();
+    stereoplot->clear();
     stereoplot = nullptr;
+    _stereoview = nullptr;
+    _pc = nullptr;
 
 }
 void CustomGraphicsView::addPolylineGroup(int group, CustomElipse*poly){
@@ -612,4 +625,55 @@ QColor CustomGraphicsView::getCurrentColor(){
 }
 QColor CustomGraphicsView::getGroupColor(int group){
     return _color.at(group);
+}
+void CustomGraphicsView::setPC(pcl::PointCloud<pcl::PointXYZ>* _pointc){
+    _pc = _pointc;
+}
+void CustomGraphicsView::setCoord(std::pair<float, std::pair<float, float> > _p){
+    coord = _p;
+}
+pcl::PointXYZ CustomGraphicsView::searchPoint(QPointF _scenePoint){
+    pcl::PointXYZ _found;
+    qreal _minimvalue = 100;
+
+    qreal _realx = (_scenePoint.x()+(this->width()/2))*static_cast<qreal>(coord.first)+static_cast<qreal>(coord.second.first);
+    qreal _realy = static_cast<qreal>(coord.second.second)-(_scenePoint.y()+(this->height()/2))*static_cast<qreal>(coord.first);
+    qDebug()<<"x: "<<_realx<< " y: "<<_realy;
+    for(size_t i = 0; i<this->_pc->size();i++){
+        qreal aux = compute_distance(static_cast<qreal>(_pc->at(i).x),static_cast<qreal>(_pc->at(i).y),_realx,_realy);
+        if(aux < _minimvalue){
+            _found = _pc->at(i);
+            //qDebug()<<"x: "<<_pc->at(i).x<< " y: "<<_pc->at(i).y<< " z: "<<_pc->at(i).z;
+            //qDebug()<<"x: "<<_found.x<< " y: "<<_found.y<< " z: "<<_found.z;
+            _minimvalue = aux;
+        }
+    }
+
+    return _found;
+}
+qreal CustomGraphicsView::compute_distance(qreal x0, qreal y0, qreal x1, qreal y1){
+    //qDebug()<<x1<<" "<<y1<<" : "<<x0<< " "<<y0;
+    return qSqrt(qPow((x1-x0),2)+qPow((y1-y0),2));
+}
+void CustomGraphicsView::computeAllStereoplot(){
+    FittingPlane _f;
+    for(int i = 0; i<poliLines.size();i++){
+        for (int j = 0; j<poliLines.at(i)->size();j++){
+            std::vector<pcl::PointXYZ> _points;
+            CustomElipse* last = poliLines.at(i)->at(j);
+            while(last->hasFinalLine()){
+                _points.push_back(last->getPointCloudp());
+                _points.push_back(last->getFinalLine()->getPointCloudp());
+                last = last->getFinalLine()->getInit();
+            }
+            _points.push_back(last->getPointCloudp());
+            last = nullptr;
+            delete(last);
+            std::pair <float,float> _normal = _f.planeCalc(_points);
+
+
+
+        }
+    }
+
 }

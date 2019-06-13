@@ -1053,6 +1053,7 @@ color: rgb(55,126,184);</string>
     <addaction name="actionAdd_Image"/>
     <addaction name="actionAdd_Point_Cloud"/>
     <addaction name="actionAdd_Matrix"/>
+    <addaction name="actionAdd_GeoData"/>
     <addaction name="actionAdd_Calibration"/>
     <addaction name="separator"/>
     <addaction name="separator"/>
@@ -1172,6 +1173,11 @@ color: rgb(55,126,184);</string>
   <action name="actionAdd_Calibration">
    <property name="text">
     <string>Add Calibration</string>
+   </property>
+  </action>
+  <action name="actionAdd_GeoData">
+   <property name="text">
+    <string>Add GeoData</string>
    </property>
   </action>
  </widget>

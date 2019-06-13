@@ -131,6 +131,8 @@ private slots:
 
     void on_actionClose_Project_triggered();
 
+    void on_actionAdd_GeoData_triggered();
+
 private:
     Ui::MainWindow *ui;
     int currentSubproject=0;
@@ -151,6 +153,7 @@ private:
     QGraphicsProxyWidget *proxyedit;
     QGraphicsProxyWidget *proxymini;
     pcl::PointCloud<pcl::PointXYZ>* PointCloud;
+    std::pair<float,std::pair<float,float>> coordinates;
 
 };
 class Dialog : public QWidget

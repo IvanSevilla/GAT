@@ -95,6 +95,9 @@ void MainWindow::openProject(){
             FittingPlane _f;
             _f.planeCalc(_testing);
         }
+        if(subproject.at("geodata") != ""){
+            coordinates=_pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
+        }
         std::string d = subproject.at("image").get<std::string>();
         QFileInfo _f(filename);
         filename = _f.absolutePath()+"/";
@@ -231,7 +234,6 @@ qDebug()<<"_filename";
             currentSubproject = static_cast<int>(project.size());
             qDebug()<<currentSubproject;
             project[std::to_string(currentSubproject)] = _dir.relativeFilePath(_directory.absolutePath()).toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
-
         }
 
         openImage(image_name);
@@ -283,10 +285,13 @@ void MainWindow::openImage(QString image_name){
     edit->setStyleSheet("background-color: rgba(255,255,255,0.001)");
     edit->setSceneG(editscene);
     edit->setToggle(false);
+    edit->setStereoPlot(stereoScene,ui->graphicsView_2);
     edit->setAttribute(Qt::WA_AcceptTouchEvents);
     edit->setUpdater(ui->showPolilines);
+    edit->setPC(PointCloud);
     ui->centralWidget->setMouseTracking(true);
     edit->setToggle(true);
+    edit->setCoord(coordinates);
     proxyedit->setAcceptTouchEvents(true);
     proxyedit->setWidget(edit);
     scene->addItem(proxyedit);
@@ -410,6 +415,8 @@ void MainWindow::createSubproject(QString image){
     if(!_d.exists("calibration"))_d.mkdir("calibration");
     subproject["pointcloud"] = "";
     if(!_d.exists("pointcloud"))_d.mkdir("pointcloud");
+    subproject["geodata"] = "";
+    if(!_d.exists("geodata"))_d.mkdir("geodata");
     subproject["polylines"] = {};
     for(int i = 0; i<MAX_GROUPS;i++){
         subproject["polylines"]["group"+std::to_string(i)] = {};
@@ -895,7 +902,15 @@ void MainWindow::on_actionNext_Image_triggered()
             currentSubproject++;
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
             qDebug()<<subproject.dump().c_str();
+            this->PointCloud->clear();
+            if(subproject.at("pointcloud")!=""){
+                _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+            }
+            if(subproject.at("geodata")!=""){
+                coordinates = _pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
+            }
             openImage(subproject.at("image").get<std::string>().c_str());
+            // Falta funcion de calculo de stereoplot
             //qDebug()<<editscene->items();
             ui->Group0->click();
         }
@@ -911,8 +926,16 @@ void MainWindow::on_actionPrevious_Image_triggered()
             saveSubproject();
             currentSubproject--;
             qDebug()<<currentSubproject;
+            this->PointCloud->clear();
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
+            if(subproject.at("pointcloud")!=""){
+                _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+            }
+            if(subproject.at("geodata")!=""){
+                coordinates = _pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
+            }
             openImage(subproject.at("image").get<std::string>().c_str());
+            // Falta funcion de calculo de stereoplot
             //qDebug()<<editscene->items();
              ui->Group0->click();
         }
@@ -922,7 +945,14 @@ void MainWindow::on_actionPrevious_Image_triggered()
 void MainWindow::on_actionAdd_Matrix_triggered()
 {
     if(image){
-      if(subproject.at("matrix").get<std::string>()!= ""){
+      if(subproject.at("matrix").get<std::string>()== ""){
+          QString _matrix = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+          QDir _dir(".");
+          QFileInfo _f (filename);
+          QFile::copy(_matrix, _dir.relativeFilePath(_f.absolutePath())+"/matrix/mat"+std::to_string(currentSubproject).c_str()+".txt");
+          subproject["calibration"]= (_dir.relativeFilePath(_f.absolutePath())+"/calibration/calib"+std::to_string(currentSubproject).c_str()+".txt").toStdString();
+          saveSubproject();
+
         //glm::mat4 _test = _pm.readMatrix(subproject.at("matrix").get<std::string>().c_str());
       }
     }
@@ -932,9 +962,15 @@ void MainWindow::on_actionAdd_Matrix_triggered()
 void MainWindow::on_actionAdd_Calibration_triggered()
 {
     if(image){
-        if(subproject.at("calibration").get<std::string>()!= ""){
+        if(subproject.at("calibration").get<std::string>()== ""){
+            QDir _dir(".");
+            QFileInfo _f (filename);
+            QString _calibration = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+            QFile::copy(_calibration, _dir.relativeFilePath(_f.absolutePath())+"/calibration/calib"+std::to_string(currentSubproject).c_str()+".txt");
+            subproject["calibration"]= (_dir.relativeFilePath(_f.absolutePath())+"/calibration/calib"+std::to_string(currentSubproject).c_str()+".txt").toStdString();
+            saveSubproject();
            // glm::mat4 _test = _pm.readCalibrationMatrix(subproject.at("calibration").get<std::string>().c_str(),pix.width(),pix.height());
-    }
+        }
     }
 
 }
@@ -945,13 +981,31 @@ void MainWindow::on_actionAdd_Point_Cloud_triggered()
     if(image){
         if(subproject.at("pointcloud").get<std::string>()!=""){
             _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+        }else{
+            QString _pointCloud = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+            QFileInfo _pc (_pointCloud);
+            QDir _dir(".");
+            QFileInfo _f (filename);
+            qDebug()<<filename;
+            if(_pc.suffix() == "txt"){
+                QFile::copy(_pointCloud, _dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt");
+                subproject["pointcloud"]= (_dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt").toStdString();
+                _pm.readPointCloud(this->PointCloud,_pointCloud);
+                saveSubproject();
+            }
+
         }
     }
 }
 
 void MainWindow::on_actionClose_Project_triggered()
 {
-
+    delete(PointCloud);
+    project.clear();
+    subproject.clear();
+    edit->clear();
+    scene->removeItem(proxyedit);
+    delete(proxyedit);
 }
 
 
@@ -1007,3 +1061,26 @@ bool Dialog::warningMessage()
 
 }
 
+
+void MainWindow::on_actionAdd_GeoData_triggered()
+{
+    if(image){
+        if(subproject.at("geodata").get<std::string>()!=""){
+            _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
+        }else{
+            QString _geodata = QFileDialog::getOpenFileName(this,"Open File",QDir::homePath());
+            QFileInfo _pc (_geodata);
+            QDir _dir(".");
+            QFileInfo _f (filename);
+            qDebug()<<filename;
+            if(_pc.suffix() == "tfw"){
+                QFile::copy(_geodata, _dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw");
+                subproject["geodata"]= (_dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw").toStdString();
+                coordinates = _pm.readGeoData(_geodata);
+                saveSubproject();
+                // generar stereoplot a partir de los puntos generados por ahora solo polilineas
+            }
+
+        }
+    }
+}

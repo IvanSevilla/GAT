@@ -171,6 +171,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 macx {
+
+
 CONFIG += link_pkgconfig
 PKGCONFIG += eigen3
  PKGCONFIG += pcl_registration-1.9

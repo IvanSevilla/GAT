@@ -20,6 +20,9 @@
 #include <string>
 #include <fstream>
 
+#include "pcl/point_types.h"
+#include "pcl/point_cloud.h"
+
 
 class CustomGraphicsView : public QGraphicsView
 {
@@ -47,7 +50,7 @@ public:
     void addElipse(QMouseEvent *e);
     QGraphicsScene* getGraphicsScene();
     void setUpdater(QPushButton* _ui);
-    void setStereoPlot(QGraphicsView* _stereo);
+    void setStereoPlot(QGraphicsScene* _stereo,QGraphicsView* ste);
     void setSceneG(QGraphicsScene* extsc);
     void setGroup(int g);
     void setGroupVisibility(int vis, bool bvis);
@@ -66,6 +69,12 @@ public:
     QGraphicsItemGroup* getGroup(int number);
     void addPolylineGroup(int group, CustomElipse*poly);
     void clear();
+    void setPC(pcl::PointCloud<pcl::PointXYZ>* _pointc);
+    void setCoord(std::pair<float,std::pair<float,float>>_p);
+    pcl::PointXYZ searchPoint(QPointF _scenePoint);
+    qreal compute_distance(qreal x0, qreal y0, qreal x1, qreal y1);
+    void computeAllStereoplot();
+    void computeActualPointStereoplot();
 signals:
 void sendMousePoint(QPointF point);
 
@@ -90,7 +99,10 @@ QGraphicsItemGroup* group;
 CustomElipse * lastPoint;
 QList<QColor> _color;
 QPushButton* up_btn;
-QGraphicsView* stereoplot;
+QGraphicsView * _stereoview;
+QGraphicsScene* stereoplot;
+pcl::PointCloud<pcl::PointXYZ>* _pc;
+std::pair<float,std::pair<float,float>> coord;
 };
 
 

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[45];
-    char stringdata0[1005];
+    QByteArrayData data[46];
+    char stringdata0[1036];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -75,7 +75,8 @@ QT_MOC_LITERAL(40, 838, 33), // "on_actionPrevious_Image_trigg..."
 QT_MOC_LITERAL(41, 872, 29), // "on_actionAdd_Matrix_triggered"
 QT_MOC_LITERAL(42, 902, 34), // "on_actionAdd_Calibration_trig..."
 QT_MOC_LITERAL(43, 937, 34), // "on_actionAdd_Point_Cloud_trig..."
-QT_MOC_LITERAL(44, 972, 32) // "on_actionClose_Project_triggered"
+QT_MOC_LITERAL(44, 972, 32), // "on_actionClose_Project_triggered"
+QT_MOC_LITERAL(45, 1005, 30) // "on_actionAdd_GeoData_triggered"
 
     },
     "MainWindow\0on_actionLoad_Project_triggered\0"
@@ -105,7 +106,8 @@ QT_MOC_LITERAL(44, 972, 32) // "on_actionClose_Project_triggered"
     "on_actionAdd_Matrix_triggered\0"
     "on_actionAdd_Calibration_triggered\0"
     "on_actionAdd_Point_Cloud_triggered\0"
-    "on_actionClose_Project_triggered"
+    "on_actionClose_Project_triggered\0"
+    "on_actionAdd_GeoData_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -115,7 +117,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      38,   14, // methods
+      39,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -123,44 +125,45 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  204,    2, 0x08 /* Private */,
-       3,    0,  205,    2, 0x08 /* Private */,
-       4,    1,  206,    2, 0x08 /* Private */,
-       6,    0,  209,    2, 0x08 /* Private */,
-       7,    0,  210,    2, 0x08 /* Private */,
-       8,    0,  211,    2, 0x08 /* Private */,
-       9,    0,  212,    2, 0x08 /* Private */,
-      10,    1,  213,    2, 0x08 /* Private */,
-      12,    1,  216,    2, 0x08 /* Private */,
-      13,    1,  219,    2, 0x08 /* Private */,
-      14,    1,  222,    2, 0x08 /* Private */,
-      15,    1,  225,    2, 0x08 /* Private */,
-      16,    1,  228,    2, 0x08 /* Private */,
-      17,    1,  231,    2, 0x08 /* Private */,
-      18,    1,  234,    2, 0x08 /* Private */,
-      19,    1,  237,    2, 0x08 /* Private */,
-      20,    1,  240,    2, 0x08 /* Private */,
-      21,    1,  243,    2, 0x08 /* Private */,
-      22,    1,  246,    2, 0x08 /* Private */,
-      23,    1,  249,    2, 0x08 /* Private */,
-      24,    1,  252,    2, 0x08 /* Private */,
-      25,    1,  255,    2, 0x08 /* Private */,
-      26,    1,  258,    2, 0x08 /* Private */,
-      27,    1,  261,    2, 0x08 /* Private */,
-      28,    0,  264,    2, 0x08 /* Private */,
-      29,    0,  265,    2, 0x08 /* Private */,
-      30,    0,  266,    2, 0x08 /* Private */,
-      31,    1,  267,    2, 0x08 /* Private */,
-      32,    0,  270,    2, 0x08 /* Private */,
-      33,    2,  271,    2, 0x08 /* Private */,
-      37,    0,  276,    2, 0x08 /* Private */,
-      38,    0,  277,    2, 0x08 /* Private */,
-      39,    0,  278,    2, 0x08 /* Private */,
-      40,    0,  279,    2, 0x08 /* Private */,
-      41,    0,  280,    2, 0x08 /* Private */,
-      42,    0,  281,    2, 0x08 /* Private */,
-      43,    0,  282,    2, 0x08 /* Private */,
-      44,    0,  283,    2, 0x08 /* Private */,
+       1,    0,  209,    2, 0x08 /* Private */,
+       3,    0,  210,    2, 0x08 /* Private */,
+       4,    1,  211,    2, 0x08 /* Private */,
+       6,    0,  214,    2, 0x08 /* Private */,
+       7,    0,  215,    2, 0x08 /* Private */,
+       8,    0,  216,    2, 0x08 /* Private */,
+       9,    0,  217,    2, 0x08 /* Private */,
+      10,    1,  218,    2, 0x08 /* Private */,
+      12,    1,  221,    2, 0x08 /* Private */,
+      13,    1,  224,    2, 0x08 /* Private */,
+      14,    1,  227,    2, 0x08 /* Private */,
+      15,    1,  230,    2, 0x08 /* Private */,
+      16,    1,  233,    2, 0x08 /* Private */,
+      17,    1,  236,    2, 0x08 /* Private */,
+      18,    1,  239,    2, 0x08 /* Private */,
+      19,    1,  242,    2, 0x08 /* Private */,
+      20,    1,  245,    2, 0x08 /* Private */,
+      21,    1,  248,    2, 0x08 /* Private */,
+      22,    1,  251,    2, 0x08 /* Private */,
+      23,    1,  254,    2, 0x08 /* Private */,
+      24,    1,  257,    2, 0x08 /* Private */,
+      25,    1,  260,    2, 0x08 /* Private */,
+      26,    1,  263,    2, 0x08 /* Private */,
+      27,    1,  266,    2, 0x08 /* Private */,
+      28,    0,  269,    2, 0x08 /* Private */,
+      29,    0,  270,    2, 0x08 /* Private */,
+      30,    0,  271,    2, 0x08 /* Private */,
+      31,    1,  272,    2, 0x08 /* Private */,
+      32,    0,  275,    2, 0x08 /* Private */,
+      33,    2,  276,    2, 0x08 /* Private */,
+      37,    0,  281,    2, 0x08 /* Private */,
+      38,    0,  282,    2, 0x08 /* Private */,
+      39,    0,  283,    2, 0x08 /* Private */,
+      40,    0,  284,    2, 0x08 /* Private */,
+      41,    0,  285,    2, 0x08 /* Private */,
+      42,    0,  286,    2, 0x08 /* Private */,
+      43,    0,  287,    2, 0x08 /* Private */,
+      44,    0,  288,    2, 0x08 /* Private */,
+      45,    0,  289,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -193,6 +196,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,    5,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 34, 0x80000000 | 34,   35,   36,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -249,6 +253,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 35: _t->on_actionAdd_Calibration_triggered(); break;
         case 36: _t->on_actionAdd_Point_Cloud_triggered(); break;
         case 37: _t->on_actionClose_Project_triggered(); break;
+        case 38: _t->on_actionAdd_GeoData_triggered(); break;
         default: ;
         }
     }
@@ -283,13 +288,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 38)
+        if (_id < 39)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 38;
+        _id -= 39;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 38)
+        if (_id < 39)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 38;
+        _id -= 39;
     }
     return _id;
 }

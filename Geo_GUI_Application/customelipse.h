@@ -7,6 +7,7 @@
 #include <QtDebug>
 #include <QPen>
 #include <QSharedPointer>
+#include "pcl/point_types.h"
 
 class CustomLine;
 
@@ -33,6 +34,9 @@ public:
     void setCenter(QPointF c){
         center = c;
     }
+    void setPCPoint(pcl::PointXYZ c){
+        _p = c;
+    }
     CustomLine* getInitLine(){
         return initLine;
     }
@@ -44,6 +48,9 @@ public:
     }
     int getGroupNumber(){
         return groupnumber;
+    }
+    pcl::PointXYZ getPointCloudp(){
+        return _p;
     }
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -98,6 +105,7 @@ private:
     CustomLine *finalLine = nullptr;
     int groupnumber = 0;
     bool _isResizing;
+    pcl::PointXYZ _p;
 };
 
 class CustomLine: public QGraphicsLineItem,QObject
@@ -131,6 +139,9 @@ public:
         this->setLine(0,0,final->getCenter().x()-init->getCenter().x(),final->getCenter().y()-init->getCenter().y());
 
     }
+    void setPCPoint(pcl::PointXYZ c){
+        _p = c;
+    }
     CustomElipse * getInit(){
         return init;
     }
@@ -153,6 +164,9 @@ public:
 
     bool hasInital(){
         return init != nullptr;
+    }
+    pcl::PointXYZ getPointCloudp(){
+        return _p;
     }
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -197,6 +211,7 @@ private:
     CustomElipse * init = nullptr;
     CustomElipse * final = nullptr;
     bool _isResizing;
+    pcl::PointXYZ _p;
 };
 
 

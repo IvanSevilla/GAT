@@ -44,6 +44,7 @@ public:
     QAction *actionNext_Image;
     QAction *actionPrevious_Image;
     QAction *actionAdd_Calibration;
+    QAction *actionAdd_GeoData;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout_9;
     QHBoxLayout *horizontalLayout_7;
@@ -155,6 +156,8 @@ public:
         actionPrevious_Image->setObjectName(QString::fromUtf8("actionPrevious_Image"));
         actionAdd_Calibration = new QAction(MainWindow);
         actionAdd_Calibration->setObjectName(QString::fromUtf8("actionAdd_Calibration"));
+        actionAdd_GeoData = new QAction(MainWindow);
+        actionAdd_GeoData->setObjectName(QString::fromUtf8("actionAdd_GeoData"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout_9 = new QHBoxLayout(centralWidget);
@@ -670,6 +673,7 @@ public:
         menuEdit->addAction(actionAdd_Image);
         menuEdit->addAction(actionAdd_Point_Cloud);
         menuEdit->addAction(actionAdd_Matrix);
+        menuEdit->addAction(actionAdd_GeoData);
         menuEdit->addAction(actionAdd_Calibration);
         menuEdit->addSeparator();
         menuEdit->addSeparator();
@@ -704,6 +708,7 @@ public:
         actionNext_Image->setText(QApplication::translate("MainWindow", "Next Image", nullptr));
         actionPrevious_Image->setText(QApplication::translate("MainWindow", "Previous Image", nullptr));
         actionAdd_Calibration->setText(QApplication::translate("MainWindow", "Add Calibration", nullptr));
+        actionAdd_GeoData->setText(QApplication::translate("MainWindow", "Add GeoData", nullptr));
 #ifndef QT_NO_TOOLTIP
         Btn_Zoom_In->setToolTip(QString());
 #endif // QT_NO_TOOLTIP

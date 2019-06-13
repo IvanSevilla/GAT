@@ -31,6 +31,8 @@ public:
     glm::mat4 readCalibrationMatrix(QString calibFile,int _imWidth,int _imHeight);
 
     void readPointCloud(pcl::PointCloud<pcl::PointXYZ>* data,QString filename);
+    std::pair<float,std::pair<float,float>> readGeoData(QString filename);
+    bool isContained(pcl::PointXYZ pt,pcl::PointCloud<pcl::PointXYZ>* data);
     ~ProjectManager();
 };
 
