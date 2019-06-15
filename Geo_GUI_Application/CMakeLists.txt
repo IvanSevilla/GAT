@@ -57,7 +57,9 @@ set(SOURCES
         mainwindow.cpp 
     gagraphicsview.cpp 
     customelipse.cpp 
-    projectmanager.cpp)
+    projectmanager.cpp
+    fittingplane.cpp
+    )
 
 set ( MOC_HEADERS
  mainwindow.h

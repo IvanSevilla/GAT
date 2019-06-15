@@ -10,6 +10,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Geo_GUI_Application.dir/gagraphicsview.cpp.o"
   "CMakeFiles/Geo_GUI_Application.dir/customelipse.cpp.o"
   "CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.o"
+  "CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o"
   "CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o"
   "CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o"
   "Geo_GUI_Application.pdb"

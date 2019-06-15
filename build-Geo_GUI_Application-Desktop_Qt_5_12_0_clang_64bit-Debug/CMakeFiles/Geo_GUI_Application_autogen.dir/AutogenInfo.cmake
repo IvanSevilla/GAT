@@ -11,7 +11,7 @@ set(AM_CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE "")
 set(AM_BUILD_DIR "/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/Geo_GUI_Application_autogen")
 set(AM_INCLUDE_DIR "/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/Geo_GUI_Application_autogen/include")
 # Files
-set(AM_SOURCES "/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/customelipse.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/main.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/projectmanager.cpp")
+set(AM_SOURCES "/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/customelipse.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/main.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/mainwindow.cpp;/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/projectmanager.cpp")
 set(AM_HEADERS "")
 set(AM_SETTINGS_FILE "/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles/Geo_GUI_Application_autogen.dir/AutogenOldSettings.txt")
 # Qt

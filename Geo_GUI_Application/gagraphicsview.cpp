@@ -51,6 +51,8 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     up_btn->clicked(true);
                     lastPoints.replace(lastPoint->getGroupNumber(),nullptr);
                     lastPoint = nullptr;
+                    if(_pc != nullptr && coord.first != 0)
+                    this->computeAllStereoplot();
                 }
 
             }else{
@@ -657,6 +659,17 @@ qreal CustomGraphicsView::compute_distance(qreal x0, qreal y0, qreal x1, qreal y
 }
 void CustomGraphicsView::computeAllStereoplot(){
     FittingPlane _f;
+    if(!_stereoplotLoad.empty()){
+        int size = _stereoplotLoad.size();
+        qDebug()<<size;
+        for(int i=size-1;i>=0;i--){
+           stereoplot->removeItem(_stereoplotLoad.at(i));
+           QGraphicsEllipseItem* _e = _stereoplotLoad.at(i);
+           _stereoplotLoad.removeAt(i);
+           delete(_e);
+        }
+
+    }
     for(int i = 0; i<poliLines.size();i++){
         for (int j = 0; j<poliLines.at(i)->size();j++){
             std::vector<pcl::PointXYZ> _points;
@@ -670,6 +683,11 @@ void CustomGraphicsView::computeAllStereoplot(){
             last = nullptr;
             delete(last);
             std::pair <float,float> _normal = _f.planeCalc(_points);
+            if(_normal.first != -3){
+                // el stereoplot esta centrat en 130,130
+                QGraphicsEllipseItem* _e = stereoplot->addEllipse((_normal.first*130+130),(_normal.second*(-130)+130),8,8,QPen(getGroupColor(i)),QBrush(getGroupColor(i),Qt::SolidPattern));
+                _stereoplotLoad.push_back(_e);
+            }
 
 
 

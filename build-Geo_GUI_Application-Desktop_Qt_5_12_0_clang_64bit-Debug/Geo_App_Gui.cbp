@@ -167,6 +167,12 @@
 		<Unit filename="/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/customelipse.h">
 			<Option target="Geo_GUI_Application"/>
 		</Unit>
+		<Unit filename="/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp">
+			<Option target="Geo_GUI_Application"/>
+		</Unit>
+		<Unit filename="/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.h">
+			<Option target="Geo_GUI_Application"/>
+		</Unit>
 		<Unit filename="/Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/gagraphicsview.cpp">
 			<Option target="Geo_GUI_Application"/>
 		</Unit>

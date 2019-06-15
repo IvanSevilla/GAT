@@ -74,7 +74,8 @@ public:
     pcl::PointXYZ searchPoint(QPointF _scenePoint);
     qreal compute_distance(qreal x0, qreal y0, qreal x1, qreal y1);
     void computeAllStereoplot();
-    void computeActualPointStereoplot();
+    void computeActualPointsStereoplot();
+    void computeActualPointStereoplot(QPointF _pt);
 signals:
 void sendMousePoint(QPointF point);
 
@@ -93,6 +94,8 @@ QBrush brusherase;
 QList<QGraphicsItemGroup*> groups;
 QList<CustomElipse*> lastPoints;
 QList<QList<CustomElipse*>*> poliLines;
+QList<QGraphicsEllipseItem*> _stereoplotLoad;
+QList<QGraphicsEllipseItem*> _stereoplotActual;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QGraphicsItemGroup* group;
@@ -101,8 +104,9 @@ QList<QColor> _color;
 QPushButton* up_btn;
 QGraphicsView * _stereoview;
 QGraphicsScene* stereoplot;
-pcl::PointCloud<pcl::PointXYZ>* _pc;
-std::pair<float,std::pair<float,float>> coord;
+
+pcl::PointCloud<pcl::PointXYZ>* _pc = nullptr;
+std::pair<float,std::pair<float,float>> coord = {0,{0,0}};
 };
 
 

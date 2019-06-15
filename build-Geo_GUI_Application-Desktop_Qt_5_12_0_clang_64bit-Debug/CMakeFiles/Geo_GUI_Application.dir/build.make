@@ -165,9 +165,22 @@ CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/projectmanager.cpp -o CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.s
 
+CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o: CMakeFiles/Geo_GUI_Application.dir/flags.make
+CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o: /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o"
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o -c /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp
+
+CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp > CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.i
+
+CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ivan/Documents/GitHub/TFG/Geo_GUI_Application/fittingplane.cpp -o CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.s
+
 CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o: CMakeFiles/Geo_GUI_Application.dir/flags.make
 CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o: moc_mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o -c /Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/moc_mainwindow.cpp
 
 CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.i: cmake_force
@@ -180,7 +193,7 @@ CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.s: cmake_force
 
 CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o: CMakeFiles/Geo_GUI_Application.dir/flags.make
 CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o: Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o -c /Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp
 
 CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.i: cmake_force
@@ -199,6 +212,7 @@ Geo_GUI_Application_OBJECTS = \
 "CMakeFiles/Geo_GUI_Application.dir/gagraphicsview.cpp.o" \
 "CMakeFiles/Geo_GUI_Application.dir/customelipse.cpp.o" \
 "CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.o" \
+"CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o" \
 "CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o" \
 "CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o"
 
@@ -211,6 +225,7 @@ Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/mainwindow.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/gagraphicsview.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/customelipse.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/projectmanager.cpp.o
+Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/fittingplane.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/moc_mainwindow.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/Geo_GUI_Application_autogen/EWIEGA46WW/qrc_assets.cpp.o
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/build.make
@@ -218,7 +233,7 @@ Geo_GUI_Application: /Applications/Qt/5.12.0/clang_64/lib/QtWidgets.framework/Qt
 Geo_GUI_Application: /Applications/Qt/5.12.0/clang_64/lib/QtGui.framework/QtGui
 Geo_GUI_Application: /Applications/Qt/5.12.0/clang_64/lib/QtCore.framework/QtCore
 Geo_GUI_Application: CMakeFiles/Geo_GUI_Application.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable Geo_GUI_Application"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ivan/Documents/GitHub/TFG/build-Geo_GUI_Application-Desktop_Qt_5_12_0_clang_64bit-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable Geo_GUI_Application"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Geo_GUI_Application.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

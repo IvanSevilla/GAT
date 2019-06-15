@@ -6,7 +6,7 @@ FittingPlane::FittingPlane()
 }
 
 std::pair<float,float> FittingPlane::planeCalc(std::vector<pcl::PointXYZ> &_vec){
-    std::pair<float,float> _n= {-1,-1};
+    std::pair<float,float> _n= {-3,-1};
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
     for(u_long i = 0; i<_vec.size();i++){

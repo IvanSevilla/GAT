@@ -268,10 +268,6 @@ void MainWindow::openImage(QString image_name){
     stereoScene= new QGraphicsScene();
     ui->graphicsView_2->setScene(stereoScene);
     stereoScene->addEllipse(0,0,260,260,QPen(QColor(175,175,175)),QBrush(QColor(175,175,175),Qt::SolidPattern));
-    stereoScene->addEllipse(120,130,8,8,QPen(QColor(228,26,28)),QBrush(QColor(228,26,28),Qt::SolidPattern));
-    stereoScene->addEllipse(125,125,8,8,QPen(QColor(228,26,28)),QBrush(QColor(228,26,28),Qt::SolidPattern));
-    stereoScene->addEllipse(100,230,8,8,QPen(QColor(55,126,184)),QBrush(QColor(55,126,184),Qt::SolidPattern));
-    stereoScene->addEllipse(125,225,8,8,QPen(QColor(55,126,184)),QBrush(QColor(55,126,184),Qt::SolidPattern));
     edit = new CustomGraphicsView();
     deledit = true;
     proxyedit = new QGraphicsProxyWidget();
@@ -318,6 +314,7 @@ void MainWindow::openImage(QString image_name){
                         _ce->setFlag(QGraphicsItem::ItemIsMovable,true);
                         _ce->setFlag(QGraphicsItem::ItemIsSelectable,true);
                         _ce->setFlag(QGraphicsItem::ItemClipsToShape,true);
+                        _ce->setPCPoint(edit->searchPoint(_point));
                         edit->getScene()->addItem(_ce);
                         edit->getGroup(i)->addToGroup(_ce);
                         if(k == 0){
@@ -330,6 +327,10 @@ void MainWindow::openImage(QString image_name){
                             _li->setPen(QPen(edit->getGroupColor(i)));
                             _ce->setInitLine(_li);
                             last->setFinalLine(_li);
+                            qreal _x = _li->getFinal()->getCenter().x()-_li->getInit()->getCenter().x();
+                            qreal _y = _li->getFinal()->getCenter().y()-_li->getInit()->getCenter().y();
+                            QPointF _p(_x,_y) ;
+                            _li->setPCPoint(edit->searchPoint(_p));
                             edit->getScene()->addItem(_li);
                             edit->getGroup(i)->addToGroup(_li);
                             if(k == a.size()-1){
@@ -349,6 +350,7 @@ void MainWindow::openImage(QString image_name){
                 }
             }
         }
+        edit->computeAllStereoplot();
     }
 
 }
@@ -767,6 +769,7 @@ void MainWindow::on_actionDelete_Poliline_triggered()
 
 
             }
+            edit->computeAllStereoplot();
 
     }
 }
