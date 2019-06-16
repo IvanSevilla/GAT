@@ -62,7 +62,7 @@ void MainWindow::on_actionLoad_Project_triggered()
     openProject();
 }
 void MainWindow::saveFile(){
-    qDebug()<<project.dump().c_str();
+    //qDebug()<<project.dump().c_str();
     _pm.saveProject(filename,project);
     saveSubproject();
 }
@@ -79,21 +79,6 @@ void MainWindow::openProject(){
         subproject = _pm.loadProject(QString(project.at("0").get<std::string>().c_str()));
         if(subproject.at("pointcloud") != ""){
             _pm.readPointCloud(PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
-            std::vector<pcl::PointXYZ> _testing;
-            pcl::PointXYZ first(401134.00f,4606022.00f,954.93f);
-            _testing.push_back(first);
-            pcl::PointXYZ second(401238.00f, 4606022.00f, 944.29f);
-            _testing.push_back(second);
-            pcl::PointXYZ third(401252.00f,4606022.00f, 937.47f);
-            _testing.push_back(third);
-            pcl::PointXYZ first_2(401354.00f, 4606022.00f, 907.37f);
-            _testing.push_back(first_2);
-            pcl::PointXYZ second_2(401262.00f, 4606018.00f, 930.44f);
-            _testing.push_back(second_2);
-            pcl::PointXYZ third_2(401194.00f, 4606008.00f, 949.06f);
-            _testing.push_back(third_2);
-            FittingPlane _f;
-            _f.planeCalc(_testing);
         }
         if(subproject.at("geodata") != ""){
             coordinates=_pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
@@ -144,8 +129,8 @@ void MainWindow::saveSubproject()
     }else{
         _filename += "/subproject"+std::to_string(this->currentSubproject)+".json";
     }
-    qDebug()<<subproject.dump().c_str();
-    qDebug()<<_filename.c_str();
+    //qDebug()<<subproject.dump().c_str();
+    //qDebug()<<_filename.c_str();
     _pm.saveProject(QString(_filename.c_str()),subproject);
 
 
@@ -213,7 +198,7 @@ qDebug()<<"_filename";
         QDir _dir(".");
         QFileInfo _f(filename);
         project["0"]=_dir.relativeFilePath(_f.dir().path()).toStdString()+"/subproject0.json";
-        qDebug()<<project.dump().c_str();
+        //qDebug()<<project.dump().c_str();
         filename+="project.json";
         currentSubproject = 0;
         }
@@ -227,12 +212,12 @@ qDebug()<<"_filename";
             QFileInfo _directory(filename);
             project[std::to_string(currentSubproject)] =_dir.relativeFilePath(_directory.absolutePath()).toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
             if(filename != "")saveFile();
-            qDebug()<<currentSubproject;
+            //qDebug()<<currentSubproject;
 
 
             createSubproject(image_name);
             currentSubproject = static_cast<int>(project.size());
-            qDebug()<<currentSubproject;
+            //qDebug()<<currentSubproject;
             project[std::to_string(currentSubproject)] = _dir.relativeFilePath(_directory.absolutePath()).toStdString()+"/subproject"+std::to_string(currentSubproject)+".json";
         }
 
@@ -897,14 +882,14 @@ qDebug()<<"_filename";
 void MainWindow::on_actionNext_Image_triggered()
 {
     if(image){
-        qDebug()<<currentSubproject;
+        //qDebug()<<currentSubproject;
         if((currentSubproject+1) < static_cast<int>(project.size())){
-            qDebug()<<"next";
+            //qDebug()<<"next";
             saveSubproject();
-            qDebug()<<"saved";
+            //qDebug()<<"saved";
             currentSubproject++;
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
-            qDebug()<<subproject.dump().c_str();
+            //qDebug()<<subproject.dump().c_str();
             this->PointCloud->clear();
             if(subproject.at("pointcloud")!=""){
                 _pm.readPointCloud(this->PointCloud,subproject.at("pointcloud").get<std::string>().c_str());
@@ -923,12 +908,12 @@ void MainWindow::on_actionNext_Image_triggered()
 void MainWindow::on_actionPrevious_Image_triggered()
 {
     if(image){
-        qDebug()<<currentSubproject;
+        //qDebug()<<currentSubproject;
         if((currentSubproject-1) >= 0){
-            qDebug()<<"previous";
+            //qDebug()<<"previous";
             saveSubproject();
             currentSubproject--;
-            qDebug()<<currentSubproject;
+            //qDebug()<<currentSubproject;
             this->PointCloud->clear();
             subproject = _pm.loadProject(QString(project.at(std::to_string(currentSubproject)).get<std::string>().c_str()));
             if(subproject.at("pointcloud")!=""){
@@ -989,7 +974,7 @@ void MainWindow::on_actionAdd_Point_Cloud_triggered()
             QFileInfo _pc (_pointCloud);
             QDir _dir(".");
             QFileInfo _f (filename);
-            qDebug()<<filename;
+            //qDebug()<<filename;
             if(_pc.suffix() == "txt"){
                 QFile::copy(_pointCloud, _dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt");
                 subproject["pointcloud"]= (_dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt").toStdString();
@@ -1075,7 +1060,7 @@ void MainWindow::on_actionAdd_GeoData_triggered()
             QFileInfo _pc (_geodata);
             QDir _dir(".");
             QFileInfo _f (filename);
-            qDebug()<<filename;
+            //qDebug()<<filename;
             if(_pc.suffix() == "tfw"){
                 QFile::copy(_geodata, _dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw");
                 subproject["geodata"]= (_dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw").toStdString();

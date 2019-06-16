@@ -34,6 +34,16 @@ CustomGraphicsView::CustomGraphicsView(QWidget *parent) :
     }
     lastPoint = nullptr;
     }
+void CustomGraphicsView::mouseReleaseEvent(QMouseEvent * e)
+{
+    QGraphicsView::mouseReleaseEvent(e);
+    if(_pc != nullptr && coord.first != 0){
+        updateMoved();
+        this->computeAllStereoplot();
+
+    }
+
+}
 void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
 {
     if(toggle){
@@ -51,8 +61,10 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     up_btn->clicked(true);
                     lastPoints.replace(lastPoint->getGroupNumber(),nullptr);
                     lastPoint = nullptr;
-                    if(_pc != nullptr && coord.first != 0)
-                    this->computeAllStereoplot();
+                    if(_pc != nullptr && coord.first != 0){
+                        this->computeAllStereoplot();
+
+                    }
                 }
 
             }else{
@@ -71,7 +83,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                 it->setFlag(QGraphicsItem::ItemClipsToShape,true);
                 // Buscamos el punto en el pointcloud
                 it->setPCPoint(this->searchPoint(pt));
-                qDebug()<<"x = "<< it->getPointCloudp().x<<"y = "<< it->getPointCloudp().y<<"z = "<< it->getPointCloudp().z;
+                //qDebug()<<"x = "<< it->getPointCloudp().x<<"y = "<< it->getPointCloudp().y<<"z = "<< it->getPointCloudp().z;
 
                 if(lastPoint != nullptr){
                     // Si hay ultimo punto generamos una linea
@@ -95,7 +107,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     qreal _y = li->getFinal()->getCenter().y()-li->getInit()->getCenter().y();
                     QPointF _p(_x,_y) ;
                     li->setPCPoint(this->searchPoint(_p));
-                    qDebug()<<"x = "<< li->getPointCloudp().x<<"y = "<< li->getPointCloudp().y<<"z = "<< li->getPointCloudp().z;
+                    //qDebug()<<"x = "<< li->getPointCloudp().x<<"y = "<< li->getPointCloudp().y<<"z = "<< li->getPointCloudp().z;
                 }
 
             scene->addItem(it);
@@ -109,14 +121,17 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
             d.g = dynamic_cast<QGraphicsItemGroup*>(it->parentItem());
             lastItems.push(d);
             int _i = redoItems.length();
-            qDebug()<<pt;
+            //qDebug()<<pt;
             for(int i =_i;i>0;i-- ){
                 DoneAction _d = redoItems.pop();
                 if(_d.a == ADD){
                     delete(_d.point);
                 }
             }
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
 
+            }
             }
         }
     }
@@ -186,7 +201,10 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     }
                 lastItems.push(d);
                 scene->removeItem(lastItems.top().point);
-                this->computeAllStereoplot();
+                if(_pc != nullptr && coord.first != 0){
+                    this->computeAllStereoplot();
+
+                }
                 // compute actual points
             }
         }
@@ -250,7 +268,10 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     d.g = dynamic_cast<QGraphicsItemGroup*>(_e->parentItem());
                     lastItems.push(d);
                     }
-                this->computeAllStereoplot();
+                if(_pc != nullptr && coord.first != 0){
+                    this->computeAllStereoplot();
+
+                }
             }
         }
 
@@ -270,23 +291,19 @@ void CustomGraphicsView::mouseMoveEvent(QMouseEvent * e){
                     itemToUpdate = dynamic_cast<CustomElipse*>(item);
                     if(itemToUpdate->hasInitLine()){
                         itemToUpdate->getInitLine()->updatel();
-                        itemToUpdate->setPCPoint(searchPoint(itemToUpdate->getCenter()));
-                        qreal _x = itemToUpdate->getInitLine()->getFinal()->getCenter().x()-itemToUpdate->getInitLine()->getInit()->getCenter().x();
-                        qreal _y = itemToUpdate->getInitLine()->getFinal()->getCenter().y()-itemToUpdate->getInitLine()->getInit()->getCenter().y();
-                        QPointF _p(_x,_y) ;
-                        itemToUpdate->getInitLine()->setPCPoint(searchPoint(_p));
+                        if(!_moved.contains(itemToUpdate)){
+                            _moved.push_back(itemToUpdate);
+                        }
                     }if(itemToUpdate->hasFinalLine()){
                         itemToUpdate->getFinalLine()->updatel();
-                        itemToUpdate->setPCPoint(searchPoint(itemToUpdate->getCenter()));
-                        qreal _x = itemToUpdate->getFinalLine()->getFinal()->getCenter().x()-itemToUpdate->getFinalLine()->getInit()->getCenter().x();
-                        qreal _y = itemToUpdate->getFinalLine()->getFinal()->getCenter().y()-itemToUpdate->getFinalLine()->getInit()->getCenter().y();
-                        QPointF _p(_x,_y) ;
-                        itemToUpdate->getFinalLine()->setPCPoint(searchPoint(_p));
+                        if(!_moved.contains(itemToUpdate)){
+                            _moved.push_back(itemToUpdate);
+                        }
                     }
                     break;
                 }
             }
-            this->computeAllStereoplot();
+
         }
     }
 }
@@ -552,7 +569,10 @@ void CustomGraphicsView::redoLastPoint(){
             break;
 
         }
-        this->computeAllStereoplot();
+        if(_pc != nullptr && coord.first != 0){
+            this->computeAllStereoplot();
+
+        }
     }
 }
 void CustomGraphicsView::removeLastPoint(){
@@ -633,8 +653,10 @@ void CustomGraphicsView::removeLastPoint(){
             break;
 
         }
-        this->computeAllStereoplot();
+        if(_pc != nullptr && coord.first != 0){
+            this->computeAllStereoplot();
 
+        }
 
     }
 }
@@ -670,7 +692,7 @@ pcl::PointXYZ CustomGraphicsView::searchPoint(QPointF _scenePoint){
 
     qreal _realx = (_scenePoint.x()+(this->width()/2))*static_cast<qreal>(coord.first)+static_cast<qreal>(coord.second.first);
     qreal _realy = static_cast<qreal>(coord.second.second)-(_scenePoint.y()+(this->height()/2))*static_cast<qreal>(coord.first);
-    qDebug()<<"x: "<<_realx<< " y: "<<_realy;
+    //qDebug()<<"x: "<<_realx<< " y: "<<_realy;
     for(size_t i = 0; i<this->_pc->size();i++){
         qreal aux = compute_distance(static_cast<qreal>(_pc->at(i).x),static_cast<qreal>(_pc->at(i).y),_realx,_realy);
         if(aux < _minimvalue){
@@ -688,10 +710,11 @@ qreal CustomGraphicsView::compute_distance(qreal x0, qreal y0, qreal x1, qreal y
     return qSqrt(qPow((x1-x0),2)+qPow((y1-y0),2));
 }
 void CustomGraphicsView::computeAllStereoplot(){
+    if(_pc != nullptr && coord.first!=0){
     FittingPlane _f;
     if(!_stereoplotLoad.empty()){
         int size = _stereoplotLoad.size();
-        qDebug()<<size;
+        //qDebug()<<size;
         for(int i=size-1;i>=0;i--){
            stereoplot->removeItem(_stereoplotLoad.at(i));
            QGraphicsEllipseItem* _e = _stereoplotLoad.at(i);
@@ -722,6 +745,30 @@ void CustomGraphicsView::computeAllStereoplot(){
 
 
         }
+    }
+    }
+
+}
+
+void CustomGraphicsView::updateMoved(){
+    if(!_moved.empty()){
+        int size = _moved.size();
+        for(int i = size-1 ; i>=0;i--){
+            _moved.at(i)->setPCPoint(searchPoint(_moved.at(i)->getCenter()));
+            if(_moved.at(i)->hasInitLine()){
+                qreal _x = _moved.at(i)->getInitLine()->getFinal()->getCenter().x()-_moved.at(i)->getInitLine()->getInit()->getCenter().x();
+                qreal _y = _moved.at(i)->getInitLine()->getFinal()->getCenter().y()-_moved.at(i)->getInitLine()->getInit()->getCenter().y();
+                QPointF _p(_x,_y) ;
+                _moved.at(i)->getInitLine()->setPCPoint(this->searchPoint(_p));
+            }
+            if(_moved.at(i)->hasFinalLine()){
+                qreal _x = _moved.at(i)->getFinalLine()->getFinal()->getCenter().x()-_moved.at(i)->getFinalLine()->getInit()->getCenter().x();
+                qreal _y = _moved.at(i)->getFinalLine()->getFinal()->getCenter().y()-_moved.at(i)->getFinalLine()->getInit()->getCenter().y();
+                QPointF _p(_x,_y) ;
+                _moved.at(i)->getFinalLine()->setPCPoint(this->searchPoint(_p));
+            }
+        }
+        _moved.clear();
     }
 
 }

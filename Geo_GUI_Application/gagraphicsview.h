@@ -75,6 +75,7 @@ public:
     qreal compute_distance(qreal x0, qreal y0, qreal x1, qreal y1);
     void computeAllStereoplot();
     void computeActualPointsStereoplot();
+    void updateMoved();
     void computeActualPointStereoplot(QPointF _pt);
 signals:
 void sendMousePoint(QPointF point);
@@ -82,6 +83,7 @@ void sendMousePoint(QPointF point);
 public slots:
 void mousePressEvent(QMouseEvent * e);
 void mouseMoveEvent(QMouseEvent * e);
+void mouseReleaseEvent(QMouseEvent* e);
 
 private:
 QGraphicsScene * scene;
@@ -96,6 +98,7 @@ QList<CustomElipse*> lastPoints;
 QList<QList<CustomElipse*>*> poliLines;
 QList<QGraphicsEllipseItem*> _stereoplotLoad;
 QList<QGraphicsEllipseItem*> _stereoplotActual;
+QList<CustomElipse*> _moved;
 QStack <DoneAction>lastItems;
 QStack <DoneAction>redoItems;
 QGraphicsItemGroup* group;
