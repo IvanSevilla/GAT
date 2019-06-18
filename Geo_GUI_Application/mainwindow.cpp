@@ -294,7 +294,7 @@ void MainWindow::openImage(QString image_name){
                         _ce->setCenter(_point);
                         _ce->setPen(QPen(edit->getGroupColor(i)));
                         _ce->setBrush(QBrush(edit->getGroupColor(i)));
-                        _ce->setRect(_point.x()-2,_point.y()-2,4,4);
+                        _ce->setRect(_point.x()-4,_point.y()-4,8,8);
                         _ce->setGroupNumber(i);
                         _ce->setFlag(QGraphicsItem::ItemIsMovable,true);
                         _ce->setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -692,17 +692,21 @@ void MainWindow::on_showPolilines_clicked(bool checked)
                 QList<CustomElipse*>* _curr = edit->getCurrentGroupPolilines();
                 QColor _c = edit->getCurrentColor();
                 _c.setAlphaF(0.5);
+                QPen _p(_c);
+                QBrush _b(_c);
                 for (int i = 0; i<_curr->length();i++){
                     CustomElipse* _last = _curr->value(i);
                     while(_last->hasFinalLine()){
 
-                        _last->setPen(QPen(_c));
-                        _last->setBrush(QBrush(_c));
-                        _last->getFinalLine()->setPen(QPen(_c));
+                        _last->setPen(_p);
+                        _last->setBrush(_b);
+                        _last->getFinalLine()->setPen(_p);
                         _last= _last->getFinalLine()->getInit();
                     }
-                    _last->setPen(QPen(_c));
-                    _last->setBrush(QBrush(_c));
+                    if(_last != nullptr){
+                        _last->setPen(_p);
+                        _last->setBrush(_b);
+                    }
                 }
                 this->ui->polilines->setHidden(1);
                 ui->polilines->clear();

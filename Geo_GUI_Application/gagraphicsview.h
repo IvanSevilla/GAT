@@ -55,6 +55,8 @@ public:
     void setGroup(int g);
     void setGroupVisibility(int vis, bool bvis);
     void setGroupColor(int position, QColor _new);
+    QPen getCurrentPen();
+    QBrush getCurrentBrush();
     QColor getGroupColor(int group);
     QColor getCurrentColor();
     QList<CustomElipse*>* getPolilines(int _group);
@@ -76,7 +78,8 @@ public:
     void computeAllStereoplot();
     void computeActualPointsStereoplot();
     void updateMoved();
-    void computeActualPointStereoplot(QPointF _pt);
+    void computeActualPointStereoplot(CustomElipse* _pt);
+    bool searchPoliline(CustomElipse *_pt);
 signals:
 void sendMousePoint(QPointF point);
 

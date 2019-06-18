@@ -35,12 +35,13 @@ CustomGraphicsView::CustomGraphicsView(QWidget *parent) :
     lastPoint = nullptr;
     }
 void CustomGraphicsView::mouseReleaseEvent(QMouseEvent * e)
-{
-    QGraphicsView::mouseReleaseEvent(e);
-    if(_pc != nullptr && coord.first != 0){
-        updateMoved();
-        this->computeAllStereoplot();
+{    if(paint == 3){
+        QGraphicsView::mouseReleaseEvent(e);
+        if(_pc != nullptr && coord.first != 0){
+            updateMoved();
+            this->computeAllStereoplot();
 
+        }
     }
 
 }
@@ -63,8 +64,10 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     lastPoint = nullptr;
                     if(_pc != nullptr && coord.first != 0){
                         this->computeAllStereoplot();
+                        this->computeActualPointsStereoplot();
 
                     }
+
                 }
 
             }else{
@@ -76,7 +79,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                 CustomElipse* it = new CustomElipse();
                 it->setPen(pen);
                 it->setBrush(brush);
-                it->setRect(pt.x()-2,pt.y()-2,4,4);
+                it->setRect(pt.x()-4,pt.y()-4,8,8);
                 it->setCenter(pt);
                 it->setFlag(QGraphicsItem::ItemIsMovable,true);
                 it->setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -128,8 +131,9 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     delete(_d.point);
                 }
             }
+
             if(_pc != nullptr && coord.first != 0){
-                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
 
             }
             }
@@ -203,9 +207,9 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                 scene->removeItem(lastItems.top().point);
                 if(_pc != nullptr && coord.first != 0){
                     this->computeAllStereoplot();
+                    this->computeActualPointsStereoplot();
 
                 }
-                // compute actual points
             }
         }
 
@@ -232,7 +236,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     CustomElipse* _e = new CustomElipse();
                     _e->setPen(QPen(_color.value(getNumber(_l))));
                     _e->setBrush(QBrush(_color.value(getNumber(_l))));
-                    _e->setRect(pt.x()-2,pt.y()-2,4,4);
+                    _e->setRect(pt.x()-4,pt.y()-4,8,8);
                     _e->setCenter(pt);
                     _e->setFlag(QGraphicsItem::ItemIsMovable,true);
                     _e->setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -270,6 +274,7 @@ void CustomGraphicsView::mousePressEvent(QMouseEvent * e)
                     }
                 if(_pc != nullptr && coord.first != 0){
                     this->computeAllStereoplot();
+                    this->computeActualPointsStereoplot();
 
                 }
             }
@@ -440,6 +445,9 @@ void CustomGraphicsView::WriteLogFile(const char* szString)
 
 void CustomGraphicsView::clear(){
     up_btn = nullptr;
+    lastItems.clear();
+    redoItems.clear();
+    _moved.clear();
     int _ps = poliLines.size();
     for(int i =_ps;i>0;i--){
         QList<CustomElipse*>* _aux = poliLines.back();
@@ -472,9 +480,22 @@ void CustomGraphicsView::clear(){
         _aux->clear();
         delete(_aux);
     }
+    for(QGraphicsEllipseItem* ce:_stereoplotLoad){
+
+            stereoplot->removeItem(ce);
+            delete(ce);
+
+
+    }
+    for(QGraphicsEllipseItem* ce:_stereoplotActual){
+
+            stereoplot->removeItem(ce);
+            delete(ce);
+
+
+    }
     lastPoint = nullptr;
-    lastItems.clear();
-    redoItems.clear();
+
     stereoplot->clear();
     stereoplot = nullptr;
     _stereoview = nullptr;
@@ -529,6 +550,11 @@ void CustomGraphicsView::redoLastPoint(){
                 poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
             }
             lastItems.push(redoItems.pop());
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
             break;
         case ADD:
             WriteLogFile("REDO ADD");
@@ -537,7 +563,23 @@ void CustomGraphicsView::redoLastPoint(){
 
             redoItems.top().g->addToGroup(redoItems.top().point->getFinalLine());
             redoItems.top().g->addToGroup(redoItems.top().point);
+
+
+            if(poliLines.value(redoItems.top().point->getGroupNumber())->contains(redoItems.top().point->getFinalLine()->getInit())){
+                int _position = poliLines.value(redoItems.top().point->getGroupNumber())->indexOf(redoItems.top().point->getFinalLine()->getInit());
+                poliLines.value(redoItems.top().point->getGroupNumber())->replace(_position,redoItems.top().point);
+            }else{
+                if(redoItems.top().point->hasFinalLine()){
+                    lastPoint = redoItems.top().point;
+                    lastPoints.replace(redoItems.top().point->getGroupNumber(),lastPoint);
+                }
+            }
             lastItems.push(redoItems.pop());
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
             break;
 
         case MOVE:
@@ -553,6 +595,11 @@ void CustomGraphicsView::redoLastPoint(){
             scene->removeItem(redoItems.top().point->getInitLine());
             scene->removeItem(redoItems.top().point);
             lastItems.push(redoItems.pop());
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
             break;
         case SPLIT:
             WriteLogFile("REDO SPLIT");
@@ -564,13 +611,14 @@ void CustomGraphicsView::redoLastPoint(){
             scene->addItem(redoItems.top().point);
             redoItems.top().g->addToGroup(redoItems.top().point);
             lastItems.push(redoItems.pop());
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
             break;
         case NONE:
             break;
-
-        }
-        if(_pc != nullptr && coord.first != 0){
-            this->computeAllStereoplot();
 
         }
     }
@@ -607,23 +655,41 @@ void CustomGraphicsView::removeLastPoint(){
 
 
             }
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
 
+            }
 
             break;
         case ADD:
-            WriteLogFile("UNDO ADD");
-            if(redoItems.top().point->hasFinalLine()){
-                scene->removeItem(redoItems.top().point->getFinalLine());
-                scene->removeItem(redoItems.top().point);
-                if(lastPoint!=nullptr){
-                    lastPoint = redoItems.top().point->getFinalLine()->getInit();
-                }
-            }else {
-                if(!redoItems.top().point->hasInitLine()){
-                    lastPoint = nullptr;
-                }
-                scene->removeItem(redoItems.top().point);
+            if(!searchPoliline(redoItems.top().point)){
+                WriteLogFile("UNDO ADD");
+                // TO DO: Gestion polilinea.
+                if(redoItems.top().point->hasFinalLine()){
+                    scene->removeItem(redoItems.top().point->getFinalLine());
+                    scene->removeItem(redoItems.top().point);
 
+                    if(lastPoint!=nullptr){
+                        lastPoint = redoItems.top().point->getFinalLine()->getInit();
+                    }
+                }else {
+
+                    if(!redoItems.top().point->hasInitLine()){
+                        lastPoint = nullptr;
+
+                    }
+                    scene->removeItem(redoItems.top().point);
+
+
+                }
+                if(_pc != nullptr && coord.first != 0){
+                    this->computeAllStereoplot();
+                    this->computeActualPointsStereoplot();
+
+                }
+            }else{
+                redoItems.pop();
             }
             break;
         case MOVE:
@@ -638,6 +704,11 @@ void CustomGraphicsView::removeLastPoint(){
             scene->addItem(redoItems.top().point);
             redoItems.top().g->addToGroup(redoItems.top().point);
             break;
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
         case SPLIT:
             WriteLogFile("UNDO SPLIT");
             CustomElipse* p1,*p3;
@@ -649,12 +720,13 @@ void CustomGraphicsView::removeLastPoint(){
             scene->removeItem(redoItems.top().point->getInitLine());
             scene->removeItem(redoItems.top().point);
             break;
+            if(_pc != nullptr && coord.first != 0){
+                this->computeAllStereoplot();
+                this->computeActualPointsStereoplot();
+
+            }
         case NONE:
             break;
-
-        }
-        if(_pc != nullptr && coord.first != 0){
-            this->computeAllStereoplot();
 
         }
 
@@ -732,6 +804,7 @@ void CustomGraphicsView::computeAllStereoplot(){
                 _points.push_back(last->getFinalLine()->getPointCloudp());
                 last = last->getFinalLine()->getInit();
             }
+            //qDebug()<<"2";
             _points.push_back(last->getPointCloudp());
             last = nullptr;
             delete(last);
@@ -771,4 +844,96 @@ void CustomGraphicsView::updateMoved(){
         _moved.clear();
     }
 
+}
+
+// Prueba descartada para futuro
+void CustomGraphicsView::computeActualPointStereoplot(CustomElipse* _pt){
+    if(_pc != nullptr && coord.first!=0){
+        FittingPlane _f;
+        CustomElipse* last = lastPoint;
+
+        if(_pt != lastPoint){
+            last = _pt;
+            while(!lastPoints.contains(last) && last->hasFinalLine()){
+                last = last->getFinalLine()->getInit();
+            }
+        }
+            std::vector<pcl::PointXYZ> _points;
+            while(last->hasFinalLine()){
+                _points.push_back(last->getPointCloudp());
+                _points.push_back(last->getFinalLine()->getPointCloudp());
+                last = last->getFinalLine()->getInit();
+            }
+            _points.push_back(last->getPointCloudp());
+            std::pair <float,float> _normal = _f.planeCalc(_points);
+            if(_normal.first != -3){
+                // el stereoplot esta centrat en 130,130
+                QGraphicsEllipseItem* _e = stereoplot->addEllipse((_normal.first*130+130),(_normal.second*(-130)+130),8,8,QPen(getGroupColor(last->getGroupNumber())),QBrush(getGroupColor(last->getGroupNumber()),Qt::SolidPattern));
+                _stereoplotActual.removeAt(last->getGroupNumber());
+                _stereoplotActual.push_back(_e);
+            }
+            last = nullptr;
+            delete(last);
+
+    }
+}
+void CustomGraphicsView::computeActualPointsStereoplot(){
+    if(_pc != nullptr && coord.first!=0){
+        if(!_stereoplotActual.empty()){
+            int size = _stereoplotActual.size();
+            //qDebug()<<size;
+            for(int i=size-1;i>=0;i--){
+               stereoplot->removeItem(_stereoplotActual.at(i));
+               QGraphicsEllipseItem* _e = _stereoplotActual.at(i);
+               _stereoplotActual.removeAt(i);
+               delete(_e);
+            }
+
+        }
+        FittingPlane _f;
+        for(int i=0; i<lastPoints.size();i++){
+            if(lastPoints.at(i) != nullptr){
+                CustomElipse* last = lastPoints.at(i);
+
+                std::vector<pcl::PointXYZ> _points;
+                while(last->hasFinalLine()){
+                    _points.push_back(last->getPointCloudp());
+                    _points.push_back(last->getFinalLine()->getPointCloudp());
+                    last = last->getFinalLine()->getInit();
+                }
+                _points.push_back(last->getPointCloudp());
+                last = nullptr;
+                delete(last);
+
+                if(_points.size() >=3){
+                    std::pair <float,float> _normal = _f.planeCalc(_points);
+                    if(_normal.first != -3){
+                        // el stereoplot esta centrat en 130,130
+                        QGraphicsEllipseItem* _e = stereoplot->addEllipse((_normal.first*130+130),(_normal.second*(-130)+130),8,8,QPen(getGroupColor(i)),QBrush(getGroupColor(i),Qt::SolidPattern));
+                        _stereoplotActual.push_back(_e);
+                    }
+            }
+        }
+
+    }
+}
+}
+QPen CustomGraphicsView::getCurrentPen(){
+    return pen;
+}
+QBrush CustomGraphicsView::getCurrentBrush(){
+    return brush;
+}
+
+bool CustomGraphicsView::searchPoliline(CustomElipse *_pt){
+    bool _r = false;
+
+    CustomElipse *_e = _pt;
+    while (_e->hasInitLine()){
+        _e = _e->getInitLine()->getFinal();
+    }
+    _r = poliLines.at(_e->getGroupNumber())->contains(_e);
+    _e = nullptr;
+    delete(_e);
+    return _r;
 }
