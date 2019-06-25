@@ -901,7 +901,6 @@ void MainWindow::on_actionNext_Image_triggered()
                 coordinates = _pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
             }
             openImage(subproject.at("image").get<std::string>().c_str());
-            // Falta funcion de calculo de stereoplot
             //qDebug()<<editscene->items();
             ui->Group0->click();
         }
@@ -926,7 +925,6 @@ void MainWindow::on_actionPrevious_Image_triggered()
                 coordinates = _pm.readGeoData(subproject.at("geodata").get<std::string>().c_str());
             }
             openImage(subproject.at("image").get<std::string>().c_str());
-            // Falta funcion de calculo de stereoplot
             //qDebug()<<editscene->items();
              ui->Group0->click();
         }
