@@ -980,6 +980,7 @@ void MainWindow::on_actionAdd_Point_Cloud_triggered()
                 QFile::copy(_pointCloud, _dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt");
                 subproject["pointcloud"]= (_dir.relativeFilePath(_f.absolutePath())+"/pointcloud/PointCloud"+std::to_string(currentSubproject).c_str()+".txt").toStdString();
                 _pm.readPointCloud(this->PointCloud,_pointCloud);
+                edit->setPC(this->PointCloud);
                 saveSubproject();
             }
 
@@ -1074,6 +1075,7 @@ void MainWindow::on_actionAdd_GeoData_triggered()
                 QFile::copy(_geodata, _dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw");
                 subproject["geodata"]= (_dir.relativeFilePath(_f.absolutePath())+"/geodata/geodata"+std::to_string(currentSubproject).c_str()+".tfw").toStdString();
                 coordinates = _pm.readGeoData(_geodata);
+                edit->setCoord(coordinates);
                 saveSubproject();
                 // generar stereoplot a partir de los puntos generados por ahora solo polilineas
             }
